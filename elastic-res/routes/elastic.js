@@ -314,7 +314,14 @@ router.post('/elasticsearch/:type/create', function (req, res, next) {
                 "incorrect_path": req.body.incorrect_path,
                 "repeat_path": req.body.repeat_path,
                 "confirmation_path": req.body.confirmation_path,
-                "goodbye_path": req.body.goodbye_path
+                "goodbye_path": req.body.goodbye_path,
+                "selection_confirmation_path": req.body.selection_confirmation_path,
+                "no_selection_path": req.body.no_selection_path,
+                "wrong_path": req.body.wrong_path,
+                "success_path": req.body.success_path,
+                'default': req.body.default,
+                'subscription_failure_path': req.body.subscription_failure_path,
+                'continue_path': req.body.continue_path
             }
         }, function (err, resp, status) {
             res.setHeader('Content-Type', 'application/json');
