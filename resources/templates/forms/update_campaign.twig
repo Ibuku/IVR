@@ -287,49 +287,36 @@
                             <fieldset class="content-group">
                                 <legend class="text-bold">CONFIGURE CALL TO ACTION</legend>
 
-                                {#configure actions for Number *#}
-                                {#{% for action in actions %}#}
-                                {#<div class="form-group">#}
-                                    {#<label class="control-label col-lg-2"><strong>{{ number }}</strong></label>#}
-                                    {#<div class="col-lg-5">#}
-                                        {#<select name="{{ number }}_value" class="form-control" id="{{ action.number }}_value">#}
-                                            {#{% for option in options  %}#}
-                                                {#<option value="{{ option.value }}">{{ option.name }}</option>#}
-                                            {#{% endfor %}#}
-                                        {#</select>#}
-                                    {#</div>#}
-                                    {#<div class="col-lg-5">#}
-                                        {#<input type="text" name="{{ action.number }}_body" id="{{ action.number }}_body" class="form-control" value="{{ action.body }}" placeholder="Enter subscription url or text messages here">#}
-                                    {#</div>#}
-                                {#</div>#}
-                                {#{% endfor %}#}
-
                                 <div class="form-group">
-                                    <div class="col-sm-1">
-                                        <input type="text" name="number" id="number" class="form-control" value="{{ action.number }}" placeholder="Number">
-                                    </div>
+                                    <label class="control-label col-lg-2"><strong>Subscription Key</strong></label>
                                     <div class="col-lg-2">
-                                        <input type="text" name="repeat_param" id="repeat_param" class="form-control" value="{{ action.repeat_param }}" placeholder="Enter repeat advert key">
+                                        <input type="text" name="number" id="number" maxlength="1" class="form-control" value="{{ action.number }}" placeholder="Number">
                                     </div>
+                                    <span class="col-sm-1"></span>
+                                    <label class="control-label col-lg-2"><strong>Action</strong></label>
                                     <div class="col-lg-2">
-                                        <input type="text" name="confirm" id="confirm" class="form-control" value="{{ action.confirm }}" placeholder="Enter confirmation key">
-                                    </div>
-                                    <div class="col-sm-1">
                                         <select name="value" class="form-control" id="value">
                                             {% for option in options  %}
                                                 <option value="{{ option.value }}" {% if action.value == option.value %}selected{% endif %}>{{ option.name }}</option>
                                             {% endfor %}
                                         </select>
                                     </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-lg-2"><strong>Subscription Url</strong></label>
+                                    <div class="col-lg-3">
+                                        <input type="text" name="body" id="body" class="form-control" value="{{ action.body }}" placeholder="Enter subscription url here">
+                                    </div>
+                                    <label class="control-label col-sm-2"><strong>Request Method</strong></label>
                                     <div class="col-sm-1">
                                         <select name="request" class="form-control" id="request">
                                             <option value='GET' {% if action.request == 'GET' %}selected{% endif %}>GET</option>
                                             <option value='POST' {% if action.request == 'POST' %}selected{% endif %}>POST</option>
                                         </select>
                                     </div>
-                                    <div class="col-lg-3">
-                                        <input type="text" name="body" id="body" class="form-control" value="{{ action.body }}" placeholder="Enter subscription url here">
-                                    </div>
+                                    <span class="col-sm-1"></span>
+                                    <label class="control-label col-lg-1"><strong>Parameter</strong></label>
                                     <div class="col-sm-2">
                                         <input type="text" name="parameter" id="parameter" class="form-control" value="{{ action.parameter }}" placeholder="Phone/Msisdn parameter">
                                     </div>
