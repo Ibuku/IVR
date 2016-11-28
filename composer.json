@@ -11,7 +11,8 @@
         "php-ffmpeg/php-ffmpeg": "^0.6.1",
         "gietos/phpagi": "^2.0",
         "php-amqplib/php-amqplib": "^2.6",
-        "phpoffice/phpexcel": "^1.8"
+        "phpoffice/phpexcel": "^1.8",
+        "predis/predis": "^1.1"
     },
     "autoload": {
         "psr-4": {
