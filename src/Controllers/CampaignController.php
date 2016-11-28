@@ -243,7 +243,8 @@ class CampaignController extends BaseController
             'name' => $request->getParam('name'),
             'description' => $request->getParam('description'),
             'start_date' => $start_date,
-            'end_date' => $end_date
+            'end_date' => $end_date,
+            'play_path' => $campaign->play_path
         ]);
 
         Index::update('campaign', $campaign->id, [
