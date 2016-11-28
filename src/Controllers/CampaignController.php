@@ -243,8 +243,7 @@ class CampaignController extends BaseController
             'name' => $request->getParam('name'),
             'description' => $request->getParam('description'),
             'start_date' => $start_date,
-            'end_date' => $end_date,
-            'play_path' => $campaign->play_path
+            'end_date' => $end_date
         ]);
 
         Index::update('campaign', $campaign->id, [
@@ -253,6 +252,7 @@ class CampaignController extends BaseController
             'start_date' => $start_date,
             'end_date' => $end_date,
             'id' => $campaign->id,
+            'play_path' => $campaign->play_path
         ]);
 
         $action = Action::where('campaign_id', $campaign->id)->first();
