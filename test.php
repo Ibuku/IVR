@@ -1,5 +1,5 @@
 <?php
 
-$d = substr('2016-11-18T15:49:44.777Z');
+$d = openssl_digest('ivr_marketing?', 'sha512');
 var_dump($d);
 

@@ -20,7 +20,7 @@ class SettingsController extends BaseController
     {
         $files = Files::where('tag', 'prompt')->get();
 
-        $setting = Settings::where('default', true)->first();
+        $setting = Settings::where('default_settings', true)->first();
 
         return $this->view->render($response, 'templates/forms/settings.twig', [
             'files' => $files,
@@ -44,7 +44,7 @@ class SettingsController extends BaseController
                 'success_path' => $request->getParam('success_path'),
                 'no_selection_path' => $request->getParam('no_selection_path'),
                 'selection_confirmation_path' => $request->getParam('selection_confirmation_path'),
-                'default' => true,
+                'default_settings' => true,
                 'subscription_failure_path' => $request->getParam('subscription_failure_path'),
                 'continue_path' => $request->getParam('continue_path')
             ]);
@@ -59,7 +59,7 @@ class SettingsController extends BaseController
                 'success_path' => $request->getParam('success_path'),
                 'no_selection_path' => $request->getParam('no_selection_path'),
                 'selection_confirmation_path' => $request->getParam('selection_confirmation_path'),
-                'default' => true,
+                'default_settings' => true,
                 'subscription_failure_path' => $request->getParam('subscription_failure_path'),
                 'continue_path' => $request->getParam('continue_path')
             ]);
@@ -106,7 +106,7 @@ class SettingsController extends BaseController
                 'success_path' => $settings->success_path,
                 'no_selection_path' => $settings->no_selection_path,
                 'selection_confirmation_path' => $settings->selection_confirmation_path,
-                'default' => $settings->default,
+                'default_settings' => $settings->default,
                 'subscription_failure_path' => $settings->subscription_failure_path,
                 'continue_path' => $settings->continue_path
             ]

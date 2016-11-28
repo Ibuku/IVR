@@ -115,6 +115,15 @@ $settings = "CREATE TABLE IF NOT EXISTS settings(
   repeat_path VARCHAR (255) NOT NULL,
   confirmation_path VARCHAR (255) NOT NULL,
   advert_limit INTEGER NOT NULL,
+  wrong_path VARCHAR (255) NOT NULL,
+  success_path VARCHAR (255) NOT NULL,
+  failure_path VARCHAR (255) NOT NULL,
+  goodbye_path VARCHAR (255) NOT NULL,
+  continue_path VARCHAR (255) NOT NULL,
+  no_selection_path VARCHAR (255) NOT NULL,
+  selection_confirmation_path VARCHAR (255) NOT NULL,
+  subscription_failure_path VARCHAR (255) NOT NULL,
+  default_settings BOOL DEFAULT TRUE,
   updated_at date DEFAULT NULL,
   created_at date DEFAULT NULL
 );";
