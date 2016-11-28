@@ -1,4 +1,4 @@
-var app = angular.module('mainApp', ['ngAudio']);
+var app = angular.module('mainApp', ['ngWebAudio']);
 
 app.config(function ($interpolateProvider) {
     $interpolateProvider.startSymbol('[[').endSymbol(']]');
@@ -50,7 +50,7 @@ app.controller('UploadController', function ($scope, $location) {
     };
 });
 
-app.controller('FileCtrl', function ($scope) {
+app.controller('FileCtrl', function ($scope, WebAudio) {
 
     $scope.init = function (data, username) {
 
@@ -58,6 +58,7 @@ app.controller('FileCtrl', function ($scope) {
         $scope.etisalat = false;
         $scope.tm30 = false;
         $scope.all = false;
+        $scope.audio = null;
 
         if (username == 'etisalat') {
             $scope.etisalat = true;
@@ -107,18 +108,21 @@ app.controller('FileCtrl', function ($scope) {
         }
     };
 
-    $scope.playAudio = function() {
-        $scope.buffer = function() {
-            $scope.audio.buffer();
-        };
-        $scope.play = function(file_path) {
-            $scope.audio = WebAudio(file_path, {buffer: false});
-            $scope.audio.play();
-        };
-        $scope.pause = function() {
+    $scope.buffer = function() {
+        $scope.audio.buffer();
+    };
+    $scope.play = function(file_path) {
+        $scope.audio = WebAudio(file_path, {buffer: false});
+        console.log($scope.audio);
+        $scope.audio.play();
+    };
+    $scope.pause = function() {
+        if ($scope.audio) {
             $scope.audio.pause();
-        };
-        $scope.stop = function() {
+        }
+    };
+    $scope.stop = function() {
+        if ($scope.audio) {
             $scope.audio.stop();
         }
     };
