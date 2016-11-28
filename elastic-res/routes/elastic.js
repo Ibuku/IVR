@@ -313,7 +313,8 @@ router.post('/elasticsearch/:type/create', function (req, res, next) {
                 "advert_limit": req.body.advert_limit,
                 "incorrect_path": req.body.incorrect_path,
                 "repeat_path": req.body.repeat_path,
-                "confirmation_path": req.body.confirmation_path
+                "confirmation_path": req.body.confirmation_path,
+                "goodbye_path": req.body.goodbye_path
             }
         }, function (err, resp, status) {
             res.setHeader('Content-Type', 'application/json');

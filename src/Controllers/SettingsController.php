@@ -38,14 +38,16 @@ class SettingsController extends BaseController
                 'advert_limit' => $request->getParam('advert_limit'),
                 'incorrect_path' => $request->getParam('incorrect_path'),
                 'repeat_path' => $request->getParam('repeat_path'),
-                'confirmation_path' => $request->getParam('confirmation_path')
+                'confirmation_path' => $request->getParam('confirmation_path'),
+                'goodbye_path' => $request->getParam('goodbye_path')
             ]);
         } else {
             $settings = Settings::create([
                 'advert_limit' => $request->getParam('advert_limit'),
                 'incorrect_path' => $request->getParam('incorrect_path'),
                 'repeat_path' => $request->getParam('repeat_path'),
-                'confirmation_path' => $request->getParam('confirmation_path')
+                'confirmation_path' => $request->getParam('confirmation_path'),
+                'goodbye_path' => $request->getParam('goodbye_path')
             ]);
         }
 
@@ -58,12 +60,16 @@ class SettingsController extends BaseController
         $con_command = 'cp ' . $settings->confirmation_path . ' ' . "/var/lib/asterisk/sounds/defaults/confirmation.wav";
         shell_exec($con_command);
 
+        $settings_command = 'cp ' . $settings->goodbye_path . ' ' . "/var/lib/asterisk/sounds/defaults/goodbye.wav";
+        shell_exec($settings_command);
+
         Index::index('settings', [
                 'id' => $settings->id,
                 'advert_limit' => $settings->advert_limit,
                 'incorrect_path' => '/var/lib/asterisk/sounds/defaults/incorrect.wav',
                 'repeat_path' => "/var/lib/asterisk/sounds/defaults/repeat.wav",
-                'confirmation_path' => "/var/lib/asterisk/sounds/defaults/confirmation.wav"
+                'confirmation_path' => "/var/lib/asterisk/sounds/defaults/confirmation.wav",
+                'goodbye_path' => "/var/lib/asterisk/sounds/defaults/goodbye.wav"
             ]
         );
 
