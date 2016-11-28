@@ -32,14 +32,14 @@ class SettingsController extends BaseController
     {
 
         $settings = Settings::create([
-            'limit' => $request->getParam('limit'),
+            'advert_limit' => $request->getParam('advert_limit'),
             'incorrect_path' => $request->getParam('incorrect_path'),
             'repeat_path' => $request->getParam('repeat_path'),
             'confirmation_path' => $request->getParam('confirmation_path')
         ]);
 
         Index::index('settings', [
-                'limit' => $settings->limit,
+                'advert_limit' => $settings->advert_limit,
                 'incorrect_path' => $settings->incorrect_path,
                 'repeat_path' => $settings->repeat_path,
                 'confirmation_path' => $settings->confirmation_path

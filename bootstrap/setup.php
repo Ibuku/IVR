@@ -114,6 +114,7 @@ $settings = "CREATE TABLE IF NOT EXISTS settings(
   incorrect_path VARCHAR (255) NOT NULL,
   repeat_path VARCHAR (255) NOT NULL,
   confirmation_path VARCHAR (255) NOT NULL,
+  advert_limit INTEGER NOT NULL,
   updated_at date DEFAULT NULL,
   created_at date DEFAULT NULL
 );";

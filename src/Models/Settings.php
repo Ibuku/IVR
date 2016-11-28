@@ -16,7 +16,7 @@ class Settings extends Model
     protected $table = 'settings';
 
     protected $fillable = [
-        "limit",
+        "advert_limit",
         "incorrect_path",
         "repeat_path",
         "confirmation_path",
