@@ -281,11 +281,11 @@
 
                             <fieldset class="content-group">
                                 <div class="form-group">
-                                    <label class="control-label col-lg-2"><strong>Select Subscription Failure Prompt</strong></label>
+                                    <label class="control-label col-lg-2"><strong>Select Continue Listening Prompt</strong></label>
                                     <div class="col-lg-10">
-                                        <select class="form-control" id="subscription_failure_path" name="subscription_failure_path" required>
+                                        <select class="form-control" id="continue_path" name="continue_path" required>
                                             {% for file in files  %}
-                                                <option value="{{ file.file_path }}" {% if setting.subscription_failure_path == file.file_path %}selected{% endif %}>{{ file.name }}</option>
+                                                <option value="{{ file.file_path }}" {% if setting.continue_path == file.file_path %}selected{% endif %}>{{ file.name }}</option>
                                             {% endfor %}
                                         </select>
                                     </div>
