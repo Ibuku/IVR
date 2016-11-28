@@ -20,8 +20,11 @@ class SettingsController extends BaseController
     {
         $files = Files::where('tag', 'prompt')->get();
 
+        $setting = Settings::first();
+
         return $this->view->render($response, 'templates/forms/settings.twig', [
-            'files' => $files
+            'files' => $files,
+            'setting' => $setting
         ]);
     }
 
