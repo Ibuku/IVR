@@ -631,7 +631,8 @@ router.post('/elasticsearch/:type/:id/update', function (req, res, next) {
                         name: req.body.name,
                         description: req.body.description,
                         start_date: start_date,
-                        end_date: end_date
+                        end_date: end_date,
+                        play_path: req.body.play_path
                     }
                 }
             }, function (error, response) {
