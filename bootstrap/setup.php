@@ -109,6 +109,17 @@ $files = "CREATE TABLE IF NOT EXISTS files(
 
 array_push($list, $files);
 
+$settings = "CREATE TABLE IF NOT EXISTS settings(
+  id serial,
+  incorrect_path VARCHAR (255) NOT NULL,
+  repeat_path VARCHAR (255) NOT NULL,
+  confirmation_path VARCHAR (255) NOT NULL,
+  updated_at date DEFAULT NULL,
+  created_at date DEFAULT NULL
+);";
+
+array_push($list, $settings);
+
 foreach ($list as $data) {
     $pdo->exec($data);
 }

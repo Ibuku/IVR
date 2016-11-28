@@ -17,6 +17,8 @@ class Settings extends Model
 
     protected $fillable = [
         "limit",
-        "file_path"
+        "incorrect_path",
+        "repeat_path",
+        "confirmation_path",
     ];
 }

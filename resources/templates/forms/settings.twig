@@ -179,7 +179,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-lg-2"><strong>Select Incorrect Prompt</strong></label>
                                     <div class="col-lg-10">
-                                        <select name="campaign_id" class="form-control" id="campaign_id" required>
+                                        <select name="campaign_id" class="form-control" id="incorrect_path" required>
                                             {% for file in files  %}
                                                 <option value="{{ file.file_path }}">{{ file.name }}</option>
                                             {% endfor %}
@@ -192,7 +192,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-lg-2"><strong>Select Listen Again Prompt</strong></label>
                                     <div class="col-lg-10">
-                                        <select name="campaign_id" class="form-control" id="campaign_id" required>
+                                        <select name="campaign_id" class="form-control" id="repeat_path" required>
                                             {% for file in files  %}
                                                 <option value="{{ file.file_path }}">{{ file.name }}</option>
                                             {% endfor %}
@@ -205,7 +205,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-lg-2"><strong>Select Confirmation Prompt</strong></label>
                                     <div class="col-lg-10">
-                                        <select name="campaign_id" class="form-control" id="campaign_id" required>
+                                        <select name="campaign_id" class="form-control" id="confirmation_path" required>
                                             {% for file in files  %}
                                                 <option value="{{ file.file_path }}">{{ file.name }}</option>
                                             {% endfor %}
