@@ -170,7 +170,7 @@
                                     <label class="control-label col-lg-2"><strong>Advert Limit/Call</strong></label>
                                     <div class="col-lg-2">
                                         <span style="color: red;">{{ error }}</span>
-                                        <input type="number" min="1" max="9" maxlength="1" name="limit" id="limit" class="form-control" placeholder="Enter Advert Limit/Call here" value="{{ old.limit }}" required>
+                                        <input type="number" min="1" max="9" maxlength="1" name="advert_limit" id="advert_limit" class="form-control" placeholder="Enter Advert Limit/Call here" value="{{ old.limit }}" required>
                                     </div>
                                 </div>
                             </fieldset>
@@ -179,7 +179,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-lg-2"><strong>Select Incorrect Prompt</strong></label>
                                     <div class="col-lg-10">
-                                        <select name="campaign_id" class="form-control" id="incorrect_path" required>
+                                        <select name="campaign_id" class="form-control" id="incorrect_path" name="incorrect_path" required>
                                             {% for file in files  %}
                                                 <option value="{{ file.file_path }}">{{ file.name }}</option>
                                             {% endfor %}
@@ -192,7 +192,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-lg-2"><strong>Select Listen Again Prompt</strong></label>
                                     <div class="col-lg-10">
-                                        <select name="campaign_id" class="form-control" id="repeat_path" required>
+                                        <select name="campaign_id" class="form-control" id="repeat_path" name="repeat_path" required>
                                             {% for file in files  %}
                                                 <option value="{{ file.file_path }}">{{ file.name }}</option>
                                             {% endfor %}
@@ -205,7 +205,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-lg-2"><strong>Select Confirmation Prompt</strong></label>
                                     <div class="col-lg-10">
-                                        <select name="campaign_id" class="form-control" id="confirmation_path" required>
+                                        <select name="campaign_id" class="form-control" id="confirmation_path" name="confirmation_path" required>
                                             {% for file in files  %}
                                                 <option value="{{ file.file_path }}">{{ file.name }}</option>
                                             {% endfor %}
