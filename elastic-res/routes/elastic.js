@@ -303,7 +303,23 @@ router.post('/elasticsearch/:type/create', function (req, res, next) {
             res.send(JSON.stringify({response: resp, error: err, status: status}));
         });
     }
-
+    else if (req.params.type == 'settings') {
+        client.index({
+            index: 'ivr',
+            type: req.params.type,
+            id: req.body.id,
+            body: {
+                "id": req.body.id,
+                "advert_limit": req.body.advert_limit,
+                "incorrect_path": req.body.incorrect_path,
+                "repeat_path": req.body.repeat_path,
+                "confirmation_path": req.body.confirmation_path
+            }
+        }, function (err, resp, status) {
+            res.setHeader('Content-Type', 'application/json');
+            res.send(JSON.stringify({response: resp, error: err, status: status}));
+        });
+    }
 });
 
 /*Number of campaign over a certain period*/
