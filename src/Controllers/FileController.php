@@ -56,8 +56,16 @@ class FileController extends BaseController
             }
             catch (\Exception $e) {
             }
+        }
 
+        try {
+            $play_split = explode('/', $file->file_path);
+            $play_name = end($play_split);
+
+            rename($file->file_path, realpath(__DIR__ . '/../..') . "/files/deleted/" . $play_name);
             $file->delete();
+        }
+        catch (\Exception $e) {
         }
 
         return $response->withStatus(200);

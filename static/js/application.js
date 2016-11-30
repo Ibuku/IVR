@@ -118,7 +118,7 @@ app.controller('FileCtrl', function ($scope, WebAudio, $location) {
         var choice = window.confirm('Deleting this file will deactivate any campaign associated to this file.');
         if (choice) {
             $.post('/file/' + file_id + '/delete', {}, function (data, status) {
-                $location.href = '/file';
+                location.href = '/file';
             });
         }
     };
@@ -127,7 +127,7 @@ app.controller('FileCtrl', function ($scope, WebAudio, $location) {
         var choice = window.confirm('Are you sure you want to continue.');
         if (choice) {
             $.post('/campaign/' + campaign_id + '/deactivate', {}, function (data, status) {
-                $location.href = '/campaigns';
+                location.href = '/campaigns';
             });
         }
     };
