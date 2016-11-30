@@ -1,5 +1,4 @@
 <?php
-
-$d = openssl_digest('ivr_marketing?', 'sha512');
-var_dump($d);
-
+$v = 0;
+var_dump($v !== null && $v == 0);
+exit();

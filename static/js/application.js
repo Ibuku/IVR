@@ -50,7 +50,7 @@ app.controller('UploadController', function ($scope, $location) {
     };
 });
 
-app.controller('FileCtrl', function ($scope, WebAudio) {
+app.controller('FileCtrl', function ($scope, WebAudio, $location) {
 
     $scope.init = function (data, username) {
 
@@ -108,24 +108,30 @@ app.controller('FileCtrl', function ($scope, WebAudio) {
         }
     };
 
-    $scope.buffer = function() {
-        $scope.audio.buffer();
+    $scope.clean = function (file_path) {
+        var url= file_path;
+        var parameter_Start_index=url.indexOf('/files');
+        return url.substring(parameter_Start_index);
     };
-    $scope.play = function(file_path) {
-        $scope.audio = WebAudio(file_path, {buffer: false});
-        console.log($scope.audio);
-        $scope.audio.play();
-    };
-    $scope.pause = function() {
-        if ($scope.audio) {
-            $scope.audio.pause();
+
+    $scope.deleteFile = function (file_id) {
+        var choice = window.confirm('Deleting this file will deactivate any campaign associated to this file.');
+        if (choice) {
+            $.post('/file/' + file_id + '/delete', {}, function (data, status) {
+                $location.href = '/file';
+            });
         }
     };
-    $scope.stop = function() {
-        if ($scope.audio) {
-            $scope.audio.stop();
+
+    $scope.deactivateCampaign = function (campaign_id) {
+        var choice = window.confirm('Are you sure you want to continue.');
+        if (choice) {
+            $.post('/campaign/' + campaign_id + '/deactivate', {}, function (data, status) {
+                $location.href = '/campaigns';
+            });
         }
     };
+
 });
 
 

@@ -8,6 +8,7 @@
 
 namespace App\Controllers;
 use App\Models\Files;
+use App\Models\Campaign;
 
 class FileController extends BaseController
 {
@@ -22,5 +23,45 @@ class FileController extends BaseController
             'username' => $user->username
         ]);
     }
+
+    public function deleteFile($request, $response, $args) {
+
+        if (!isset($args['file_id'])) {
+            return $response->withStatus(404);
+        };
+
+        $user = $this->auth->user();
+        $match = ['username' => $user->username, 'id' => $args['file_id']];
+
+        $file = Files::where($match)->first();
+
+        if (!$file) {
+            return $response->withStatus(404);
+        };
+
+        $campaign = Campaign::where('file_path', $file->file_path)->first();
+
+        if ($campaign) {
+
+            $campaign->update([
+                'is_active' => false,
+                'end_date' => date("Y-m-d")
+            ]);
+
+            $file_split = explode('/', $campaign->play_path);
+            $file_name = end($file_split);
+
+            try {
+                rename($campaign->play_path, '/var/lib/asterisk/sounds/files/inactive/'. $campaign->username. '/'. $file_name);
+            }
+            catch (\Exception $e) {
+            }
+
+            $file->delete();
+        }
+
+        return $response->withStatus(200);
+    }
+
 
 }

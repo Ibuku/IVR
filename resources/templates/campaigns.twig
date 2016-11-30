@@ -63,7 +63,8 @@
         <div class="navbar-right">
             <ul class="nav navbar-nav">
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Logged In as <strong>{{ username| title }}</strong>&nbsp;&nbsp;&nbsp;
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Logged In as
+                        <strong>{{ username| title }}</strong>&nbsp;&nbsp;&nbsp;
                         <i class="icon-person"></i>
                         <span class="visible-xs-inline-block position-right">Messages</span>
                         <span class="note-icon-caret"></span>
@@ -81,7 +82,7 @@
                         {#<ul class="media-list dropdown-content-body">#}
 
                         {#<li class="media">#}
-                            {#<div class="media-left"><img src="assets/images/demo/users/face25.jpg" class="img-circle img-sm" alt=""></div>#}
+                        {#<div class="media-left"><img src="assets/images/demo/users/face25.jpg" class="img-circle img-sm" alt=""></div>#}
                         {#<div class="media-body">#}
                         {#<a href="{{ path_for('logout') }}" class="media-heading">#}
                         {#<span class="text-muted">Sign Out</span>#}
@@ -117,9 +118,16 @@
                             </div>
                             <!-- SIDEBAR BUTTONS -->
                             <div class="profile-userbuttons">
-                                <a href="{{ path_for('upload') }}"><button type="button" class="btn btn-success btn-sm"><span style="font-size:smaller;">Upload</span></button></a>
-                                <a href="{{ path_for('create_campaign') }}"><button type="button" class="btn btn-primary btn-sm"><span style="font-size:smaller;">Campaign</span></button></a>
-                            </div></a>
+                                <a href="{{ path_for('upload') }}">
+                                    <button type="button" class="btn btn-success btn-sm"><span
+                                                style="font-size:smaller;">Upload</span></button>
+                                </a>
+                                <a href="{{ path_for('create_campaign') }}">
+                                    <button type="button" class="btn btn-primary btn-sm"><span
+                                                style="font-size:smaller;">Campaign</span></button>
+                                </a>
+                            </div>
+                            </a>
 
                             <!-- Main -->
                             <li class="navigation-header"><span>Main</span> <i class="icon-menu" title="Main pages"></i>
@@ -189,9 +197,11 @@
                     </ul>
 
                     <ul class="breadcrumb-elements">
-                        <li><a href="{{ path_for('settings') }}"><i class="icon-gear position-left"></i> Settings</a></li>
+                        <li><a href="{{ path_for('settings') }}"><i class="icon-gear position-left"></i> Settings</a>
+                        </li>
                         <li>
-                            <a href="{{ path_for('download') }}"><i class="icon-download position-left"></i> Download</a>
+                            <a href="{{ path_for('download') }}"><i class="icon-download position-left"></i>
+                                Download</a>
                         </li>
                     </ul>
                 </div>
@@ -232,24 +242,23 @@
                             <td ng-bind="campaign.start_date"></td>
                             <td ng-bind="campaign.end_date"></td>
                             <td>
-                                <span ng-show="campaign.is_active" class="label label-success">Active</span>
-                                <span ng-hide="campaign.is_active" class="label label-danger">Expired</span>
+                                <span ng-show="campaign.is_active == true" class="label label-success">Active</span>
+                                <span ng-hide="campaign.is_active == true" class="label label-danger">Expired</span>
                             </td>
                             <td class="text-center">
-                                <span><a href="{{ path_for('campaign_report', {'campaign_id': '[[ campaign.id ]]'}) }}">View Reports</a></span>
-                                {#<ul class="icons-list">#}
-                                {#<li class="dropdown">#}
-                                {#<a href="#" class="dropdown-toggle" data-toggle="dropdown">#}
-                                {#<i class="icon-menu9"></i>#}
-                                {#</a>#}
+                                <ul class="icons-list">
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                            <i class="icon-menu9"></i>
+                                        </a>
 
-                                {#<ul class="dropdown-menu dropdown-menu-right">#}
-                                {#<li><a href="#"><i class="icon-file-pdf"></i> Export to .pdf</a></li>#}
-                                {#<li><a href="#"><i class="icon-file-excel"></i> Export to .csv</a></li>#}
-                                {#<li><a href="#"><i class="icon-file-word"></i> Export to .doc</a></li>#}
-                                {#</ul>#}
-                                {#</li>#}
-                                {#</ul>#}
+                                        <ul class="dropdown-menu dropdown-menu-right">
+                                            <li><a href="" ng-click="deactivateCampaign(campaign.id)"><i class="icon-cancel-circle2"></i> Deactivate</a></li>
+                                            <li><a href="{{ path_for('campaign_report', {'campaign_id': '[[ campaign.id ]]'}) }}"><i class="icon-file-pdf"></i>View Reports</a></li>
+                                            <li><a href="{{ path_for('download') }}"><i class="icon-download"></i> Download</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
                             </td>
                         </tr>
                         </tbody>

@@ -25,6 +25,10 @@
     <!-- /core JS files -->
 
     <script src="../../static/js/angular.min.js"></script>
+    <script src="../../static/js/angular-animate.min.js"></script>
+    <script src="../../static/js/angular-aria.min.js"></script>
+    <script src="../../static/js/angular-messages.min.js"></script>
+    <script src="../../static/js/angular-material.min.js"></script>
     {#<script src="../../node_modules/angular-audio/app/angular.audio.js"></script>#}
     <script src="../../bower_components/ngWebAudio/src/ngWebAudio.js"></script>
     <script src="../../static/js/application.js"></script>
@@ -132,7 +136,6 @@
                     </div>
                 </div>
                 <!-- /main navigation -->
-
             </div>
         </div>
         <!-- /main sidebar -->
@@ -148,7 +151,6 @@
                         <h4><i class="icon-arrow-left52 position-left"></i> <span
                                     class="text-semibold">File Manager</span></h4>
                     </div>
-
                     <div class="heading-elements">
                         <div class="heading-btn-group">
                             <a class="btn btn-link btn-float text-size-small has-text" ng-class="all ? 'selected' : ''"
@@ -180,7 +182,7 @@
 
 
             <!-- Content area -->
-            <div class="content">
+            <div class="content md-padding" id="popupContainer" ng-cloak>
                 <div class="panel panel-flat">
                     <div class="panel-heading">
                         <h5 class="panel-title"><strong>Uploaded Audio Files</strong></h5>
@@ -199,6 +201,7 @@
                             <th><strong>Tag</strong></th>
                             <th>Size <strong>(kb)</strong></th>
                             <th><strong>Duration</strong></th>
+                            <th><strong>Action</strong></th>
                         </tr>
                         </thead>
                         <tbody ng-repeat="_file in data">
@@ -207,14 +210,22 @@
                             <em style="color: grey; font-size: 12px"><small ng-bind="_file.description"></small></em>
                         </td>
                         <td>
-                            <button ng-click="buffer()">Buffer</button>
-                            <button ng-click="play({{ _file.file_path }})">Play</button>
-                            <button ng-click="pause()">Pause</button>
-                            <button ng-click="stop()">Stop</button>
+                            <audio controls>
+                                <source src="[[ clean(_file.file_path) ]]" type="audio/wav">
+                            </audio>
                         </td>
+                        {#<td>#}
+                            {#<button ng-click="buffer()">Buffer</button>#}
+                            {#<button ng-click="play({{ _file.file_path }})">Play</button>#}
+                            {#<button ng-click="pause()">Pause</button>#}
+                            {#<button ng-click="stop()">Stop</button>#}
+                        {#</td>#}
                         <td ng-bind="_file.tag"></td>
                         <td ng-bind="_file.size | number"></td>
                         <td ng-bind="_file.duration"></td>
+                        <td>
+                            <button type="button" class="btn btn-xs btn-danger" ng-click="deleteFile(_file.id)">Delete</button>
+                        </td>
                         </tbody>
                         {#<tbody>#}
                         {#{% for _file in files %}#}
@@ -262,6 +273,5 @@
 
 </div>
 <!-- /page container -->
-
 </body>
 </html>

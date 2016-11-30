@@ -113,6 +113,10 @@ $app->group('', function (){
     $this->get('/reports/download', 'ReportController:Download')->setName('download');
 
     $this->post('/reports/download', 'ReportController:postDownload');
+
+    $this->post('/file/{file_id}/delete', 'FileController:deleteFile');
+
+    $this->post('/campaign/{campaign_id}/deactivate', 'CampaignController:deactivateCampaign');
     
 })->add(new AuthMiddleware($container));
 
