@@ -104,7 +104,7 @@ class CampaignController extends BaseController
             'description' => $request->getParam('description'),
             'value' => $request->getParam('value'),
             'body' => $request->getParam('body'),
-            'play_path' => "/var/lib/asterisk/sounds/files/" . $user->username . '/'. $file->name
+            'play_path' => "/var/lib/asterisk/sounds/files/" . $user->username . '/'. $file_name
         ]);
 
         if ($request->getParam('body') && $request->getParam('number') && $request->getParam('value')) {
