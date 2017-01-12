@@ -171,11 +171,11 @@ router.post('/elasticsearch/:type/create', function (req, res, next) {
                 var campaign = resp.hits.hits[0]._source;
                 var created = new Date();
                 created.toDateString;
-                var impression = false;
+                // var impression = false;
 
-                if (parseInt(req.body.duration) == parseInt(req.body.billsec)) {
-                    impression = true;
-                }
+                // if (parseInt(req.body.duration) == parseInt(req.body.billsec)) {
+                //     impression = true;
+                // }
 
                 client.index({
                     index: 'ivr',
@@ -187,7 +187,7 @@ router.post('/elasticsearch/:type/create', function (req, res, next) {
                         "duration": req.body.duration,
                         "userfield": campaign.id,
                         "uniqueid": req.body.uniqueid,
-                        "impression": impression,
+                        "impression": false,
                         "billsec": req.body.billsec,
                         "is_successful": false,
                         "created_at": created,
@@ -226,7 +226,7 @@ router.post('/elasticsearch/:type/create', function (req, res, next) {
                                     body: {
                                         doc: {
                                             cdr_count: response._source.cdr_count + 1,
-                                            impression_count: response._source.impression_count + 1
+                                            // impression_count: response._source.impression_count + 1
                                         }
                                     }
                                 }, function (error, response) {
@@ -241,7 +241,7 @@ router.post('/elasticsearch/:type/create', function (req, res, next) {
                                 id: status_id,
                                 body: {
                                     "campaign_id": campaign.id,
-                                    "impression_count": impression ? 1 : 0,
+                                    "impression_count": 0,
                                     "success_count": 0,
                                     "cdr_count": 1,
                                     "campaign_name": campaign.name,
@@ -382,8 +382,10 @@ router.get('/campaign/:id/data', function (req, res, next) {
     var campaign_id = req.params.id;
     var sevenDays = new Date(new Date().getTime() - (6 * 24 * 60 * 60 * 1000));
     sevenDays.setHours(0,0,0,0);
-    var today = new Date();
-    today.setHours(23,59,59,59);
+    // var today = new Date();
+    var today = new Date(new Date().getTime() + (24 * 60 * 60 * 1000));
+    today.setHours(0,0,0,0);
+    // today.setHours(23,59,59,59);
     sevenDays.toDateString;
     today.toDateString;
     //Add javacript check date
@@ -598,6 +600,48 @@ router.post('/cdr/success', function (req, res, next) {
                     body: {
                         doc: {
                             success_count: response._source.success_count + 1
+                        }
+                    }
+                }, function (error, response) {
+                    res.setHeader('Content-Type', 'application/json');
+                    res.send(JSON.stringify({response: response, error: error}));
+                })
+            });
+        });
+    });
+});
+
+router.post('/cdr/impression', function (req, res, next) {
+
+    client.get({
+        index: 'ivr',
+        type: 'cdr',
+        id: req.body.uniqueid
+    }, function (err, resp) {
+        client.update({
+            index: 'ivr',
+            type: 'cdr',
+            id: req.body.uniqueid,
+            body: {
+                doc: {
+                    impression: true
+                }
+            }
+        }, function (errr, respose) {
+            var campaign_id = resp._source.userfield;
+            var status_id = new Date().toDateString().replace(/ /g, '') + '-' + campaign_id;
+            client.get({
+                index: 'ivr',
+                type: 'statuses',
+                id: status_id
+            }, function (error, response) {
+                client.update({
+                    index: 'ivr',
+                    type: 'statuses',
+                    id: status_id,
+                    body: {
+                        doc: {
+                            impression_count: response._source.impression_count + 1
                         }
                     }
                 }, function (error, response) {
@@ -1168,7 +1212,7 @@ function IvrDataFilter(search_date) {
         var campaignResult = searchWithId("campaign_id", "created_at", "statuses");
 
         var imp = campaignResult.map(function (val) {
-            return val.impressions_count;
+            return val.impression_count;
         })
         var sum = imp.reduce(function (prev, current) {
             return prev + current;
