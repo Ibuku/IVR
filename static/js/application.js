@@ -155,7 +155,7 @@ app.controller('HomeController', function ($scope, $http, $timeout) {
         console.log(err);
     });
 
-    $scope.init = function (data, username) {
+    $scope.init = function (data, active, username) {
 
         $scope.data_bank = {"today": [], "yesterday": [], "totalToday": 0, "totalYday": 0, "impressionToday": 0};
         $scope.filtered_data = {"today": [], "yesterday": [], "totalToday": 0, "totalYday": 0, "impressionToday": 0};
@@ -186,9 +186,7 @@ app.controller('HomeController', function ($scope, $http, $timeout) {
             $scope.campaigns = data;
         }
 
-        $scope.active_campaigns = $scope.campaigns.filter(function (val) {
-            return val.is_active = true
-        });
+        $scope.active_campaigns = active;
 
     };
 
