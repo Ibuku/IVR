@@ -285,51 +285,51 @@ app.controller('HomeController', function ($scope, $http, $timeout, $q) {
 
     $scope.changeActive = function (value) {
 
-        var bank = $scope.data_bank;
+        $timeout(function () {
+            $scope.username = value;
 
-        $scope.username = value;
-        $scope.etisalat = false;
-        $scope.tm30 = false;
-        $scope.all = false;
+            if (value != 'all') {
+                $scope.campaigns = $scope.campaigns_bank.filter(function (value) {
+                    return value.username == $scope.username;
+                });
 
-        if (value == 'etisalat') {
-            $scope.etisalat = true;
-        }
-        else if (value == 'tm30') {
-            $scope.tm30 = true;
-        }
-        else {
-            $scope.all = true
-        }
+                $scope.filtered_data.today = $scope.data_bank.today.filter(function (value) {
+                    return value.username == $scope.username;
+                });
 
-        if (value != 'all') {
-            $scope.campaigns = $scope.campaigns_bank.filter(function (value) {
-                return value.username == $scope.username;
+                $scope.filtered_data.totalToday = sum($scope.filtered_data.today, 'cdr_count');
+
+                $scope.filtered_data.impressionToday = sum($scope.filtered_data.today, 'impression_count');
+
+                $scope.filtered_data.yesterday = $scope.data_bank.yesterday.filter(function (value) {
+                    return value.username == $scope.username;
+                });
+                $scope.filtered_data.totalYday = sum($scope.filtered_data.yesterday, 'cdr_count');
+
+                $scope.filtered_data.this_week = $scope.data_bank.this_week.filter(function (value) {
+                    return value.username == $scope.username;
+                });
+                $scope.filtered_data.totalTWk = sum($scope.filtered_data.this_week, 'cdr_count');
+
+                $scope.filtered_data.last_week = $scope.data_bank.last_week.filter(function (value) {
+                    return value.username == $scope.username;
+                });
+                $scope.filtered_data.totalLWk = sum($scope.filtered_data.last_week, 'cdr_count');
+
+                $scope.filtered_data.month = $scope.data_bank.month.filter(function (value) {
+                    return value.username == $scope.username;
+                });
+                $scope.filtered_data.totalMonth = sum($scope.filtered_data.month, 'cdr_count');
+            }
+            else {
+                $scope.campaigns = $scope.campaigns_bank;
+                $scope.filtered_data = $scope.data_bank;
+            }
+
+            $scope.active_campaigns = $scope.active_campaigns.filter(function (val) {
+                return val.username == $scope.username;
             });
-
-            $scope.filtered_data.today = $scope.data_bank.today.filter(function (value) {
-                return value.username == $scope.username;
-            });
-
-            $scope.filtered_data.totalToday = sum($scope.filtered_data.today, 'cdr_count');
-
-            $scope.filtered_data.impressionToday = sum($scope.filtered_data.today, 'impression_count');
-
-            $scope.filtered_data.yesterday = $scope.data_bank.yesterday.filter(function (value) {
-                return value.username == $scope.username;
-            });
-            $scope.filtered_data.totalYday = sum($scope.filtered_data.yesterday, 'cdr_count');
-        }
-        else {
-            $scope.campaigns = $scope.campaigns_bank;
-            $scope.filtered_data = $scope.data_bank;
-        }
-
-        $scope.active_campaigns = $scope.campaigns.filter(function (val) {
-            return val.is_active = true
-        });
-
-        $scope.data_bank = bank;
+        }, 2);
     };
 });
 
