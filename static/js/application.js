@@ -340,9 +340,9 @@ app.controller('HomeController', function ($scope, $http, $timeout, $q) {
                 $scope.filtered_data.totalLWk = sum(copy.last_week, 'cdr_count');
                 $scope.filtered_data.totalMonth = sum(copy.month, 'cdr_count');
                 $scope.active_campaigns = $.extend([], $scope.active_bank);
-                
-                console.log(copy);
-                console.log(campaigns_copy);
+
+                console.log($scope.data_bank);
+                console.log($scope.campaigns_bank);
                 console.log($scope.filtered_data.totalTWk);
                 console.log($scope.filtered_data.totalMonth);
             }
