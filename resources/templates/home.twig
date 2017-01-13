@@ -12,14 +12,16 @@
 
             <div class="heading-elements">
                 <div class="heading-btn-group">
-                    <a class="btn btn-link btn-float text-size-small has-text" ng-class="all ? 'selected' : ''"
-                       ng-click="changeActive('all')"><i class="icon-bars-alt text-primary"></i><span>All</span></a>
+                    <a class="btn btn-link btn-float text-size-small has-text" ng-class="username == 'all' ? 'selected' : ''"
+                       ng-click="changeActive('all')"><i class="icon-bars-alt text-primary"></i><span>All</span>
+                    </a>
                     <a class="btn btn-link btn-float text-size-small has-text"
-                       ng-class="etisalat ? 'selected' : ''" ng-click="changeActive('etisalat')"><img
-                                src="/images/etisalat.png"/><span></span></a>
-                    <a class="btn btn-link btn-float text-size-small has-text" ng-class="tm30 ? 'selected' : ''"
+                       ng-class="username == 'etisalat' ? 'selected' : ''" ng-click="changeActive('etisalat')"><img
+                                src="/images/etisalat.png"/><span></span>
+                    </a>
+                    <a class="btn btn-link btn-float text-size-small has-text" ng-class="username == 'tm30' ? 'selected' : ''"
                        ng-click="changeActive('tm30')"><img src="/images/tm.png"/>
-                        <span></span></a>
+                    </a>
                 </div>
             </div>
         </div>
@@ -427,59 +429,59 @@
                                 </td>
                             </tr>
                             </tbody>
-                            <tbody ng-show="filtered_data.last_week.length">
-                                <tr class="active border-double">
-                                    <td colspan="5">Last Week</td>
-                                    <td class="text-right">
-                                        <span class="progress-meter" id="today-progress" data-progress="30"></span>
-                                    </td>
-                                </tr>
-                                <tr ng-repeat="val in filtered_data.last_week">
-                                <td>
-                                    <div class="media-left media-middle">
-                                        <div class=""><a href="#" class="text-default" ng-bind="val.username"
-                                                         style="font-size:13px"></a>
-                                        </div>
-                                    </div>
-                                    <div class="media-left">
-                                        <div class=""><a href="#" class="text-default text-semibold"
-                                                         ng-bind="val.campaign_name"></a>
-                                        </div>
+                            {#<tbody ng-show="filtered_data.last_week.length">#}
+                                {#<tr class="active border-double">#}
+                                    {#<td colspan="5">Last Week</td>#}
+                                    {#<td class="text-right">#}
+                                        {#<span class="progress-meter" id="today-progress" data-progress="30"></span>#}
+                                    {#</td>#}
+                                {#</tr>#}
+                                {#<tr ng-repeat="val in filtered_data.last_week">#}
+                                {#<td>#}
+                                    {#<div class="media-left media-middle">#}
+                                        {#<div class=""><a href="#" class="text-default" ng-bind="val.username"#}
+                                                         {#style="font-size:13px"></a>#}
+                                        {#</div>#}
+                                    {#</div>#}
+                                    {#<div class="media-left">#}
+                                        {#<div class=""><a href="#" class="text-default text-semibold"#}
+                                                         {#ng-bind="val.campaign_name"></a>#}
+                                        {#</div>#}
                                         {#<div class="text-muted text-size-small">#}
                                         {#<span class="status-mark border-blue position-left"></span>#}
                                         {#02:00 - 03:00#}
                                         {#</div>#}
-                                    </div>
-                                </td>
-                                <td><span class="text-muted" ng-bind="val.cdr_count"></span></td>
-                                <td><span class="text-warning-600" ng-bind="val.impression_count"></span>
-                                </td>
-                                <td><h6 class="text-semibold" ng-bind="val.success_count"></h6></td>
-                                <td><span class="label bg-blue"></span></td>
-                                <td class="text-center">
-                                    <ul class="icons-list">
-                                        <li class="dropdown">
-                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i
-                                                        class="icon-menu7"></i></a>
-                                            <ul class="dropdown-menu dropdown-menu-right">
-                                                <li>
-                                                    <a href="campaigns/[[val.campaign_id]]/report"><i
-                                                                class="icon-file-stats"></i> View Report</a>
-                                                </li>
-                                                <li>
-                                                    <a href="reports/[[val.campaign_id]]/download"><i
-                                                                class="icon-download"></i> Download Report</a>
-                                                </li>
-                                                <li>
-                                                    <a href="campaigns/[[val.campaign_id]]/update"><i
-                                                                class="icon-file-text2"></i> Edit campaign</a>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                    </ul>
-                                </td>
-                            </tr>
-                            </tbody>
+                                    {#</div>#}
+                                {#</td>#}
+                                {#<td><span class="text-muted" ng-bind="val.cdr_count"></span></td>#}
+                                {#<td><span class="text-warning-600" ng-bind="val.impression_count"></span>#}
+                                {#</td>#}
+                                {#<td><h6 class="text-semibold" ng-bind="val.success_count"></h6></td>#}
+                                {#<td><span class="label bg-blue"></span></td>#}
+                                {#<td class="text-center">#}
+                                    {#<ul class="icons-list">#}
+                                        {#<li class="dropdown">#}
+                                            {#<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i#}
+                                                        {#class="icon-menu7"></i></a>#}
+                                            {#<ul class="dropdown-menu dropdown-menu-right">#}
+                                                {#<li>#}
+                                                    {#<a href="campaigns/[[val.campaign_id]]/report"><i#}
+                                                                {#class="icon-file-stats"></i> View Report</a>#}
+                                                {#</li>#}
+                                                {#<li>#}
+                                                    {#<a href="reports/[[val.campaign_id]]/download"><i#}
+                                                                {#class="icon-download"></i> Download Report</a>#}
+                                                {#</li>#}
+                                                {#<li>#}
+                                                    {#<a href="campaigns/[[val.campaign_id]]/update"><i#}
+                                                                {#class="icon-file-text2"></i> Edit campaign</a>#}
+                                                {#</li>#}
+                                            {#</ul>#}
+                                        {#</li>#}
+                                    {#</ul>#}
+                                {#</td>#}
+                            {#</tr>#}
+                            {#</tbody>#}
                             <tbody ng-show="filtered_data.month.length">
                                 <tr class="active border-double">
                                     <td colspan="5">This Month</td>
