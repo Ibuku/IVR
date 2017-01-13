@@ -987,7 +987,8 @@ router.get('/elasticsearch/data', function (req, res, next) {
             var data = result.map(function (_obj) {
                 return _obj._source
             });
-            total_data.today = groupBy(data, "campaign_name");
+            total_data.today = groupBy(data, "userfield");
+            console.log(total_data.today);
         }
 
         // yesterday cdr records
@@ -1035,7 +1036,7 @@ router.get('/elasticsearch/data', function (req, res, next) {
                 var yer_data = yer_result.map(function (__obj) {
                     return __obj._source
                 });
-                total_data.yesterday = groupBy(yer_data, "campaign_name");
+                total_data.yesterday = groupBy(yer_data, "userfield");
             }
 
             // this week cdr records
@@ -1082,7 +1083,7 @@ router.get('/elasticsearch/data', function (req, res, next) {
                     var this_data = this_result.map(function (__obj) {
                         return __obj._source
                     });
-                    total_data.this_week = groupBy(this_data, "campaign_name");
+                    total_data.this_week = groupBy(this_data, "userfield");
                 }
 
                 // last week CDR records
@@ -1130,7 +1131,7 @@ router.get('/elasticsearch/data', function (req, res, next) {
                         var last_data = last_result.map(function (__obj) {
                             return __obj._source
                         });
-                        total_data.last_week = groupBy(last_data, "campaign_name");
+                        total_data.last_week = groupBy(last_data, "userfield");
                     }
 
                     // this month CDR records
@@ -1179,7 +1180,7 @@ router.get('/elasticsearch/data', function (req, res, next) {
                             var month_data = month_result.map(function (__obj) {
                                 return __obj._source
                             });
-                            total_data.month = groupBy(month_data, "campaign_name");
+                            total_data.month = groupBy(month_data, "userfield");
                         }
                         res.send(JSON.stringify(total_data));
                     });
