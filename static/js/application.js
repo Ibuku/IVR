@@ -333,6 +333,12 @@ app.controller('HomeController', function ($scope, $http, $timeout, $q) {
             else {
                 $scope.campaigns = $.extend( [], $scope.campaigns_bank );
                 $scope.filtered_data = $.extend( [], $scope.data_bank );
+                $scope.filtered_data.totalToday = sum($scope.filtered_data.today, 'cdr_count');
+                $scope.filtered_data.impressionToday = sum($scope.filtered_data.today, 'impression_count');
+                $scope.filtered_data.totalYday = sum($scope.filtered_data.yesterday, 'cdr_count');
+                $scope.filtered_data.totalTWk = sum($scope.filtered_data.this_week, 'cdr_count');
+                $scope.filtered_data.totalLWk = sum($scope.filtered_data.last_week, 'cdr_count');
+                $scope.filtered_data.totalMonth = sum($scope.filtered_data.month, 'cdr_count');
                 $scope.active_campaigns = $.extend([], $scope.active_bank);
             }
         }, 2);
