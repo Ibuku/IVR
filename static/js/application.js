@@ -324,19 +324,17 @@ app.controller('HomeController', function ($scope, $http, $timeout, $q) {
                     return value.username == $scope.username;
                 });
                 $scope.filtered_data.totalMonth = sum($scope.filtered_data.month, 'cdr_count');
+
+                var active_copy = $.extend([], $scope.active_bank);
+                $scope.active_campaigns = active_copy.filter(function (val) {
+                    return val.username == $scope.username;
+                });
             }
             else {
                 $scope.campaigns = $.extend( [], $scope.campaigns_bank );
                 $scope.filtered_data = $.extend( [], $scope.data_bank );
+                $scope.active_campaigns = $.extend([], $scope.active_bank);
             }
-
-            var active_copy = $.extend([], $scope.active_bank);
-            $scope.active_campaigns = active_copy.filter(function (val) {
-                return val.username == $scope.username;
-            });
-
-            console.log(active_copy);
-            console.log($scope.active_campaigns);
         }, 2);
     };
 });
