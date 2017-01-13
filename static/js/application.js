@@ -327,15 +327,17 @@ app.controller('HomeController', function ($scope, $http, $timeout, $q) {
                 $scope.filtered_data.totalMonth = sum($scope.filtered_data.month, 'cdr_count');
             }
             else {
-                $scope.campaigns = $scope.campaigns_bank;
-                $scope.filtered_data = $scope.data_bank;
+                $scope.campaigns = $.extend( [], $scope.campaigns_bank );
+                $scope.filtered_data = $.extend( [], $scope.data_bank );
             }
 
             var active_copy = $.extend([], $scope.active_campaigns);
-
             $scope.active_campaigns = active_copy.filter(function (val) {
                 return val.username == $scope.username;
             });
+
+            console.log(active_copy);
+            console.log($scope.active_campaigns);
         }, 2);
     };
 });
