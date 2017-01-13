@@ -288,12 +288,15 @@ app.controller('HomeController', function ($scope, $http, $timeout, $q) {
         $timeout(function () {
             $scope.username = value;
 
+            var copy = $.extend( {}, $scope.data_bank );
+            var campaigns_copy = $.extend( {}, $scope.campaigns_bank );
+
             if (value != 'all') {
-                $scope.campaigns = $scope.campaigns_bank.filter(function (value) {
+                $scope.campaigns = campaigns_copy.filter(function (value) {
                     return value.username == $scope.username;
                 });
 
-                $scope.filtered_data.today = $scope.data_bank.today.filter(function (value) {
+                $scope.filtered_data.today = copy.today.filter(function (value) {
                     return value.username == $scope.username;
                 });
 
@@ -301,22 +304,22 @@ app.controller('HomeController', function ($scope, $http, $timeout, $q) {
 
                 $scope.filtered_data.impressionToday = sum($scope.filtered_data.today, 'impression_count');
 
-                $scope.filtered_data.yesterday = $scope.data_bank.yesterday.filter(function (value) {
+                $scope.filtered_data.yesterday = copy.yesterday.filter(function (value) {
                     return value.username == $scope.username;
                 });
                 $scope.filtered_data.totalYday = sum($scope.filtered_data.yesterday, 'cdr_count');
 
-                $scope.filtered_data.this_week = $scope.data_bank.this_week.filter(function (value) {
+                $scope.filtered_data.this_week = copy.this_week.filter(function (value) {
                     return value.username == $scope.username;
                 });
                 $scope.filtered_data.totalTWk = sum($scope.filtered_data.this_week, 'cdr_count');
 
-                $scope.filtered_data.last_week = $scope.data_bank.last_week.filter(function (value) {
+                $scope.filtered_data.last_week = copy.last_week.filter(function (value) {
                     return value.username == $scope.username;
                 });
                 $scope.filtered_data.totalLWk = sum($scope.filtered_data.last_week, 'cdr_count');
 
-                $scope.filtered_data.month = $scope.data_bank.month.filter(function (value) {
+                $scope.filtered_data.month = copy.month.filter(function (value) {
                     return value.username == $scope.username;
                 });
                 $scope.filtered_data.totalMonth = sum($scope.filtered_data.month, 'cdr_count');
@@ -326,7 +329,9 @@ app.controller('HomeController', function ($scope, $http, $timeout, $q) {
                 $scope.filtered_data = $scope.data_bank;
             }
 
-            $scope.active_campaigns = $scope.active_campaigns.filter(function (val) {
+            var active_copy = $.extend({}, $scope.active_campaigns);
+
+            $scope.active_campaigns = active_copy.filter(function (val) {
                 return val.username == $scope.username;
             });
         }, 2);
