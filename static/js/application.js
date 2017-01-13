@@ -288,8 +288,10 @@ app.controller('HomeController', function ($scope, $http, $timeout, $q) {
         $timeout(function () {
             $scope.username = value;
 
-            var copy = $.extend( {}, $scope.data_bank );
-            var campaigns_copy = $.extend( {}, $scope.campaigns_bank );
+            var copy = $.extend( [], $scope.data_bank );
+            var campaigns_copy = $.extend( [], $scope.campaigns_bank );
+
+            console.log(copy);
 
             if (value != 'all') {
                 $scope.campaigns = campaigns_copy.filter(function (value) {
@@ -329,7 +331,7 @@ app.controller('HomeController', function ($scope, $http, $timeout, $q) {
                 $scope.filtered_data = $scope.data_bank;
             }
 
-            var active_copy = $.extend({}, $scope.active_campaigns);
+            var active_copy = $.extend([], $scope.active_campaigns);
 
             $scope.active_campaigns = active_copy.filter(function (val) {
                 return val.username == $scope.username;
