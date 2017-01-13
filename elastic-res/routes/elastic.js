@@ -1,3 +1,12 @@
+function getStart(d) {
+    d = new Date(d);
+    var day = d.getDay(),
+        diff = d.getDate() - day + (day == 0 ? -6:0);
+    var x = new Date(d.setDate(diff));
+    x.setHours(0,0,0,0);
+    return new Date(x);
+}
+
 var express = require('express');
 var router = express.Router();
 
@@ -336,7 +345,7 @@ router.get('/no_of_campaign', function (req, res, next) {
     var sevenDays = new Date(new Date().getTime() - (6 * 24 * 60 * 60 * 1000));
     sevenDays.setHours(0,0,0,0);
     var today = new Date();
-    today.setHours(0,0,0,0);
+    today.setHours(23,59,59,59);
     sevenDays.toDateString;
     today.toDateString;
     //Add javacript check date
@@ -925,7 +934,10 @@ router.get('/elasticsearch/data', function (req, res, next) {
     var day = new Date();
     day.setHours(0, 0, 0, 0);
     var right_now = new Date();
+    right_now.setHours(23, 59, 59, 59);
+    var data = {"today": [], "yesterday": [], "last_week": [], "this_week": [], "month": []};
 
+    // today CDR records
     client.search({
         index: 'ivr',
         type: 'statuses',
@@ -950,13 +962,12 @@ router.get('/elasticsearch/data', function (req, res, next) {
             var data = result.map(function (_obj) {
                 return _obj._source
             });
-            var todayCDR = groupBy(data, "campaign_name");
-        }
-        else {
-            todayCDR = []
+            data.today = groupBy(data, "campaign_name");
         }
 
+        // yesterday cdr records
         var yesterday = new Date(new Date().getTime() - (24 * 60 * 60 * 1000));
+        yesterday.setHours(0, 0, 0, 0);
         client.search({
             index: 'ivr',
             type: 'statuses',
@@ -981,16 +992,110 @@ router.get('/elasticsearch/data', function (req, res, next) {
                 var yer_data = yer_result.map(function (__obj) {
                     return __obj._source
                 });
-                var yesterdayCDR = groupBy(yer_data, "campaign_name");
+                data.yesterday = groupBy(yer_data, "campaign_name");
             }
-            else {
-                yesterdayCDR = []
-            }
-            //res.setHeader('Content-Type', 'application/json');
-            res.send(JSON.stringify({today: todayCDR, yesterday: yesterdayCDR}));
+
+            // this week cdr records
+            var week_start = getStart(new Date());
+            var week_end = new Date(week_start.getTime() + (6 * 24 * 60 * 60 * 1000));
+            week_end.setHours(23,59,59,59);
+            client.search({
+                index: 'ivr',
+                type: 'statuses',
+                body: {
+                    "query": {
+                        "constant_score": {
+                            "filter": {
+                                "range": {
+                                    "created_at": {
+                                        "gte": week_start,
+                                        "lte": week_end
+                                    }
+                                }
+                            }
+
+                        }
+                    }
+                }
+            }).then(function (resp) {
+                var this_result = resp.hits.hits;
+                if (this_result.length > 0) {
+                    var this_data = this_result.map(function (__obj) {
+                        return __obj._source
+                    });
+                    data.this_week = groupBy(this_data, "campaign_name");
+                }
+
+                // last week CDR records
+                var last_start = new Date(week_start.getTime() - (6 * 24 * 60 * 60 * 1000));
+                last_start.setHours(0,0,0,0);
+                var last_end = new Date(week_start.getTime() - (24 * 60 * 60 * 1000));
+                last_end.setHours(23,59,59,59);
+                client.search({
+                    index: 'ivr',
+                    type: 'statuses',
+                    body: {
+                        "query": {
+                            "constant_score": {
+                                "filter": {
+                                    "range": {
+                                        "created_at": {
+                                            "gte": last_start,
+                                            "lte": last_end
+                                        }
+                                    }
+                                }
+
+                            }
+                        }
+                    }
+                }).then(function (resp) {
+                    var last_result = resp.hits.hits;
+                    if (last_result.length > 0) {
+                        var last_data = last_result.map(function (__obj) {
+                            return __obj._source
+                        });
+                        data.last_week = groupBy(last_data, "campaign_name");
+                    }
+
+                    // this month CDR records
+                    var date = new Date();
+                    var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+                    var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+                    
+                    client.search({
+                        index: 'ivr',
+                        type: 'statuses',
+                        body: {
+                            "query": {
+                                "constant_score": {
+                                    "filter": {
+                                        "range": {
+                                            "created_at": {
+                                                "gte": yesterday,
+                                                "lte": day
+                                            }
+                                        }
+                                    }
+
+                                }
+                            }
+                        }
+                    }).then(function (resp) {
+                        var month_result = resp.hits.hits;
+                        if (month_result.length > 0) {
+                            var month_data = month_result.map(function (__obj) {
+                                return __obj._source
+                            });
+                            data.month = groupBy(month_data, "campaign_name");
+                        }
+                        res.send(JSON.stringify(data));
+                    });
+                });
+            });
+
+
         });
-        //res.setHeader('Content-Type', 'application/json');
-        //return next(res.send(JSON.stringify({today: todayCDR, yesterday: yesterdayCDR})));
     });
 });
 

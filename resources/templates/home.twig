@@ -125,7 +125,7 @@
                             </div>
 
                             <h3 class="no-margin" ng-bind="filtered_data.impressionToday"></h3>
-                            Today's Call impressions
+                            Current Call impressions
                         </div>
 
                         <div id="today-revenue"></div>
@@ -156,16 +156,13 @@
                         <table class="table table-lg text-nowrap">
                             <tbody>
                             <tr>
-                                <td class="col-md-5">
+                                <td class="col-md-2">
                                     <div class="media-left">
                                         <div id="campaigns-donut"></div>
                                     </div>
 
                                     <div class="media-left">
                                         <h5 class="text-semibold no-margin" ng-bind="filtered_data.totalToday">
-                                            {#<small class="text-success text-size-base"><i#}
-                                            {#class="icon-arrow-up12"></i> (+16.2%)#}
-                                            {#</small>#}
                                         </h5>
                                         <ul class="list-inline list-inline-condensed no-margin">
                                             <li>
@@ -178,7 +175,7 @@
                                     </div>
                                 </td>
 
-                                <td class="col-md-5">
+                                <td class="col-md-2">
                                     <div class="media-left">
                                         <div id="campaign-status-pie"></div>
                                     </div>
@@ -192,6 +189,63 @@
                                             </li>
                                             <li>
                                                 <span class="text-muted">Yesterday</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </td>
+
+                                <td class="col-md-2">
+                                    <div class="media-left">
+                                        <div id="campaign-status-pie"></div>
+                                    </div>
+
+                                    <div class="media-left">
+                                        <h5 class="text-semibold no-margin" ng-bind="filtered_data.totalTWk">
+                                        </h5>
+                                        <ul class="list-inline list-inline-condensed no-margin">
+                                            <li>
+                                                <span class="status-mark border-warning"></span>
+                                            </li>
+                                            <li>
+                                                <span class="text-muted">This Week</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </td>
+
+                                <td class="col-md-2">
+                                    <div class="media-left">
+                                        <div id="campaign-status-pie"></div>
+                                    </div>
+
+                                    <div class="media-left">
+                                        <h5 class="text-semibold no-margin" ng-bind="filtered_data.totalLWk">
+                                        </h5>
+                                        <ul class="list-inline list-inline-condensed no-margin">
+                                            <li>
+                                                <span class="status-mark border-primary"></span>
+                                            </li>
+                                            <li>
+                                                <span class="text-muted">Last Week</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </td>
+
+                                <td class="col-md-2">
+                                    <div class="media-left">
+                                        <div id="campaign-status-pie"></div>
+                                    </div>
+
+                                    <div class="media-left">
+                                        <h5 class="text-semibold no-margin" ng-bind="filtered_data.totalMonth">
+                                        </h5>
+                                        <ul class="list-inline list-inline-condensed no-margin">
+                                            <li>
+                                                <span class="status-mark border-success"></span>
+                                            </li>
+                                            <li>
+                                                <span class="text-muted">This Month</span>
                                             </li>
                                         </ul>
                                     </div>

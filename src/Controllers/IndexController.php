@@ -19,7 +19,7 @@ class IndexController extends BaseController
         
         $campaigns = Campaign::all();
 
-        $active_campaigns = Campaign::where('is_active', true)->get()->all();
+        $active_campaigns = Campaign::where('is_active', true)->get();
             
         return $this->view->render($response, 'templates/home.twig', [
             'user' => $user,
