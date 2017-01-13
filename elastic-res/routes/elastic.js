@@ -343,30 +343,43 @@ router.post('/elasticsearch/:type/create', function (req, res, next) {
 router.get('/no_of_campaign', function (req, res, next) {
 
     var sevenDays = new Date(new Date().getTime() - (6 * 24 * 60 * 60 * 1000));
-    sevenDays.setHours(0,0,0,0);
+    sevenDays.setUTCHours(0,0,0,0);
     var today = new Date();
-    today.setHours(23,59,59,59);
-    sevenDays.toDateString;
-    today.toDateString;
-    //Add javacript check date
+    today.setUTCHours(23,59,59,59);
     client.search({
         index: "ivr",
         type: "statuses",
         body: {
+            // "query": {
+            //     "constant_score": {
+            //         "filter": {
+            //             "bool": {
+            //                 "should": [
+            //                     {
+            //                         "range": {
+            //                             "created_at": {
+            //                                 "from": sevenDays,
+            //                                 "to": today
+            //                             }
+            //                         }
+            //                     }
+            //                 ]
+            //             }
+            //         }
+            //     }
+            // }
             "query": {
-                "constant_score": {
+                "filtered": {
+                    "query": {
+                        "match_all": {
+                        }
+                    },
                     "filter": {
-                        "bool": {
-                            "should": [
-                                {
-                                    "range": {
-                                        "created_at": {
-                                            "from": sevenDays,
-                                            "to": today
-                                        }
-                                    }
-                                }
-                            ]
+                        "range": {
+                            "created_at": {
+                                "gte": sevenDays,
+                                "lte": today
+                            }
                         }
                     }
                 }
@@ -390,32 +403,43 @@ router.get('/campaign/:id/data', function (req, res, next) {
 
     var campaign_id = req.params.id;
     var sevenDays = new Date(new Date().getTime() - (6 * 24 * 60 * 60 * 1000));
-    sevenDays.setHours(0,0,0,0);
-    // var today = new Date();
+    sevenDays.setUTCHours(0,0,0,0);
     var today = new Date(new Date().getTime() + (24 * 60 * 60 * 1000));
-    today.setHours(0,0,0,0);
-    // today.setHours(23,59,59,59);
-    sevenDays.toDateString;
-    today.toDateString;
-    //Add javacript check date
+    today.setUTCHours(23,59,59,999);
     client.search({
         index: "ivr",
         type: "statuses",
         body: {
+            // "query": {
+            //     "constant_score": {
+            //         "filter": {
+            //             "bool": {
+            //                 "should": [
+            //                     {
+            //                         "range": {
+            //                             "created_at": {
+            //                                 "from": sevenDays,
+            //                                 "to": today
+            //                             }
+            //                         }
+            //                     }
+            //                 ]
+            //             }
+            //         }
+            //     }
+            // }
             "query": {
-                "constant_score": {
+                "filtered": {
+                    "query": {
+                        "match_all": {
+                        }
+                    },
                     "filter": {
-                        "bool": {
-                            "should": [
-                                {
-                                    "range": {
-                                        "created_at": {
-                                            "from": sevenDays,
-                                            "to": today
-                                        }
-                                    }
-                                }
-                            ]
+                        "range": {
+                            "created_at": {
+                                "gte": sevenDays,
+                                "lte": today
+                            }
                         }
                     }
                 }
