@@ -278,7 +278,8 @@ app.controller('HomeController', function ($scope, $http, $timeout, $q) {
             $scope.campaigns = data;
         }
 
-        $scope.active_campaigns = active;
+        $scope.active_bank = active;
+        $scope.active_campaigns = $.extend( [], $scope.active_bank );
 
         startParallel();
     };
@@ -290,8 +291,6 @@ app.controller('HomeController', function ($scope, $http, $timeout, $q) {
 
             var copy = $.extend( [], $scope.data_bank );
             var campaigns_copy = $.extend( [], $scope.campaigns_bank );
-
-            console.log(copy);
 
             if (value != 'all') {
                 $scope.campaigns = campaigns_copy.filter(function (value) {
@@ -331,7 +330,7 @@ app.controller('HomeController', function ($scope, $http, $timeout, $q) {
                 $scope.filtered_data = $.extend( [], $scope.data_bank );
             }
 
-            var active_copy = $.extend([], $scope.active_campaigns);
+            var active_copy = $.extend([], $scope.active_bank);
             $scope.active_campaigns = active_copy.filter(function (val) {
                 return val.username == $scope.username;
             });
