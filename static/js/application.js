@@ -227,7 +227,8 @@ app.controller('HomeController', function ($scope, $http, $timeout, $q) {
     $scope.init = function (data, active, username) {
 
         $scope.response_data = {"data": []};
-        $scope.data_bank = {"today": [], "yesterday": [], "totalToday": 0, "totalYday": 0, "impressionToday": 0, "totalLWk": 0, "totalTWk": 0, "totalMonth": 0};
+        $scope.data_bank = {"today": [], "yesterday": [], "totalToday": 0, "totalYday": 0, "impressionToday": 0,
+            "this_week": [], "last_week": [], "month": [], "totalLWk": 0, "totalTWk": 0, "totalMonth": 0};
         $scope.filtered_data = {"today": [], "yesterday": [], "totalToday": 0, "totalYday": 0, "impressionToday": 0, "totalLWk": 0, "totalTWk": 0, "totalMonth": 0};
 
         $scope.username = username;
