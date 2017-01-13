@@ -135,7 +135,7 @@ app.controller('FileCtrl', function ($scope, WebAudio, $location) {
 });
 
 
-app.controller('HomeController', function ($scope, $http, $timeout) {
+app.controller('HomeController', function ($scope, $http, $timeout, $q) {
 
     var sum = function(items, prop){
         return items.reduce( function(a, b){
@@ -175,8 +175,6 @@ app.controller('HomeController', function ($scope, $http, $timeout) {
                     $scope.data_bank.month.push(response.month[key][0]);
                     $scope.data_bank.totalMonth += response.month[key][0].cdr_count;
                 });
-
-                console.log($scope.data_bank);
 
                 if ($scope.username != 'all') {
                     $scope.filtered_data.today = $scope.data_bank.today.filter(function (value) {

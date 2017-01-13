@@ -3,7 +3,7 @@ function getStart(d) {
     var day = d.getDay(),
         diff = d.getDate() - day + (day == 0 ? -6:0);
     var x = new Date(d.setDate(diff));
-    x.setHours(0,0,0,0);
+    x.setUTCHours(0,0,0,0);
     return new Date(x);
 }
 
@@ -932,10 +932,10 @@ router.get('/elasticsearch/cdr/missing', function (req, res, next) {
 router.get('/elasticsearch/data', function (req, res, next) {
 
     var day = new Date();
-    day.setHours(0, 0, 0, 0);
+    day.setUTCHours(0, 0, 0, 0);
     var right_now = new Date();
-    right_now.setHours(23, 59, 59, 59);
-    var data = {"today": [], "yesterday": [], "last_week": [], "this_week": [], "month": []};
+    right_now.setUTCHours(23, 59, 59, 999);
+    var total_data = {"today": [], "yesterday": [], "last_week": [], "this_week": [], "month": []};
 
     // today CDR records
     client.search({
@@ -962,12 +962,14 @@ router.get('/elasticsearch/data', function (req, res, next) {
             var data = result.map(function (_obj) {
                 return _obj._source
             });
-            data.today = groupBy(data, "campaign_name");
+            total_data.today = groupBy(data, "campaign_name");
         }
 
         // yesterday cdr records
-        var yesterday = new Date(new Date().getTime() - (24 * 60 * 60 * 1000));
-        yesterday.setHours(0, 0, 0, 0);
+        var yesterday_start = new Date(new Date().getTime() - (24 * 60 * 60 * 1000));
+        yesterday_start.setUTCHours(0, 0, 0, 0);
+        var yesterday_end = new Date(new Date().getTime() - (24 * 60 * 60 * 1000));
+        yesterday_end.setUTCHours(23,59,59,999);
         client.search({
             index: 'ivr',
             type: 'statuses',
@@ -977,8 +979,8 @@ router.get('/elasticsearch/data', function (req, res, next) {
                         "filter": {
                             "range": {
                                 "created_at": {
-                                    "gte": yesterday,
-                                    "lte": day
+                                    "gte": yesterday_start,
+                                    "lte": yesterday_end
                                 }
                             }
                         }
@@ -992,13 +994,13 @@ router.get('/elasticsearch/data', function (req, res, next) {
                 var yer_data = yer_result.map(function (__obj) {
                     return __obj._source
                 });
-                data.yesterday = groupBy(yer_data, "campaign_name");
+                total_data.yesterday = groupBy(yer_data, "campaign_name");
             }
 
             // this week cdr records
             var week_start = getStart(new Date());
             var week_end = new Date(week_start.getTime() + (6 * 24 * 60 * 60 * 1000));
-            week_end.setHours(23,59,59,59);
+            week_end.setUTCHours(23,59,59,999);
             client.search({
                 index: 'ivr',
                 type: 'statuses',
@@ -1023,14 +1025,14 @@ router.get('/elasticsearch/data', function (req, res, next) {
                     var this_data = this_result.map(function (__obj) {
                         return __obj._source
                     });
-                    data.this_week = groupBy(this_data, "campaign_name");
+                    total_data.this_week = groupBy(this_data, "campaign_name");
                 }
 
                 // last week CDR records
-                var last_start = new Date(week_start.getTime() - (6 * 24 * 60 * 60 * 1000));
-                last_start.setHours(0,0,0,0);
+                var last_start = new Date(week_start.getTime() - (7 * 24 * 60 * 60 * 1000));
+                last_start.setUTCHours(0,0,0,0);
                 var last_end = new Date(week_start.getTime() - (24 * 60 * 60 * 1000));
-                last_end.setHours(23,59,59,59);
+                last_end.setUTCHours(23,59,59,999);
                 client.search({
                     index: 'ivr',
                     type: 'statuses',
@@ -1055,14 +1057,15 @@ router.get('/elasticsearch/data', function (req, res, next) {
                         var last_data = last_result.map(function (__obj) {
                             return __obj._source
                         });
-                        data.last_week = groupBy(last_data, "campaign_name");
+                        total_data.last_week = groupBy(last_data, "campaign_name");
                     }
 
                     // this month CDR records
-                    var date = new Date();
-                    var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
-                    var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-                    
+                    var date = new Date(), y = date.getFullYear(), m = date.getMonth();
+                    var firstDay = new Date(y, m, 1);
+                    var lastDay = new Date(y, m + 1, 0);
+                    firstDay.setHours(1,0,0,0);
+                    lastDay.setHours(24,59,59,999);
                     client.search({
                         index: 'ivr',
                         type: 'statuses',
@@ -1072,8 +1075,8 @@ router.get('/elasticsearch/data', function (req, res, next) {
                                     "filter": {
                                         "range": {
                                             "created_at": {
-                                                "gte": yesterday,
-                                                "lte": day
+                                                "gte": firstDay,
+                                                "lte": lastDay
                                             }
                                         }
                                     }
@@ -1087,9 +1090,9 @@ router.get('/elasticsearch/data', function (req, res, next) {
                             var month_data = month_result.map(function (__obj) {
                                 return __obj._source
                             });
-                            data.month = groupBy(month_data, "campaign_name");
+                            total_data.month = groupBy(month_data, "campaign_name");
                         }
-                        res.send(JSON.stringify(data));
+                        res.send(JSON.stringify(total_data));
                     });
                 });
             });
