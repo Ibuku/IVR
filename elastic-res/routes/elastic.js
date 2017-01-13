@@ -966,8 +966,25 @@ router.get('/elasticsearch/data', function (req, res, next) {
         index: 'ivr',
         type: 'statuses',
         body: {
+            // "query": {
+            //     "constant_score": {
+            //         "filter": {
+            //             "range": {
+            //                 "created_at": {
+            //                     "gte": day,
+            //                     "lte": right_now
+            //                 }
+            //             }
+            //         }
+            //
+            //     }
+            // }
             "query": {
-                "constant_score": {
+                "filtered": {
+                    "query": {
+                        "match_all": {
+                        }
+                    },
                     "filter": {
                         "range": {
                             "created_at": {
@@ -976,7 +993,6 @@ router.get('/elasticsearch/data', function (req, res, next) {
                             }
                         }
                     }
-
                 }
             }
         }
@@ -998,8 +1014,25 @@ router.get('/elasticsearch/data', function (req, res, next) {
             index: 'ivr',
             type: 'statuses',
             body: {
+                // "query": {
+                //     "constant_score": {
+                //         "filter": {
+                //             "range": {
+                //                 "created_at": {
+                //                     "gte": yesterday_start,
+                //                     "lte": yesterday_end
+                //                 }
+                //             }
+                //         }
+                //
+                //     }
+                // }
                 "query": {
-                    "constant_score": {
+                    "filtered": {
+                        "query": {
+                            "match_all": {
+                            }
+                        },
                         "filter": {
                             "range": {
                                 "created_at": {
@@ -1008,7 +1041,6 @@ router.get('/elasticsearch/data', function (req, res, next) {
                                 }
                             }
                         }
-
                     }
                 }
             }
@@ -1029,8 +1061,25 @@ router.get('/elasticsearch/data', function (req, res, next) {
                 index: 'ivr',
                 type: 'statuses',
                 body: {
+                    // "query": {
+                    //     "constant_score": {
+                    //         "filter": {
+                    //             "range": {
+                    //                 "created_at": {
+                    //                     "gte": week_start,
+                    //                     "lte": week_end
+                    //                 }
+                    //             }
+                    //         }
+                    //
+                    //     }
+                    // }
                     "query": {
-                        "constant_score": {
+                        "filtered": {
+                            "query": {
+                                "match_all": {
+                                }
+                            },
                             "filter": {
                                 "range": {
                                     "created_at": {
@@ -1039,7 +1088,6 @@ router.get('/elasticsearch/data', function (req, res, next) {
                                     }
                                 }
                             }
-
                         }
                     }
                 }
@@ -1061,8 +1109,25 @@ router.get('/elasticsearch/data', function (req, res, next) {
                     index: 'ivr',
                     type: 'statuses',
                     body: {
+                        // "query": {
+                        //     "constant_score": {
+                        //         "filter": {
+                        //             "range": {
+                        //                 "created_at": {
+                        //                     "gte": last_start,
+                        //                     "lte": last_end
+                        //                 }
+                        //             }
+                        //         }
+                        //
+                        //     }
+                        // }
                         "query": {
-                            "constant_score": {
+                            "filtered": {
+                                "query": {
+                                    "match_all": {
+                                    }
+                                },
                                 "filter": {
                                     "range": {
                                         "created_at": {
@@ -1071,7 +1136,6 @@ router.get('/elasticsearch/data', function (req, res, next) {
                                         }
                                     }
                                 }
-
                             }
                         }
                     }
@@ -1094,8 +1158,25 @@ router.get('/elasticsearch/data', function (req, res, next) {
                         index: 'ivr',
                         type: 'statuses',
                         body: {
+                            // "query": {
+                            //     "constant_score": {
+                            //         "filter": {
+                            //             "range": {
+                            //                 "created_at": {
+                            //                     "gte": firstDay,
+                            //                     "lte": lastDay
+                            //                 }
+                            //             }
+                            //         }
+                            //
+                            //     }
+                            // }
                             "query": {
-                                "constant_score": {
+                                "filtered": {
+                                    "query": {
+                                        "match_all": {
+                                        }
+                                    },
                                     "filter": {
                                         "range": {
                                             "created_at": {
@@ -1104,7 +1185,6 @@ router.get('/elasticsearch/data', function (req, res, next) {
                                             }
                                         }
                                     }
-
                                 }
                             }
                         }
