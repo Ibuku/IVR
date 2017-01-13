@@ -289,8 +289,8 @@ app.controller('HomeController', function ($scope, $http, $timeout, $q) {
         $timeout(function () {
             $scope.username = value;
 
-            var copy = $.extend( [], $scope.data_bank );
-            var campaigns_copy = $.extend( [], $scope.campaigns_bank );
+            var copy = JSON.parse(JSON.stringify($scope.data_bank));
+            var campaigns_copy = JSON.parse(JSON.stringify($scope.campaigns_bank));
 
             if (value != 'all') {
                 $scope.campaigns = campaigns_copy.filter(function (value) {
@@ -339,7 +339,7 @@ app.controller('HomeController', function ($scope, $http, $timeout, $q) {
                 $scope.filtered_data.totalTWk = sum(copy.this_week, 'cdr_count');
                 $scope.filtered_data.totalLWk = sum(copy.last_week, 'cdr_count');
                 $scope.filtered_data.totalMonth = sum(copy.month, 'cdr_count');
-                $scope.active_campaigns = $.extend([], $scope.active_bank);
+                $scope.active_campaigns = JSON.parse(JSON.stringify($scope.active_bank));
 
                 console.log($scope.data_bank);
                 console.log($scope.campaigns_bank);
