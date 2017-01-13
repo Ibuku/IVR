@@ -211,18 +211,6 @@ router.post('/elasticsearch/:type/create', function (req, res, next) {
                         id: status_id
                     }, function (error, exists) {
                         if (exists == true) {
-                            // client.bulk({
-                            //     body: [
-                            //         {update: {_index: 'ivr', _type: 'statuses', _id: status_id}},
-                            //         {script: 'ctx._source.cdr_count += 1'},
-                            //
-                            //         {update: {_index: 'ivr', _type: 'statuses', _id: status_id}},
-                            //         {script: 'ctx._source.impressions_count += count'}
-                            //     ]
-                            // }, function (error, response) {
-                            //     res.setHeader('Content-Type', 'application/json');
-                            //     res.send(JSON.stringify({response: response, error: error}));
-                            // })
                             client.get({
                                 index: 'ivr',
                                 type: 'statuses',
@@ -234,13 +222,10 @@ router.post('/elasticsearch/:type/create', function (req, res, next) {
                                     id: status_id,
                                     body: {
                                         doc: {
-                                            cdr_count: response._source.cdr_count + 1,
-                                            // impression_count: response._source.impression_count + 1
+                                            cdr_count: response._source.cdr_count + 1
                                         }
                                     }
                                 }, function (error, response) {
-                                    //res.setHeader('Content-Type', 'application/json');
-                                    //res.send(JSON.stringify({response: response, error: error}));
                                 })
                             });
                         } else {
@@ -964,7 +949,7 @@ router.get('/elasticsearch/data', function (req, res, next) {
     // today CDR records
     client.search({
         index: 'ivr',
-        type: 'statuses',
+        type: 'cdr',
         body: {
             // "query": {
             //     "constant_score": {
@@ -999,10 +984,10 @@ router.get('/elasticsearch/data', function (req, res, next) {
     }).then(function (resp) {
         var result = resp.hits.hits;
         if (result.length > 0) {
-            total_data.today = result.map(function (_obj) {
+            var data = result.map(function (_obj) {
                 return _obj._source
             });
-            // total_data.today = groupBy(data, "campaign_name");
+            total_data.today = groupBy(data, "campaign_name");
         }
 
         // yesterday cdr records
@@ -1012,7 +997,7 @@ router.get('/elasticsearch/data', function (req, res, next) {
         yesterday_end.setUTCHours(23,59,59,999);
         client.search({
             index: 'ivr',
-            type: 'statuses',
+            type: 'cdr',
             body: {
                 // "query": {
                 //     "constant_score": {
@@ -1047,10 +1032,10 @@ router.get('/elasticsearch/data', function (req, res, next) {
         }).then(function (resp) {
             var yer_result = resp.hits.hits;
             if (yer_result.length > 0) {
-                total_data.yesterday = yer_result.map(function (__obj) {
+                var yer_data = yer_result.map(function (__obj) {
                     return __obj._source
                 });
-                // total_data.yesterday = groupBy(yer_data, "campaign_name");
+                total_data.yesterday = groupBy(yer_data, "campaign_name");
             }
 
             // this week cdr records
@@ -1059,7 +1044,7 @@ router.get('/elasticsearch/data', function (req, res, next) {
             week_end.setUTCHours(23,59,59,999);
             client.search({
                 index: 'ivr',
-                type: 'statuses',
+                type: 'cdr',
                 body: {
                     // "query": {
                     //     "constant_score": {
@@ -1094,10 +1079,10 @@ router.get('/elasticsearch/data', function (req, res, next) {
             }).then(function (resp) {
                 var this_result = resp.hits.hits;
                 if (this_result.length > 0) {
-                    total_data.this_week = this_result.map(function (__obj) {
+                    var this_data = this_result.map(function (__obj) {
                         return __obj._source
                     });
-                    // total_data.this_week = groupBy(this_data, "campaign_name");
+                    total_data.this_week = groupBy(this_data, "campaign_name");
                 }
 
                 // last week CDR records
@@ -1107,7 +1092,7 @@ router.get('/elasticsearch/data', function (req, res, next) {
                 last_end.setUTCHours(23,59,59,999);
                 client.search({
                     index: 'ivr',
-                    type: 'statuses',
+                    type: 'cdr',
                     body: {
                         // "query": {
                         //     "constant_score": {
@@ -1142,10 +1127,10 @@ router.get('/elasticsearch/data', function (req, res, next) {
                 }).then(function (resp) {
                     var last_result = resp.hits.hits;
                     if (last_result.length > 0) {
-                        total_data.last_week = last_result.map(function (__obj) {
+                        var last_data = last_result.map(function (__obj) {
                             return __obj._source
                         });
-                        // total_data.last_week = groupBy(last_data, "campaign_name");
+                        total_data.last_week = groupBy(last_data, "campaign_name");
                     }
 
                     // this month CDR records
@@ -1156,7 +1141,7 @@ router.get('/elasticsearch/data', function (req, res, next) {
                     lastDay.setHours(24,59,59,999);
                     client.search({
                         index: 'ivr',
-                        type: 'statuses',
+                        type: 'cdr',
                         body: {
                             // "query": {
                             //     "constant_score": {
@@ -1191,10 +1176,10 @@ router.get('/elasticsearch/data', function (req, res, next) {
                     }).then(function (resp) {
                         var month_result = resp.hits.hits;
                         if (month_result.length > 0) {
-                            total_data.month = month_result.map(function (__obj) {
+                            var month_data = month_result.map(function (__obj) {
                                 return __obj._source
                             });
-                            // total_data.month = groupBy(month_data, "campaign_name");
+                            total_data.month = groupBy(month_data, "campaign_name");
                         }
                         res.send(JSON.stringify(total_data));
                     });

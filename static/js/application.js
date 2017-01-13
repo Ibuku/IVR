@@ -150,41 +150,43 @@ app.controller('HomeController', function ($scope, $http, $timeout, $q) {
                 url: '/dashboard'
             }).success(function successCallback(response) {
 
+                console.log(response);
+
                 Object.keys(response.today).map(function (key) {
-                    // $scope.data_bank.today.push(response.today[key][0]);
-                    // $scope.data_bank.totalToday += response.today[key][0].cdr_count;
-                    // $scope.data_bank.impressionToday += response.today[key][0].impression_count;
-                    $scope.data_bank.today.push(response.today[key]);
-                    $scope.data_bank.totalToday += response.today[key].cdr_count;
-                    $scope.data_bank.impressionToday += response.today[key].impression_count;
+                    $scope.data_bank.today.push(response.today[key][0]);
+                    $scope.data_bank.totalToday += response.today[key][0].cdr_count;
+                    $scope.data_bank.impressionToday += response.today[key][0].impression_count;
+                    // $scope.data_bank.today.push(response.today[key]);
+                    // $scope.data_bank.totalToday += response.today[key].cdr_count;
+                    // $scope.data_bank.impressionToday += response.today[key].impression_count;
                 });
 
                 Object.keys(response.yesterday).map(function (key) {
-                    // $scope.data_bank.yesterday.push(response.yesterday[key][0]);
-                    // $scope.data_bank.totalYday += response.yesterday[key][0].cdr_count;
-                    $scope.data_bank.yesterday.push(response.yesterday[key]);
-                    $scope.data_bank.totalYday += response.yesterday[key].cdr_count;
+                    $scope.data_bank.yesterday.push(response.yesterday[key][0]);
+                    $scope.data_bank.totalYday += response.yesterday[key][0].cdr_count;
+                    // $scope.data_bank.yesterday.push(response.yesterday[key]);
+                    // $scope.data_bank.totalYday += response.yesterday[key].cdr_count;
                 });
 
                 Object.keys(response.this_week).map(function (key) {
-                    $scope.data_bank.this_week.push(response.this_week[key]);
-                    $scope.data_bank.totalTWk += response.this_week[key].cdr_count;
-                    // $scope.data_bank.this_week.push(response.this_week[key][0]);
-                    // $scope.data_bank.totalTWk += response.this_week[key][0].cdr_count;
+                    // $scope.data_bank.this_week.push(response.this_week[key]);
+                    // $scope.data_bank.totalTWk += response.this_week[key].cdr_count;
+                    $scope.data_bank.this_week.push(response.this_week[key][0]);
+                    $scope.data_bank.totalTWk += response.this_week[key][0].cdr_count;
                 });
 
                 Object.keys(response.last_week).map(function (key) {
-                    $scope.data_bank.last_week.push(response.last_week[key]);
-                    $scope.data_bank.totalLWk += response.last_week[key].cdr_count;
-                    // $scope.data_bank.last_week.push(response.last_week[key][0]);
-                    // $scope.data_bank.totalLWk += response.last_week[key][0].cdr_count;
+                    // $scope.data_bank.last_week.push(response.last_week[key]);
+                    // $scope.data_bank.totalLWk += response.last_week[key].cdr_count;
+                    $scope.data_bank.last_week.push(response.last_week[key][0]);
+                    $scope.data_bank.totalLWk += response.last_week[key][0].cdr_count;
                 });
 
                 Object.keys(response.month).map(function (key) {
-                    $scope.data_bank.month.push(response.month[key]);
-                    $scope.data_bank.totalMonth += response.month[key].cdr_count;
-                    // $scope.data_bank.month.push(response.month[key][0]);
-                    // $scope.data_bank.totalMonth += response.month[key][0].cdr_count;
+                    // $scope.data_bank.month.push(response.month[key]);
+                    // $scope.data_bank.totalMonth += response.month[key].cdr_count;
+                    $scope.data_bank.month.push(response.month[key][0]);
+                    $scope.data_bank.totalMonth += response.month[key][0].cdr_count;
                 });
 
                 if ($scope.username != 'all') {
@@ -192,51 +194,51 @@ app.controller('HomeController', function ($scope, $http, $timeout, $q) {
                         return value.username == $scope.username;
                     });
 
-                    // $scope.filtered_data.totalToday += $scope.filtered_data.today[key][0].cdr_count;
-                    // $scope.filtered_data.impressionToday += $scope.filtered_data.today[key][0].impression_count;
-                    //
-                    // $scope.filtered_data.yesterday = $scope.data_bank.yesterday.filter(function (value) {
-                    //     return value.username == $scope.username;
-                    // });
-                    // $scope.filtered_data.totalYday += $scope.filtered_data.yesterday[key][0].cdr_count;
-                    //
-                    // $scope.filtered_data.this_week = $scope.data_bank.this_week.filter(function (value) {
-                    //     return value.username == $scope.username;
-                    // });
-                    // $scope.filtered_data.totalTWk += $scope.filtered_data.this_week[key][0].cdr_count;
-                    //
-                    // $scope.filtered_data.last_week = $scope.data_bank.last_week.filter(function (value) {
-                    //     return value.username == $scope.username;
-                    // });
-                    // $scope.filtered_data.totalLWk += $scope.filtered_data.last_week[key][0].cdr_count;
-                    //
-                    // $scope.filtered_data.month = $scope.data_bank.month.filter(function (value) {
-                    //     return value.username == $scope.username;
-                    // });
-                    // $scope.filtered_data.totalMonth += $scope.filtered_data.month[key][0].cdr_count;
-
-                    $scope.filtered_data.totalToday += $scope.filtered_data.today[key].cdr_count;
-                    $scope.filtered_data.impressionToday += $scope.filtered_data.today[key].impression_count;
+                    $scope.filtered_data.totalToday += $scope.filtered_data.today[key][0].cdr_count;
+                    $scope.filtered_data.impressionToday += $scope.filtered_data.today[key][0].impression_count;
 
                     $scope.filtered_data.yesterday = $scope.data_bank.yesterday.filter(function (value) {
                         return value.username == $scope.username;
                     });
-                    $scope.filtered_data.totalYday += $scope.filtered_data.yesterday[key].cdr_count;
+                    $scope.filtered_data.totalYday += $scope.filtered_data.yesterday[key][0].cdr_count;
 
                     $scope.filtered_data.this_week = $scope.data_bank.this_week.filter(function (value) {
                         return value.username == $scope.username;
                     });
-                    $scope.filtered_data.totalTWk += $scope.filtered_data.this_week[key].cdr_count;
+                    $scope.filtered_data.totalTWk += $scope.filtered_data.this_week[key][0].cdr_count;
 
                     $scope.filtered_data.last_week = $scope.data_bank.last_week.filter(function (value) {
                         return value.username == $scope.username;
                     });
-                    $scope.filtered_data.totalLWk += $scope.filtered_data.last_week[key].cdr_count;
+                    $scope.filtered_data.totalLWk += $scope.filtered_data.last_week[key][0].cdr_count;
 
                     $scope.filtered_data.month = $scope.data_bank.month.filter(function (value) {
                         return value.username == $scope.username;
                     });
-                    $scope.filtered_data.totalMonth += $scope.filtered_data.month[key].cdr_count;
+                    $scope.filtered_data.totalMonth += $scope.filtered_data.month[key][0].cdr_count;
+
+                    // $scope.filtered_data.totalToday += $scope.filtered_data.today[key].cdr_count;
+                    // $scope.filtered_data.impressionToday += $scope.filtered_data.today[key].impression_count;
+                    //
+                    // $scope.filtered_data.yesterday = $scope.data_bank.yesterday.filter(function (value) {
+                    //     return value.username == $scope.username;
+                    // });
+                    // $scope.filtered_data.totalYday += $scope.filtered_data.yesterday[key].cdr_count;
+                    //
+                    // $scope.filtered_data.this_week = $scope.data_bank.this_week.filter(function (value) {
+                    //     return value.username == $scope.username;
+                    // });
+                    // $scope.filtered_data.totalTWk += $scope.filtered_data.this_week[key].cdr_count;
+                    //
+                    // $scope.filtered_data.last_week = $scope.data_bank.last_week.filter(function (value) {
+                    //     return value.username == $scope.username;
+                    // });
+                    // $scope.filtered_data.totalLWk += $scope.filtered_data.last_week[key].cdr_count;
+                    //
+                    // $scope.filtered_data.month = $scope.data_bank.month.filter(function (value) {
+                    //     return value.username == $scope.username;
+                    // });
+                    // $scope.filtered_data.totalMonth += $scope.filtered_data.month[key].cdr_count;
                 }
                 else {
                     $scope.filtered_data = $scope.data_bank;
