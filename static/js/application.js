@@ -149,6 +149,8 @@ app.controller('HomeController', function ($scope, $http, $timeout, $q) {
                 url: '/dashboard'
             }).success(function successCallback(response) {
 
+                console.log(response);
+
                 Object.keys(response.today).map(function (key) {
                     // $scope.data_bank.today.push(response.today[key][0]);
                     // $scope.data_bank.totalToday += response.today[key][0].cdr_count;
