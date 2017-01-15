@@ -949,7 +949,7 @@ router.get('/elasticsearch/data', function (req, res, next) {
     // today CDR records
     client.search({
         index: 'ivr',
-        type: 'cdr',
+        type: 'statuses',
         body: {
             // "query": {
             //     "constant_score": {
@@ -984,11 +984,10 @@ router.get('/elasticsearch/data', function (req, res, next) {
     }).then(function (resp) {
         var result = resp.hits.hits;
         if (result.length > 0) {
-            var data = result.map(function (_obj) {
+            total_data.today = result.map(function (_obj) {
                 return _obj._source
             });
-            total_data.today = groupBy(data, "userfield");
-            console.log(total_data.today);
+            // total_data.today = groupBy(data, "userfield");
         }
 
         // yesterday cdr records
@@ -998,7 +997,7 @@ router.get('/elasticsearch/data', function (req, res, next) {
         yesterday_end.setUTCHours(23,59,59,999);
         client.search({
             index: 'ivr',
-            type: 'cdr',
+            type: 'statuses',
             body: {
                 // "query": {
                 //     "constant_score": {
@@ -1033,10 +1032,10 @@ router.get('/elasticsearch/data', function (req, res, next) {
         }).then(function (resp) {
             var yer_result = resp.hits.hits;
             if (yer_result.length > 0) {
-                var yer_data = yer_result.map(function (__obj) {
+                total_data.yesterday = yer_result.map(function (__obj) {
                     return __obj._source
                 });
-                total_data.yesterday = groupBy(yer_data, "userfield");
+                // total_data.yesterday = groupBy(yer_data, "userfield");
             }
 
             // this week cdr records
@@ -1080,10 +1079,10 @@ router.get('/elasticsearch/data', function (req, res, next) {
             }).then(function (resp) {
                 var this_result = resp.hits.hits;
                 if (this_result.length > 0) {
-                    var this_data = this_result.map(function (__obj) {
+                    total_data.this_week = this_result.map(function (__obj) {
                         return __obj._source
                     });
-                    total_data.this_week = groupBy(this_data, "userfield");
+                    // total_data.this_week = groupBy(this_data, "userfield");
                 }
 
                 // last week CDR records
@@ -1128,10 +1127,10 @@ router.get('/elasticsearch/data', function (req, res, next) {
                 }).then(function (resp) {
                     var last_result = resp.hits.hits;
                     if (last_result.length > 0) {
-                        var last_data = last_result.map(function (__obj) {
+                        total_data.last_week = last_result.map(function (__obj) {
                             return __obj._source
                         });
-                        total_data.last_week = groupBy(last_data, "userfield");
+                        // total_data.last_week = groupBy(last_data, "userfield");
                     }
 
                     // this month CDR records
@@ -1177,10 +1176,10 @@ router.get('/elasticsearch/data', function (req, res, next) {
                     }).then(function (resp) {
                         var month_result = resp.hits.hits;
                         if (month_result.length > 0) {
-                            var month_data = month_result.map(function (__obj) {
+                            total_data.month = month_result.map(function (__obj) {
                                 return __obj._source
                             });
-                            total_data.month = groupBy(month_data, "userfield");
+                            // total_data.month = groupBy(month_data, "userfield");
                         }
                         res.send(JSON.stringify(total_data));
                     });

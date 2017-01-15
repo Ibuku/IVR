@@ -269,6 +269,7 @@
                                 <th>Campaign</th>
                                 <th class="col-md-2">Calls Count</th>
                                 <th class="col-md-2">Impression Count</th>
+                                <th class="col-md-2">Dropped Calls</th>
                                 <th class="col-md-2">Success Count</th>
                                 <th class="col-md-2"></th>
                                 <th class="text-center" style="width: 20px;"><i class="icon-arrow-down12"></i></th>
@@ -299,8 +300,8 @@
                                     </div>
                                 </td>
                                 <td><span class="text-muted" ng-bind="val.cdr_count"></span></td>
-                                <td><span class="text-warning-600" ng-bind="val.impression_count"></span>
-                                </td>
+                                <td><span class="text-warning-600" ng-bind="val.impression_count"></span></td>
+                                <td><span class="text-muted">{{ val.cdr_count - val.impression_count | number }}</span></td>
                                 <td><h6 class="text-semibold" ng-bind="val.success_count"></h6></td>
                                 <td><span class="label bg-blue"></span></td>
                                 <td class="text-center">
@@ -354,6 +355,7 @@
                                     <td><span class="text-muted" ng-bind="val.cdr_count"></span></td>
                                     <td><span class="text-warning-600" ng-bind="val.impression_count"></span>
                                     </td>
+                                    <td><span class="text-muted" ng-bind="val.dropped_count"></span></td>
                                     <td><h6 class="text-semibold" ng-bind="val.success_count"></h6></td>
                                     <td><span class="label bg-blue"></span></td>
                                     <td class="text-center">
@@ -384,50 +386,47 @@
                                     </td>
                                 </tr>
                                 <tr ng-repeat="val in filtered_data.this_week">
-                                <td>
-                                    <div class="media-left media-middle">
-                                        <div class=""><a href="#" class="text-default" ng-bind="val.username"
-                                                         style="font-size:13px"></a>
+                                    <td>
+                                        <div class="media-left media-middle">
+                                            <div class=""><a href="#" class="text-default" ng-bind="val.username"
+                                                             style="font-size:13px"></a>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="media-left">
-                                        <div class=""><a href="#" class="text-default text-semibold"
-                                                         ng-bind="val.campaign_name"></a>
+                                        <div class="media-left">
+                                            <div class=""><a href="#" class="text-default text-semibold"
+                                                             ng-bind="val.campaign_name"></a>
+                                            </div>
                                         </div>
-                                        {#<div class="text-muted text-size-small">#}
-                                        {#<span class="status-mark border-blue position-left"></span>#}
-                                        {#02:00 - 03:00#}
-                                        {#</div>#}
-                                    </div>
-                                </td>
-                                <td><span class="text-muted" ng-bind="val.cdr_count"></span></td>
-                                <td><span class="text-warning-600" ng-bind="val.impression_count"></span>
-                                </td>
-                                <td><h6 class="text-semibold" ng-bind="val.success_count"></h6></td>
-                                <td><span class="label bg-blue"></span></td>
-                                <td class="text-center">
-                                    <ul class="icons-list">
-                                        <li class="dropdown">
-                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i
-                                                        class="icon-menu7"></i></a>
-                                            <ul class="dropdown-menu dropdown-menu-right">
-                                                <li>
-                                                    <a href="campaigns/[[val.campaign_id]]/report"><i
-                                                                class="icon-file-stats"></i> View Report</a>
-                                                </li>
-                                                <li>
-                                                    <a href="reports/[[val.campaign_id]]/download"><i
-                                                                class="icon-download"></i> Download Report</a>
-                                                </li>
-                                                <li>
-                                                    <a href="campaigns/[[val.campaign_id]]/update"><i
-                                                                class="icon-file-text2"></i> Edit campaign</a>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                    </ul>
-                                </td>
-                            </tr>
+                                    </td>
+                                    <td><span class="text-muted" ng-bind="val.cdr_count"></span></td>
+                                    <td><span class="text-warning-600" ng-bind="val.impression_count"></span>
+                                    </td>
+                                    <td><span class="text-muted">{{ val.cdr_count - val.impression_count | number }}</span></td>
+                                    <td><h6 class="text-semibold" ng-bind="val.success_count"></h6></td>
+                                    <td><span class="label bg-blue"></span></td>
+                                    <td class="text-center">
+                                        <ul class="icons-list">
+                                            <li class="dropdown">
+                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i
+                                                            class="icon-menu7"></i></a>
+                                                <ul class="dropdown-menu dropdown-menu-right">
+                                                    <li>
+                                                        <a href="campaigns/[[val.campaign_id]]/report"><i
+                                                                    class="icon-file-stats"></i> View Report</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="reports/[[val.campaign_id]]/download"><i
+                                                                    class="icon-download"></i> Download Report</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="campaigns/[[val.campaign_id]]/update"><i
+                                                                    class="icon-file-text2"></i> Edit campaign</a>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                </tr>
                             </tbody>
                             {#<tbody ng-show="filtered_data.last_week.length">#}
                                 {#<tr class="active border-double">#}
@@ -490,50 +489,47 @@
                                     </td>
                                 </tr>
                                 <tr ng-repeat="val in filtered_data.month">
-                                <td>
-                                    <div class="media-left media-middle">
-                                        <div class=""><a href="#" class="text-default" ng-bind="val.username"
-                                                         style="font-size:13px"></a>
+                                    <td>
+                                        <div class="media-left media-middle">
+                                            <div class=""><a href="#" class="text-default" ng-bind="val.username"
+                                                             style="font-size:13px"></a>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="media-left">
-                                        <div class=""><a href="#" class="text-default text-semibold"
-                                                         ng-bind="val.campaign_name"></a>
+                                        <div class="media-left">
+                                            <div class=""><a href="#" class="text-default text-semibold"
+                                                             ng-bind="val.campaign_name"></a>
+                                            </div>
                                         </div>
-                                        {#<div class="text-muted text-size-small">#}
-                                        {#<span class="status-mark border-blue position-left"></span>#}
-                                        {#02:00 - 03:00#}
-                                        {#</div>#}
-                                    </div>
-                                </td>
-                                <td><span class="text-muted" ng-bind="val.cdr_count"></span></td>
-                                <td><span class="text-warning-600" ng-bind="val.impression_count"></span>
-                                </td>
-                                <td><h6 class="text-semibold" ng-bind="val.success_count"></h6></td>
-                                <td><span class="label bg-blue"></span></td>
-                                <td class="text-center">
-                                    <ul class="icons-list">
-                                        <li class="dropdown">
-                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i
-                                                        class="icon-menu7"></i></a>
-                                            <ul class="dropdown-menu dropdown-menu-right">
-                                                <li>
-                                                    <a href="campaigns/[[val.campaign_id]]/report"><i
-                                                                class="icon-file-stats"></i> View Report</a>
-                                                </li>
-                                                <li>
-                                                    <a href="reports/[[val.campaign_id]]/download"><i
-                                                                class="icon-download"></i> Download Report</a>
-                                                </li>
-                                                <li>
-                                                    <a href="campaigns/[[val.campaign_id]]/update"><i
-                                                                class="icon-file-text2"></i> Edit campaign</a>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                    </ul>
-                                </td>
-                            </tr>
+                                    </td>
+                                    <td><span class="text-muted" ng-bind="val.cdr_count"></span></td>
+                                    <td><span class="text-warning-600" ng-bind="val.impression_count"></span>
+                                    </td>
+                                    <td><span class="text-muted">{{ val.cdr_count - val.impression_count | number }}</span></td>
+                                    <td><h6 class="text-semibold" ng-bind="val.success_count"></h6></td>
+                                    <td><span class="label bg-blue"></span></td>
+                                    <td class="text-center">
+                                        <ul class="icons-list">
+                                            <li class="dropdown">
+                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i
+                                                            class="icon-menu7"></i></a>
+                                                <ul class="dropdown-menu dropdown-menu-right">
+                                                    <li>
+                                                        <a href="campaigns/[[val.campaign_id]]/report"><i
+                                                                    class="icon-file-stats"></i> View Report</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="reports/[[val.campaign_id]]/download"><i
+                                                                    class="icon-download"></i> Download Report</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="campaigns/[[val.campaign_id]]/update"><i
+                                                                    class="icon-file-text2"></i> Edit campaign</a>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
