@@ -395,40 +395,40 @@ router.get('/campaign/:id/data', function (req, res, next) {
         index: "ivr",
         type: "statuses",
         body: {
-            "query": {
-                "constant_score": {
-                    "filter": {
-                        "bool": {
-                            "should": [
-                                {
-                                    "range": {
-                                        "created_at": {
-                                            "from": sevenDays,
-                                            "to": today
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                }
-            }
             // "query": {
-            //     "filtered": {
-            //         "query": {
-            //             "match_all": {
-            //             }
-            //         },
+            //     "constant_score": {
             //         "filter": {
-            //             "range": {
-            //                 "created_at": {
-            //                     "gte": sevenDays,
-            //                     "lte": today
-            //                 }
+            //             "bool": {
+            //                 "should": [
+            //                     {
+            //                         "range": {
+            //                             "created_at": {
+            //                                 "from": sevenDays,
+            //                                 "to": today
+            //                             }
+            //                         }
+            //                     }
+            //                 ]
             //             }
             //         }
             //     }
             // }
+            "query": {
+                "filtered": {
+                    "query": {
+                        "match_all": {
+                        }
+                    },
+                    "filter": {
+                        "range": {
+                            "created_at": {
+                                "gte": sevenDays,
+                                "lte": today
+                            }
+                        }
+                    }
+                }
+            }
         }
     }).then(function (resp) {
         var result = resp.hits.hits;
@@ -951,25 +951,8 @@ router.get('/elasticsearch/data', function (req, res, next) {
         index: 'ivr',
         type: 'statuses',
         body: {
-            "query": {
-                "constant_score": {
-                    "filter": {
-                        "range": {
-                            "created_at": {
-                                "gte": day,
-                                "lte": right_now
-                            }
-                        }
-                    }
-
-                }
-            }
             // "query": {
-            //     "filtered": {
-            //         "query": {
-            //             "match_all": {
-            //             }
-            //         },
+            //     "constant_score": {
             //         "filter": {
             //             "range": {
             //                 "created_at": {
@@ -978,8 +961,25 @@ router.get('/elasticsearch/data', function (req, res, next) {
             //                 }
             //             }
             //         }
+            //
             //     }
             // }
+            "query": {
+                "filtered": {
+                    "query": {
+                        "match_all": {
+                        }
+                    },
+                    "filter": {
+                        "range": {
+                            "created_at": {
+                                "gte": day,
+                                "lte": right_now
+                            }
+                        }
+                    }
+                }
+            }
         }
     }).then(function (resp) {
         var result = resp.hits.hits;
@@ -999,25 +999,8 @@ router.get('/elasticsearch/data', function (req, res, next) {
             index: 'ivr',
             type: 'statuses',
             body: {
-                "query": {
-                    "constant_score": {
-                        "filter": {
-                            "range": {
-                                "created_at": {
-                                    "gte": yesterday_start,
-                                    "lte": yesterday_end
-                                }
-                            }
-                        }
-
-                    }
-                }
                 // "query": {
-                //     "filtered": {
-                //         "query": {
-                //             "match_all": {
-                //             }
-                //         },
+                //     "constant_score": {
                 //         "filter": {
                 //             "range": {
                 //                 "created_at": {
@@ -1026,8 +1009,25 @@ router.get('/elasticsearch/data', function (req, res, next) {
                 //                 }
                 //             }
                 //         }
+                //
                 //     }
                 // }
+                "query": {
+                    "filtered": {
+                        "query": {
+                            "match_all": {
+                            }
+                        },
+                        "filter": {
+                            "range": {
+                                "created_at": {
+                                    "gte": yesterday_start,
+                                    "lte": yesterday_end
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }).then(function (resp) {
             var yer_result = resp.hits.hits;
@@ -1046,25 +1046,8 @@ router.get('/elasticsearch/data', function (req, res, next) {
                 index: 'ivr',
                 type: 'cdr',
                 body: {
-                    "query": {
-                        "constant_score": {
-                            "filter": {
-                                "range": {
-                                    "created_at": {
-                                        "gte": week_start,
-                                        "lte": week_end
-                                    }
-                                }
-                            }
-
-                        }
-                    }
                     // "query": {
-                    //     "filtered": {
-                    //         "query": {
-                    //             "match_all": {
-                    //             }
-                    //         },
+                    //     "constant_score": {
                     //         "filter": {
                     //             "range": {
                     //                 "created_at": {
@@ -1073,8 +1056,25 @@ router.get('/elasticsearch/data', function (req, res, next) {
                     //                 }
                     //             }
                     //         }
+                    //
                     //     }
                     // }
+                    "query": {
+                        "filtered": {
+                            "query": {
+                                "match_all": {
+                                }
+                            },
+                            "filter": {
+                                "range": {
+                                    "created_at": {
+                                        "gte": week_start,
+                                        "lte": week_end
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }).then(function (resp) {
                 var this_result = resp.hits.hits;
@@ -1094,25 +1094,8 @@ router.get('/elasticsearch/data', function (req, res, next) {
                     index: 'ivr',
                     type: 'cdr',
                     body: {
-                        "query": {
-                            "constant_score": {
-                                "filter": {
-                                    "range": {
-                                        "created_at": {
-                                            "gte": last_start,
-                                            "lte": last_end
-                                        }
-                                    }
-                                }
-
-                            }
-                        }
                         // "query": {
-                        //     "filtered": {
-                        //         "query": {
-                        //             "match_all": {
-                        //             }
-                        //         },
+                        //     "constant_score": {
                         //         "filter": {
                         //             "range": {
                         //                 "created_at": {
@@ -1121,8 +1104,25 @@ router.get('/elasticsearch/data', function (req, res, next) {
                         //                 }
                         //             }
                         //         }
+                        //
                         //     }
                         // }
+                        "query": {
+                            "filtered": {
+                                "query": {
+                                    "match_all": {
+                                    }
+                                },
+                                "filter": {
+                                    "range": {
+                                        "created_at": {
+                                            "gte": last_start,
+                                            "lte": last_end
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                 }).then(function (resp) {
                     var last_result = resp.hits.hits;
@@ -1143,25 +1143,8 @@ router.get('/elasticsearch/data', function (req, res, next) {
                         index: 'ivr',
                         type: 'cdr',
                         body: {
-                            "query": {
-                                "constant_score": {
-                                    "filter": {
-                                        "range": {
-                                            "created_at": {
-                                                "gte": firstDay,
-                                                "lte": lastDay
-                                            }
-                                        }
-                                    }
-
-                                }
-                            }
                             // "query": {
-                            //     "filtered": {
-                            //         "query": {
-                            //             "match_all": {
-                            //             }
-                            //         },
+                            //     "constant_score": {
                             //         "filter": {
                             //             "range": {
                             //                 "created_at": {
@@ -1170,8 +1153,25 @@ router.get('/elasticsearch/data', function (req, res, next) {
                             //                 }
                             //             }
                             //         }
+                            //
                             //     }
                             // }
+                            "query": {
+                                "filtered": {
+                                    "query": {
+                                        "match_all": {
+                                        }
+                                    },
+                                    "filter": {
+                                        "range": {
+                                            "created_at": {
+                                                "gte": firstDay,
+                                                "lte": lastDay
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }).then(function (resp) {
                         var month_result = resp.hits.hits;
