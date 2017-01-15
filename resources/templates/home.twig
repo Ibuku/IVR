@@ -301,7 +301,7 @@
                                 </td>
                                 <td><span class="text-muted" ng-bind="val.cdr_count"></span></td>
                                 <td><span class="text-warning-600" ng-bind="val.impression_count"></span></td>
-                                <td><span class="text-muted">{{ val.cdr_count - val.impression_count | number }}</span></td>
+                                <td><span class="text-muted">[[ val.cdr_count - val.impression_count | number ]]</span></td>
                                 <td><h6 class="text-semibold" ng-bind="val.success_count"></h6></td>
                                 <td><span class="label bg-blue"></span></td>
                                 <td class="text-center">
@@ -355,7 +355,7 @@
                                     <td><span class="text-muted" ng-bind="val.cdr_count"></span></td>
                                     <td><span class="text-warning-600" ng-bind="val.impression_count"></span>
                                     </td>
-                                    <td><span class="text-muted" ng-bind="val.dropped_count"></span></td>
+                                    <td><span class="text-muted">[[ val.cdr_count - val.impression_count | number ]]</span></td>
                                     <td><h6 class="text-semibold" ng-bind="val.success_count"></h6></td>
                                     <td><span class="label bg-blue"></span></td>
                                     <td class="text-center">
@@ -401,7 +401,7 @@
                                     <td><span class="text-muted" ng-bind="val.cdr_count"></span></td>
                                     <td><span class="text-warning-600" ng-bind="val.impression_count"></span>
                                     </td>
-                                    <td><span class="text-muted">{{ val.cdr_count - val.impression_count | number }}</span></td>
+                                    <td><span class="text-muted">[[ val.cdr_count - val.impression_count | number ]]</span></td>
                                     <td><h6 class="text-semibold" ng-bind="val.success_count"></h6></td>
                                     <td><span class="label bg-blue"></span></td>
                                     <td class="text-center">
@@ -504,7 +504,7 @@
                                     <td><span class="text-muted" ng-bind="val.cdr_count"></span></td>
                                     <td><span class="text-warning-600" ng-bind="val.impression_count"></span>
                                     </td>
-                                    <td><span class="text-muted">{{ val.cdr_count - val.impression_count | number }}</span></td>
+                                    <td><span class="text-muted">[[ val.cdr_count - val.impression_count | number ]]</span></td>
                                     <td><h6 class="text-semibold" ng-bind="val.success_count"></h6></td>
                                     <td><span class="label bg-blue"></span></td>
                                     <td class="text-center">
