@@ -1044,7 +1044,7 @@ router.get('/elasticsearch/data', function (req, res, next) {
             week_end.setUTCHours(23,59,59,999);
             client.search({
                 index: 'ivr',
-                type: 'cdr',
+                type: 'statuses',
                 body: {
                     // "query": {
                     //     "constant_score": {
@@ -1092,7 +1092,7 @@ router.get('/elasticsearch/data', function (req, res, next) {
                 last_end.setUTCHours(23,59,59,999);
                 client.search({
                     index: 'ivr',
-                    type: 'cdr',
+                    type: 'statuses',
                     body: {
                         // "query": {
                         //     "constant_score": {
@@ -1141,7 +1141,7 @@ router.get('/elasticsearch/data', function (req, res, next) {
                     lastDay.setHours(24,59,59,999);
                     client.search({
                         index: 'ivr',
-                        type: 'cdr',
+                        type: 'statuses',
                         body: {
                             // "query": {
                             //     "constant_score": {
