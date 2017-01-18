@@ -28,8 +28,7 @@ $data = [
 foreach ($data as $camp) {
 
     $campaign = json_decode($camp);
-
-    Index::save_redis($campaign->play_path, [
+    $_data = [
         'username' => $campaign->username,
         'start_date' => $campaign->start_date,
         'end_date' => $campaign->end_date,
@@ -41,7 +40,12 @@ foreach ($data as $camp) {
         'created_at' => $campaign->created_at->format('Y-m-d'),
         'updated_at' => $campaign->updated_at->format('Y-m-d'),
         'is_active' => $campaign->is_active
-    ]);
+    ];
+
+    var_dump($_data);
+    exit();
+
+    Index::save_redis($campaign->play_path, $_data);
 
     $action = Action::where('campaign_id', $campaign->id)->first();
     if ($action) {
