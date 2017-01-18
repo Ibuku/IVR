@@ -180,11 +180,6 @@ router.post('/elasticsearch/:type/create', function (req, res, next) {
                 var campaign = resp.hits.hits[0]._source;
                 var created = new Date();
                 created.toDateString;
-                // var impression = false;
-
-                // if (parseInt(req.body.duration) == parseInt(req.body.billsec)) {
-                //     impression = true;
-                // }
 
                 client.index({
                     index: 'ivr',
@@ -196,12 +191,16 @@ router.post('/elasticsearch/:type/create', function (req, res, next) {
                         "duration": req.body.duration,
                         "userfield": campaign.id,
                         "uniqueid": req.body.uniqueid,
-                        "impression": false,
                         "billsec": req.body.billsec,
-                        "is_successful": false,
                         "created_at": created,
                         "file_path": req.body.file_path,
-                        "campaign_name": campaign.name
+                        "campaign_name": campaign.name,
+                        "impression": false,
+                        "is_subscribed": false,
+                        "is_confirmed": false,
+                        "is_successful": false,
+                        "is_insufficient": false,
+                        "has_failed": false
                     }
                 }, function (err, resp, status) {
                     var status_id = new Date().toDateString().replace(/ /g, '') + '-' + campaign.id;
@@ -235,12 +234,16 @@ router.post('/elasticsearch/:type/create', function (req, res, next) {
                                 id: status_id,
                                 body: {
                                     "campaign_id": campaign.id,
-                                    "impression_count": 0,
-                                    "success_count": 0,
-                                    "cdr_count": 1,
                                     "campaign_name": campaign.name,
                                     "created_at": created,
-                                    "username": campaign.username
+                                    "username": campaign.username,
+                                    "cdr_count": 1,
+                                    "impression_count": 0,
+                                    "subscription_count": 0,
+                                    "confirmation_count": 0,
+                                    "insufficient_count": 0,
+                                    "failed_count": 0,
+                                    "success_count": 0
                                 }
                             })
                         }
@@ -322,6 +325,258 @@ router.post('/elasticsearch/:type/create', function (req, res, next) {
             res.send(JSON.stringify({response: resp, error: err, status: status}));
         });
     }
+});
+
+router.post('/cdr/impression', function (req, res, next) {
+
+    client.get({
+        index: 'ivr',
+        type: 'cdr',
+        id: req.body.uniqueid
+    }, function (err, resp) {
+        client.update({
+            index: 'ivr',
+            type: 'cdr',
+            id: req.body.uniqueid,
+            body: {
+                doc: {
+                    impression: true
+                }
+            }
+        }, function (errr, respose) {
+            var campaign_id = resp._source.userfield;
+            var status_id = new Date().toDateString().replace(/ /g, '') + '-' + campaign_id;
+            client.get({
+                index: 'ivr',
+                type: 'statuses',
+                id: status_id
+            }, function (error, response) {
+                client.update({
+                    index: 'ivr',
+                    type: 'statuses',
+                    id: status_id,
+                    body: {
+                        doc: {
+                            impression_count: response._source.impression_count + 1
+                        }
+                    }
+                }, function (error, response) {
+                    res.setHeader('Content-Type', 'application/json');
+                    res.send(JSON.stringify({response: response, error: error}));
+                })
+            });
+        });
+    });
+});
+
+router.post('/cdr/subscribe', function (req, res, next) {
+
+    client.get({
+        index: 'ivr',
+        type: 'cdr',
+        id: req.body.uniqueid
+    }, function (err, resp) {
+        client.update({
+            index: 'ivr',
+            type: 'cdr',
+            id: req.body.uniqueid,
+            body: {
+                doc: {
+                    is_subscribed: true
+                }
+            }
+        }, function (errr, respose) {
+            var campaign_id = resp._source.userfield;
+            var status_id = new Date().toDateString().replace(/ /g, '') + '-' + campaign_id;
+            client.get({
+                index: 'ivr',
+                type: 'statuses',
+                id: status_id
+            }, function (error, response) {
+                client.update({
+                    index: 'ivr',
+                    type: 'statuses',
+                    id: status_id,
+                    body: {
+                        doc: {
+                            subscription_count: response._source.subscription_count + 1
+                        }
+                    }
+                }, function (error, response) {
+                    res.setHeader('Content-Type', 'application/json');
+                    res.send(JSON.stringify({response: response, error: error}));
+                })
+            });
+        });
+    });
+});
+
+router.post('/cdr/confirmation', function (req, res, next) {
+
+    client.get({
+        index: 'ivr',
+        type: 'cdr',
+        id: req.body.uniqueid
+    }, function (err, resp) {
+        client.update({
+            index: 'ivr',
+            type: 'cdr',
+            id: req.body.uniqueid,
+            body: {
+                doc: {
+                    is_confirmed: true
+                }
+            }
+        }, function (errr, respose) {
+            var campaign_id = resp._source.userfield;
+            var status_id = new Date().toDateString().replace(/ /g, '') + '-' + campaign_id;
+            client.get({
+                index: 'ivr',
+                type: 'statuses',
+                id: status_id
+            }, function (error, response) {
+                client.update({
+                    index: 'ivr',
+                    type: 'statuses',
+                    id: status_id,
+                    body: {
+                        doc: {
+                            confirmation_count: response._source.confirmation_count + 1
+                        }
+                    }
+                }, function (error, response) {
+                    res.setHeader('Content-Type', 'application/json');
+                    res.send(JSON.stringify({response: response, error: error}));
+                })
+            });
+        });
+    });
+});
+
+router.post('/cdr/success', function (req, res, next) {
+
+    client.get({
+        index: 'ivr',
+        type: 'cdr',
+        id: req.body.uniqueid
+    }, function (err, resp) {
+        client.update({
+            index: 'ivr',
+            type: 'cdr',
+            id: req.body.uniqueid,
+            body: {
+                doc: {
+                    is_successful: true
+                }
+            }
+        }, function (errr, respose) {
+            var campaign_id = resp._source.userfield;
+            var status_id = new Date().toDateString().replace(/ /g, '') + '-' + campaign_id;
+            client.get({
+                index: 'ivr',
+                type: 'statuses',
+                id: status_id
+            }, function (error, response) {
+                client.update({
+                    index: 'ivr',
+                    type: 'statuses',
+                    id: status_id,
+                    body: {
+                        doc: {
+                            success_count: response._source.success_count + 1
+                        }
+                    }
+                }, function (error, response) {
+                    res.setHeader('Content-Type', 'application/json');
+                    res.send(JSON.stringify({response: response, error: error}));
+                })
+            });
+        });
+    });
+});
+
+router.post('/cdr/insufficient', function (req, res, next) {
+
+    client.get({
+        index: 'ivr',
+        type: 'cdr',
+        id: req.body.uniqueid
+    }, function (err, resp) {
+        client.update({
+            index: 'ivr',
+            type: 'cdr',
+            id: req.body.uniqueid,
+            body: {
+                doc: {
+                    is_insufficient: true
+                }
+            }
+        }, function (errr, respose) {
+            var campaign_id = resp._source.userfield;
+            var status_id = new Date().toDateString().replace(/ /g, '') + '-' + campaign_id;
+            client.get({
+                index: 'ivr',
+                type: 'statuses',
+                id: status_id
+            }, function (error, response) {
+                client.update({
+                    index: 'ivr',
+                    type: 'statuses',
+                    id: status_id,
+                    body: {
+                        doc: {
+                            insufficient_count: response._source.insufficient_count + 1
+                        }
+                    }
+                }, function (error, response) {
+                    res.setHeader('Content-Type', 'application/json');
+                    res.send(JSON.stringify({response: response, error: error}));
+                })
+            });
+        });
+    });
+});
+
+router.post('/cdr/failed', function (req, res, next) {
+
+    client.get({
+        index: 'ivr',
+        type: 'cdr',
+        id: req.body.uniqueid
+    }, function (err, resp) {
+        client.update({
+            index: 'ivr',
+            type: 'cdr',
+            id: req.body.uniqueid,
+            body: {
+                doc: {
+                    has_failed: true
+                }
+            }
+        }, function (errr, respose) {
+            var campaign_id = resp._source.userfield;
+            var status_id = new Date().toDateString().replace(/ /g, '') + '-' + campaign_id;
+            client.get({
+                index: 'ivr',
+                type: 'statuses',
+                id: status_id
+            }, function (error, response) {
+                client.update({
+                    index: 'ivr',
+                    type: 'statuses',
+                    id: status_id,
+                    body: {
+                        doc: {
+                            failed_count: response._source.failed_count + 1
+                        }
+                    }
+                }, function (error, response) {
+                    res.setHeader('Content-Type', 'application/json');
+                    res.send(JSON.stringify({response: response, error: error}));
+                })
+            });
+        });
+    });
 });
 
 /*Number of campaign over a certain period*/
@@ -587,90 +842,6 @@ router.post('/campaign/download', function (req, res, next) {
     });
 });
 
-router.post('/cdr/success', function (req, res, next) {
-
-    client.get({
-        index: 'ivr',
-        type: 'cdr',
-        id: req.body.uniqueid
-    }, function (err, resp) {
-        client.update({
-            index: 'ivr',
-            type: 'cdr',
-            id: req.body.uniqueid,
-            body: {
-                doc: {
-                    is_successful: true
-                }
-            }
-        }, function (errr, respose) {
-            var campaign_id = resp._source.userfield;
-            var status_id = new Date().toDateString().replace(/ /g, '') + '-' + campaign_id;
-            client.get({
-                index: 'ivr',
-                type: 'statuses',
-                id: status_id
-            }, function (error, response) {
-                client.update({
-                    index: 'ivr',
-                    type: 'statuses',
-                    id: status_id,
-                    body: {
-                        doc: {
-                            success_count: response._source.success_count + 1
-                        }
-                    }
-                }, function (error, response) {
-                    res.setHeader('Content-Type', 'application/json');
-                    res.send(JSON.stringify({response: response, error: error}));
-                })
-            });
-        });
-    });
-});
-
-router.post('/cdr/impression', function (req, res, next) {
-
-    client.get({
-        index: 'ivr',
-        type: 'cdr',
-        id: req.body.uniqueid
-    }, function (err, resp) {
-        client.update({
-            index: 'ivr',
-            type: 'cdr',
-            id: req.body.uniqueid,
-            body: {
-                doc: {
-                    impression: true
-                }
-            }
-        }, function (errr, respose) {
-            var campaign_id = resp._source.userfield;
-            var status_id = new Date().toDateString().replace(/ /g, '') + '-' + campaign_id;
-            client.get({
-                index: 'ivr',
-                type: 'statuses',
-                id: status_id
-            }, function (error, response) {
-                client.update({
-                    index: 'ivr',
-                    type: 'statuses',
-                    id: status_id,
-                    body: {
-                        doc: {
-                            impression_count: response._source.impression_count + 1
-                        }
-                    }
-                }, function (error, response) {
-                    res.setHeader('Content-Type', 'application/json');
-                    res.send(JSON.stringify({response: response, error: error}));
-                })
-            });
-        });
-    });
-});
-
 router.post('/elasticsearch/:type/:id/update', function (req, res, next) {
 
     if (req.params.type == "campaign") {
@@ -731,113 +902,6 @@ router.post('/elasticsearch/:type/:id/update', function (req, res, next) {
     }
 });
 
-// router.post('/elasticsearch/:type/:id/update', function (req, res, next) {
-//
-//     if (req.params.type == "campaign") {
-//         var created = new Date(req.body.created_at);
-//         var updated = new Date(req.body.updated_at);
-//         var sd = new Date(req.body.start_date);
-//         var ed = new Date(req.body.end_date);
-//         created.toDateString
-//         updated.toDateString
-//         sd.toDateString
-//         ed.toDateString
-//
-//         client.index({
-//             index: 'ivr',
-//             type: req.params.type,
-//             id: req.body.id,
-//             body: {
-//                 "name": req.body.name,
-//                 "description": req.body.description,
-//                 "username": req.body.username,
-//                 "is_active": req.body.is_active,
-//                 "file_path": req.body.file_path,
-//                 "play_path": req.body.play_path,
-//                 "created_at": created,
-//                 "updated_at": updated,
-//                 "start_date": sd,
-//                 "end_date": ed
-//             }
-//         }, function (err, resp, status) {
-//             res.setHeader('Content-Type', 'application/json');
-//             res.send(JSON.stringify({response: resp, error: err, status: status}));
-//         });
-//     } else if (req.params.type == "statuses") {
-//         var created = new Date(req.body.created_at);
-//         var update = new Date(req.body.updated_at);
-//         created.toDateString;
-//         update.toDateString;
-//         client.index({
-//             index: 'ivr',
-//             type: req.params.type,
-//             id: req.body.id,
-//             body: {
-//                 "campaign_id": req.body.campaign_id,
-//                 "impressions_count": req.body.impressions_count,
-//                 "success_count": req.body.success_count,
-//                 "created_at": created,
-//                 "updated_at": update
-//             }
-//         }, function (err, resp, status) {
-//             res.setHeader('Content-Type', 'application/json');
-//             res.send(JSON.stringify({response: resp, error: err, status: status}));
-//         });
-//     } else if (req.params.type == "cdr") {
-//
-//         var campaign = findCampaignID(req.body.file_path);
-//         var created = new Date(req.body.created_at);
-//         created.toDateString;
-//         var impression = false;
-//
-//         if (req.body.billsec > 25) {
-//             impression = true;
-//         }
-//
-//         client.index({
-//             index: 'ivr',
-//             id: req.body.uniqueid,
-//             type: req.params.type,
-//             body: {
-//                 "src": req.body.src,
-//                 "clid": req.body.clid,
-//                 "duration": req.body.duration,
-//                 "userfield": campaign.id,
-//                 "uniqueid": req.body.uniqueid,
-//                 "impression": impression,
-//                 "billsec": req.body.billsec,
-//                 "is_successful": false,
-//                 "created_at": created,
-//                 "file_path": req.body.file_path
-//                 // "accountcode": req.body.accountcode,
-//                 // "dst": req.body.dst,
-//                 // "dcontext": req.body.dcontext,
-//                 // "channel": req.body.channel,
-//                 // "dstchannel": req.body.dstchannel,
-//                 // "start": req.body.start,
-//                 // "answer": req.body.answer,
-//                 // "end": req.body.end,
-//                 // "disposition": req.body.disposition,
-//                 //custom fields that need to be updated in db
-//             }
-//         }, function (err, resp, status) {
-//             res.setHeader('Content-Type', 'application/json');
-//             res.send(JSON.stringify({response: resp, error: err}));
-//         });
-//     } else {
-//         // res.setHeader('Content-Type', 'application/json');
-//         // res.send(JSON.stringify({error: 'Wrong type, please provide a valid type'}));
-//     }
-//
-//     // if (req.body.id == null || req.body.uniqueid == null) {
-//     //     res.setHeader('Content-Type', 'application/json');
-//     //     res.send(JSON.stringify({message: 'Missing parameters'}));
-//     // } else {
-//     //     // check or create index type
-//     //
-//     // }
-// });
-
 router.get('/elasticsearch/:type/all', function (req, res, next) {
     //All index object for a type
     res.setHeader('Content-Type', 'application/json');
@@ -862,7 +926,7 @@ router.get('/elasticsearch/:type/all', function (req, res, next) {
     });
 });
 
-router.get('/elasticsearch/cdr/missing', function (req, res, next) {
+router.post('/elasticsearch/cdr/missing', function (req, res, next) {
 
     client.index({
         index: 'ivr',
@@ -881,62 +945,9 @@ router.get('/elasticsearch/cdr/missing', function (req, res, next) {
         }
     }, function (err, resp, status) {
         res.setHeader('Content-Type', 'application/json');
-        res.send(JSON.stringify({response: response, error: error}));
+        res.send(JSON.stringify({response: true, error: err}));
     });
 });
-
-
-/*
- All capaign status for today and group by campaign_id
- calculate impression count and success count
-
- All cdr for today group by campaign_id
- ccdr
-
- Response - {
- "campaign_a" : {'today':
- { cdr_count': 100, 'impressions_count': 10, 'success_count': 20}
- },
- {'yesterday':
- { cdr_count': 100, 'impressions_count': 10, 'success_count': 20}
- }
- "campaign_b": {'cdr_count': 100, 'impressions_count': 10, 'success_count': 20}
- }
- */
-
-// router.get('/groupby', function (req, res, next) {
-//
-//
-// });
-//
-// function queryFilter(_type, start_date, end_date, key) {
-//     client.search({
-//         index: 'ivr',
-//         type: _type,
-//         body: {
-//             "query": {
-//                 "constant_score": {
-//                     "filter": {
-//                         "range": {
-//                             "created_at": {
-//                                 "gte": start_date,
-//                                 "lte": end_date
-//                             }
-//                         }
-//                     }
-//
-//                 }
-//             }
-//         }
-//     }, function (error, resp) {
-//         return resp;
-//         // var result = resp.hits.hits;
-//         // var _data = result.map(function (_obj) {
-//         //     return _obj._source
-//         // });
-//         // groupBy(_data, key);
-//     });
-// }
 
 router.get('/elasticsearch/data', function (req, res, next) {
 
@@ -1191,60 +1202,6 @@ router.get('/elasticsearch/data', function (req, res, next) {
     });
 });
 
-// router.get('/elasticsearch/:campaign_id/data', function (req, res, next) {
-//     var yesterday = new Date(new Date().getTime() - (1 * 24 * 60 * 60 * 1000));
-//     var today = new Date()
-//     yesterday.toDateString
-//     today.toDateString
-
-//     var ivrDataFilterToday = new IvrDataFilter(req.params.campaign_id, today);
-//     var ivrDataFilterYesterday = new IvrDataFilter(req.params.campaign_id, yesterday);
-
-//     var impression_count_today = ivrDataFilterToday.getImpressionCount();
-//     var success_count_today = ivrDataFilterToday.getSuccessCount();
-
-//     var impression_count_yesterday = ivrDataFilterYesterday.getImpressionCount();
-//     var success_count_yesterday = ivrDataFilterYesterday.getSuccessCount();
-
-//     var cdr_count_today = ivrDataFilterToday.getCdrCount;
-//     var cdr_count_yesterday = ivrDataFilterYesterday.getCdrCount;
-
-//     var result = [
-//          {
-//             impression_count : impression_count_today,
-//             success_count : success_count_today,
-//             cdr_count : cdr_count_today
-//         },
-
-//         {
-//             impression_count: impression_count_yesterday,
-//             success_count: success_count_yesterday,
-//             cdr_count: cdr_count_yesterday
-//         }
-//     ]
-
-//     return next(res.send(JSON.stringify({message: result})));
-
-
-//     //A json encoded response
-//     //B two arrays
-//     //  1. key: today, value = arrayOf
-//     /*{
-//      {
-//      "today": {"impressions_count": integer, "success_count": integer, "cdr_count": integer}
-//      },
-//      {
-//      "yesterday": {"impressions_count": integer, "success_count": integer, "cdr_count": integer}
-//      }
-//      }
-
-//      */
-//     //  2. key: yesterday, value = arrayOf
-//     /*
-
-//      */
-// });
-
 router.post('/elasticsearch/campaign/path', function (req, res, next) {
     client.search({
         index: 'ivr',
@@ -1269,64 +1226,64 @@ router.post('/elasticsearch/campaign/path', function (req, res, next) {
 });
 
 
-router.get('/elasticsearch/:campaign_id/filter', function (req, res, next) {
-    //impression_count =sum all imression_count in campign_status that matchs campaign_id
-    ////success_count =sum all imression_count in campign_status that matchs campaign_id
-    //cdr_count = (all cdrs whos uniqueid matches campaign_id).count
-    //Expected parameters start_date and end_date
-    //A json encoded response
-    //B two arrays
-    // groupby date
-    //  1. key: today, value = arrayOf
-    /*{
-     {
-     "start_date": {"impressions_count": integer, "success_count": integer, "cdr_count": integer}
-     },
-     {
-     "end_date": {"impressions_count": integer, "success_count": integer, "cdr_count": integer}
-     }
-     }
-
-     */
-    //  2. key: yesterday, value = arrayOf
-    /*
-
-     */
-
-    var startDate = new Date(req.body.start_date);
-    var endDate = new Date(req.body.end_date);
-    startDate.toDateString
-    endDate.toDateString
-
-    var ivrDataFilterStartSate = new IvrDataFilter(req.params.campaign_id, today);
-    var ivrDataFilterEndDate = new IvrDataFilter(req.params.campaign_id, yesterday);
-
-    var impression_count_start_date = ivrDataFilterStartSate.getImpressionCount();
-    var success_count_start_date = ivrDataFilterStartSate.getSuccessCount();
-
-    var impression_count_end_date = ivrDataFilterEndDate.getImpressionCount();
-    var success_count_end_date = ivrDataFilterEndDate.getSuccessCount();
-
-    var cdr_count_start_date = ivrDataFilterStartSate.getCdrCount;
-    var cdr_count_end_date = ivrDataFilterEndDate.getCdrCount;
-});
-
-router.post('/elasticsearch/:type/:id/delete', function (req, res, next) {
-
-    res.setHeader('Content-Type', 'application/json');
-
-    client.delete({
-        index: 'ivr',
-        type: req.params.type,
-        id: req.params.id
-    }, function (error, response) {
-        if (error) {
-            return next(res.send(JSON.stringify({message: error})));
-        }
-
-        return res.send(JSON.stringify({message: response}));
-    });
-});
+// router.get('/elasticsearch/:campaign_id/filter', function (req, res, next) {
+//     //impression_count =sum all imression_count in campign_status that matchs campaign_id
+//     ////success_count =sum all imression_count in campign_status that matchs campaign_id
+//     //cdr_count = (all cdrs whos uniqueid matches campaign_id).count
+//     //Expected parameters start_date and end_date
+//     //A json encoded response
+//     //B two arrays
+//     // groupby date
+//     //  1. key: today, value = arrayOf
+//     /*{
+//      {
+//      "start_date": {"impressions_count": integer, "success_count": integer, "cdr_count": integer}
+//      },
+//      {
+//      "end_date": {"impressions_count": integer, "success_count": integer, "cdr_count": integer}
+//      }
+//      }
+//
+//      */
+//     //  2. key: yesterday, value = arrayOf
+//     /*
+//
+//      */
+//
+//     var startDate = new Date(req.body.start_date);
+//     var endDate = new Date(req.body.end_date);
+//     startDate.toDateString
+//     endDate.toDateString
+//
+//     var ivrDataFilterStartSate = new IvrDataFilter(req.params.campaign_id, today);
+//     var ivrDataFilterEndDate = new IvrDataFilter(req.params.campaign_id, yesterday);
+//
+//     var impression_count_start_date = ivrDataFilterStartSate.getImpressionCount();
+//     var success_count_start_date = ivrDataFilterStartSate.getSuccessCount();
+//
+//     var impression_count_end_date = ivrDataFilterEndDate.getImpressionCount();
+//     var success_count_end_date = ivrDataFilterEndDate.getSuccessCount();
+//
+//     var cdr_count_start_date = ivrDataFilterStartSate.getCdrCount;
+//     var cdr_count_end_date = ivrDataFilterEndDate.getCdrCount;
+// });
+//
+// router.post('/elasticsearch/:type/:id/delete', function (req, res, next) {
+//
+//     res.setHeader('Content-Type', 'application/json');
+//
+//     client.delete({
+//         index: 'ivr',
+//         type: req.params.type,
+//         id: req.params.id
+//     }, function (error, response) {
+//         if (error) {
+//             return next(res.send(JSON.stringify({message: error})));
+//         }
+//
+//         return res.send(JSON.stringify({message: response}));
+//     });
+// });
 
 
 var groupBy = function (xs, key) {
@@ -1343,97 +1300,97 @@ router.get('/', function (req, res, next) {
 });
 
 
-function IvrDataFilter(search_date) {
-    this.search_date = search_date;
-
-    function searchWithId(id_field, date_field, type) {
-        client.search({
-            index: 'ivr',
-            type: type,
-            body: {
-                "query": {
-                    "constant_score": {
-                        "filter": {
-                            "bool": {
-                                "must": [
-                                    {
-                                        "term": {
-                                            date_field: this.search_date
-                                        }
-                                    }
-                                ],
-                                "should": [
-                                    {
-                                        "term": {
-                                            date_field: this.search_date
-                                        }
-                                    }
-                                ]
-                            }
-                        }
-                    }
-                }
-            }
-        }).then(function (resp) {
-            return resp.hits.hits;
-        });
-    }
-
-    function searchIvrTypePerDate(which_date, which_type) {
-
-        client.search({
-            index: 'ivr',
-            type: which_type,
-            body: {
-                "query": {
-                    "constant_score": {
-                        "filter": {
-                            "term": {
-                                created_at: which_type
-                            }
-                        }
-                    }
-                }
-            }
-        }).then(function (resp) {
-            return resp.hits.hits;
-        })
-    }
-
-    this.searchCampaignStatusByDate = searchIvrTypePerDate(search_date, "statuses");
-
-    this.searchCDRByDate = searchIvrTypePerDate(search_date, "cdr");
-
-    this.getImpressionCount = function () {
-
-        var campaignResult = searchWithId("campaign_id", "created_at", "statuses");
-
-        var imp = campaignResult.map(function (val) {
-            return val.impression_count;
-        })
-        var sum = imp.reduce(function (prev, current) {
-            return prev + current;
-        });
-
-        return sum;
-    }
-
-    this.getSuccessCount = function () {
-
-        var campaignResult = searchWithId("campaign_id", "created_at", "statuses");
-
-        var imp = campaignResult.map(function (val) {
-            return val.success_count;
-        })
-        var sum = imp.reduce(function (prev, current) {
-            return prev + current;
-        });
-
-        return sum;
-    }
-
-    this.getCdrCount = searchWithId("uniqueid", "start", "cdr").length;
-}
+// function IvrDataFilter(search_date) {
+//     this.search_date = search_date;
+//
+//     function searchWithId(id_field, date_field, type) {
+//         client.search({
+//             index: 'ivr',
+//             type: type,
+//             body: {
+//                 "query": {
+//                     "constant_score": {
+//                         "filter": {
+//                             "bool": {
+//                                 "must": [
+//                                     {
+//                                         "term": {
+//                                             date_field: this.search_date
+//                                         }
+//                                     }
+//                                 ],
+//                                 "should": [
+//                                     {
+//                                         "term": {
+//                                             date_field: this.search_date
+//                                         }
+//                                     }
+//                                 ]
+//                             }
+//                         }
+//                     }
+//                 }
+//             }
+//         }).then(function (resp) {
+//             return resp.hits.hits;
+//         });
+//     }
+//
+//     function searchIvrTypePerDate(which_date, which_type) {
+//
+//         client.search({
+//             index: 'ivr',
+//             type: which_type,
+//             body: {
+//                 "query": {
+//                     "constant_score": {
+//                         "filter": {
+//                             "term": {
+//                                 created_at: which_type
+//                             }
+//                         }
+//                     }
+//                 }
+//             }
+//         }).then(function (resp) {
+//             return resp.hits.hits;
+//         })
+//     }
+//
+//     this.searchCampaignStatusByDate = searchIvrTypePerDate(search_date, "statuses");
+//
+//     this.searchCDRByDate = searchIvrTypePerDate(search_date, "cdr");
+//
+//     this.getImpressionCount = function () {
+//
+//         var campaignResult = searchWithId("campaign_id", "created_at", "statuses");
+//
+//         var imp = campaignResult.map(function (val) {
+//             return val.impression_count;
+//         })
+//         var sum = imp.reduce(function (prev, current) {
+//             return prev + current;
+//         });
+//
+//         return sum;
+//     }
+//
+//     this.getSuccessCount = function () {
+//
+//         var campaignResult = searchWithId("campaign_id", "created_at", "statuses");
+//
+//         var imp = campaignResult.map(function (val) {
+//             return val.success_count;
+//         })
+//         var sum = imp.reduce(function (prev, current) {
+//             return prev + current;
+//         });
+//
+//         return sum;
+//     }
+//
+//     this.getCdrCount = searchWithId("uniqueid", "start", "cdr").length;
+// }
 
 
 module.exports = router;

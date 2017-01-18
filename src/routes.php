@@ -9,6 +9,7 @@
 use App\Middleware\AuthMiddleware;
 use App\Middleware\GuestMiddleware;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
+use PhpAmqpLib\Message\AMQPMessage;
 
 
 //$app->get('/cdr/success', function($request, $response){
@@ -120,3 +121,124 @@ $app->group('', function (){
     
 })->add(new AuthMiddleware($container));
 
+$app->group('/cdr', function (){
+
+    $this->post('/create', function ($request, $response) {
+        $connection=new AMQPStreamConnection('localhost',5672,'guest','guest');
+        $channel=$connection->channel();
+        $channel->queue_declare('cdr',false,false,false,false);
+
+        $data = array(
+            "clid" => $request->getParam('clid'),
+            "src" => $request->getParam('src'),
+            "duration" => $request->getParam('duration'),
+            "billsec" => $request->getParam('billsec'),
+            "uniqueid" => $request->getParam('uniqueid'),
+            "file_path" => $request->getParam('file_path'),
+            "end_point" => 'create'
+        );
+
+        $msg=new AMQPMessage(json_encode($data));
+
+        $channel->basic_publish($msg,'','cdr');
+
+        return $response->withStatus(202);
+    });
+
+    $this->post('/impression', function ($request, $response) {
+        $connection=new AMQPStreamConnection('localhost',5672,'guest','guest');
+        $channel=$connection->channel();
+        $channel->queue_declare('cdr',false,false,false,false);
+
+        $data = array(
+            "end_point" => 'impression',
+            "uniqueid" => $request->getParam('uniqueid')
+        );
+
+        $msg=new AMQPMessage(json_encode($data));
+        $channel->basic_publish($msg,'','cdr');
+
+        return $response->withStatus(202);
+    });
+
+    $this->post('/subscribe', function ($request, $response) {
+        $connection=new AMQPStreamConnection('localhost',5672,'guest','guest');
+        $channel=$connection->channel();
+        $channel->queue_declare('cdr',false,false,false,false);
+
+        $data = array(
+            "end_point" => 'subscribe',
+            "uniqueid" => $request->getParam('uniqueid')
+        );
+
+        $msg=new AMQPMessage(json_encode($data));
+        $channel->basic_publish($msg,'','cdr');
+
+        return $response->withStatus(202);
+    });
+
+    $this->post('/confirmation', function ($request, $response) {
+        $connection=new AMQPStreamConnection('localhost',5672,'guest','guest');
+        $channel=$connection->channel();
+        $channel->queue_declare('cdr',false,false,false,false);
+
+        $data = array(
+            "end_point" => 'confirmation',
+            "uniqueid" => $request->getParam('uniqueid')
+        );
+
+        $msg=new AMQPMessage(json_encode($data));
+        $channel->basic_publish($msg,'','cdr');
+
+        return $response->withStatus(202);
+    });
+
+    $this->post('/success', function ($request, $response) {
+        $connection=new AMQPStreamConnection('localhost',5672,'guest','guest');
+        $channel=$connection->channel();
+        $channel->queue_declare('cdr',false,false,false,false);
+
+        $data = array(
+            "end_point" => 'success',
+            "uniqueid" => $request->getParam('uniqueid')
+        );
+
+        $msg=new AMQPMessage(json_encode($data));
+        $channel->basic_publish($msg,'','cdr');
+
+        return $response->withStatus(202);
+    });
+
+    $this->post('/insufficient', function ($request, $response) {
+        $connection=new AMQPStreamConnection('localhost',5672,'guest','guest');
+        $channel=$connection->channel();
+        $channel->queue_declare('cdr',false,false,false,false);
+
+        $data = array(
+            "end_point" => 'insufficient',
+            "uniqueid" => $request->getParam('uniqueid')
+        );
+
+        $msg=new AMQPMessage(json_encode($data));
+        $channel->basic_publish($msg,'','cdr');
+
+        return $response->withStatus(202);
+    });
+
+    $this->post('/failed', function ($request, $response) {
+        $connection=new AMQPStreamConnection('localhost',5672,'guest','guest');
+        $channel=$connection->channel();
+        $channel->queue_declare('cdr',false,false,false,false);
+
+        $data = array(
+            "end_point" => 'failed',
+            "uniqueid" => $request->getParam('uniqueid')
+        );
+
+        $msg=new AMQPMessage(json_encode($data));
+        $channel->basic_publish($msg,'','cdr');
+
+        return $response->withStatus(202);
+    });
+
+});
