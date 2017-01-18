@@ -37,8 +37,8 @@ foreach ($data as $camp) {
         'play_path' => $campaign->play_path,
         'description' => $campaign->description,
         'id' => $campaign->id,
-        'created_at' => $campaign->created_at->format('Y-m-d'),
-        'updated_at' => $campaign->updated_at->format('Y-m-d'),
+        'created_at' => $campaign->created_at,
+        'updated_at' => $campaign->updated_at,
         'is_active' => $campaign->is_active
     ];
 
