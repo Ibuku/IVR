@@ -7,7 +7,7 @@
  */
 
 namespace App\Services;
-
+use Predis\Client;
 
 class Index
 {
@@ -77,6 +77,15 @@ class Index
         curl_close ($ch);
 
         return $server_output;
+    }
+
+    static public function save_redis($key, $params=array()) {
+
+        $redis = new Client();
+
+        $redis->hmset($string = preg_replace('/\s+/', '_', $key), $params);
+
+        return true;
     }
 
 }

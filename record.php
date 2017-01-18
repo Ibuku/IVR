@@ -99,7 +99,8 @@ $redis->set($agi->get_variable('CDR(uniqueid)')['data'].'_'.$agi->get_variable('
 
 try {
 
-    $url = 'http://localhost/cdr/create';
+//    $url = 'http://localhost:8079/cdr/create';
+    $url = 'http://localhost:4043/elastic/elasticsearch/cdr/missing';
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_POST, 1);
 

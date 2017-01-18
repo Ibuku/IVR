@@ -248,33 +248,35 @@ router.post('/elasticsearch/:type/create', function (req, res, next) {
                             })
                         }
                     });
-                    client.search({
-                        index: 'ivr',
-                        type: 'action',
-                        body: {
-                            "query": {
-                                "constant_score": {
-                                    "filter": {
-                                        "term": {
-                                            "campaign_id": campaign.id
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }).then(function (resp) {
-                        result = resp.hits.hits;
-                        var data = result.map(function (_obj) {
-                            return _obj._source;
-                        });
-                        for (i = 0; i < data.length; i++) {
-                            var _source = data[i];
-                            redis_client.hmset(req.body.uniqueid + ':' + _source.number, "value", _source.value, "body", _source.body, "number", _source.number, 'parameter', _source.parameter, function (err, res) {
-                            });
-                        }
-                        res.setHeader('Content-Type', 'application/json');
-                        res.send(JSON.stringify({response: resp, error: err}));
-                    });
+                    // res.setHeader('Content-Type', 'application/json');
+                    res.sendStatus(200);
+                    // client.search({
+                    //     index: 'ivr',
+                    //     type: 'action',
+                    //     body: {
+                    //         "query": {
+                    //             "constant_score": {
+                    //                 "filter": {
+                    //                     "term": {
+                    //                         "campaign_id": campaign.id
+                    //                     }
+                    //                 }
+                    //             }
+                    //         }
+                    //     }
+                    // }).then(function (resp) {
+                    //     result = resp.hits.hits;
+                    //     var data = result.map(function (_obj) {
+                    //         return _obj._source;
+                    //     });
+                    //     for (i = 0; i < data.length; i++) {
+                    //         var _source = data[i];
+                    //         redis_client.hmset(req.body.uniqueid + ':' + _source.number, "value", _source.value, "body", _source.body, "number", _source.number, 'parameter', _source.parameter, function (err, res) {
+                    //         });
+                    //     }
+                    //     res.setHeader('Content-Type', 'application/json');
+                    //     res.send(JSON.stringify({response: resp, error: err}));
+                    // });
                 });
             }
         });
