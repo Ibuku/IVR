@@ -9,9 +9,8 @@
 require 'vendor/autoload.php';
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 
-
-$connection =new AMQPStreamConnection('localhost',5672,'guest','guest');
-$channel=$connection->channel();
+$connection = new AMQPStreamConnection('localhost', 5672, 'admin', 'admin');
+$channel = $connection->channel();
 $channel->queue_declare('cdr',false,false,false,false);
 
 $callBack=function($msg){
