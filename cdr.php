@@ -8,7 +8,7 @@
  */
 date_default_timezone_set("Africa/Lagos");
 
-function append_line_to_limited_text_file($text, $filename='/opt/ivr/call_records') {
+function append_line_to_limited_text_file($text, $filename='/opt/ivr/logs/call_records') {
     $name = $filename. '.log';
     if (!file_exists($name)) {
         touch($name);
@@ -108,8 +108,9 @@ do {
             "src" => $agi->get_variable('CDR(src)')['data'],
             "duration" => $agi->get_variable('CDR(duration)')['data'],
             "billsec" => $agi->get_variable('CDR(billsec)')['data'],
-            "uniqueid" => $agi->get_variable('CDR(uniqueid)')['data'],
-            "campaign_name" => $data['name']
+            "uniqueid" => $agi->get_variable('CDR(uniqueid)')['data'].'_'.$agi->get_variable('CDR(src)')['data'],
+            "campaign_name" => $data['name'],
+            "file_path" => $data['play_path']
         );
 
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($body));
@@ -118,7 +119,7 @@ do {
         echo $e;
     }
 
-    $agi->stream_file("incorrect");
+    $agi->stream_file("incorrect",  2000, 1);
 
     $agi->stream_file("files/" . $name . "/" . current($_files), 2000, 1);
 
