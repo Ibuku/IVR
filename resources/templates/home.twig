@@ -285,12 +285,12 @@
                                 <tr ng-repeat="val in filtered_data.today">
                                 <td>
                                     <div class="media-left media-middle">
-                                        <div class=""><a href="#" class="text-default" ng-bind="val.username"
-                                                         style="font-size:13px"></a>
+                                        <div class=""><span class="text-default" ng-bind="val.username"
+                                                         style="font-size:13px"></span>
                                         </div>
                                     </div>
                                     <div class="media-left">
-                                        <div class=""><a href="#" class="text-default text-semibold"
+                                        <div class=""><a href="campaigns/[[val.campaign_id]]/report" class="text-default text-semibold"
                                                          ng-bind="val.campaign_name"></a>
                                         </div>
                                         {#<div class="text-muted text-size-small">#}
@@ -338,18 +338,14 @@
                                 <tr ng-repeat="val in filtered_data.yesterday">
                                     <td>
                                         <div class="media-left media-middle">
-                                            <div class=""><a href="#" class="text-default" ng-bind="val.username"
-                                                             style="font-size:13px"></a>
+                                            <div class=""><span class="text-default" ng-bind="val.username"
+                                                             style="font-size:13px"></span>
                                             </div>
                                         </div>
                                         <div class="media-left">
-                                            <div class=""><a href="#" class="text-default text-semibold"
+                                            <div class=""><a href="campaigns/[[val.campaign_id]]/report" class="text-default text-semibold"
                                                              ng-bind="val.campaign_name"></a>
                                             </div>
-                                            {#<div class="text-muted text-size-small">#}
-                                            {#<span class="status-mark border-blue position-left"></span>#}
-                                            {#02:00 - 03:00#}
-                                            {#</div>#}
                                         </div>
                                     </td>
                                     <td><span class="text-muted" ng-bind="val.cdr_count"></span></td>
@@ -388,12 +384,12 @@
                                 <tr ng-repeat="val in filtered_data.this_week">
                                     <td>
                                         <div class="media-left media-middle">
-                                            <div class=""><a href="#" class="text-default" ng-bind="val.username"
-                                                             style="font-size:13px"></a>
+                                            <div class=""><span class="text-default" ng-bind="val.username"
+                                                             style="font-size:13px"></span>
                                             </div>
                                         </div>
                                         <div class="media-left">
-                                            <div class=""><a href="#" class="text-default text-semibold"
+                                            <div class=""><a href="campaigns/[[val.campaign_id]]/report" class="text-default text-semibold"
                                                              ng-bind="val.campaign_name"></a>
                                             </div>
                                         </div>
@@ -491,12 +487,12 @@
                                 <tr ng-repeat="val in filtered_data.month">
                                     <td>
                                         <div class="media-left media-middle">
-                                            <div class=""><a href="#" class="text-default" ng-bind="val.username"
-                                                             style="font-size:13px"></a>
+                                            <div class=""><span class="text-default" ng-bind="val.username"
+                                                             style="font-size:13px"></span>
                                             </div>
                                         </div>
                                         <div class="media-left">
-                                            <div class=""><a href="#" class="text-default text-semibold"
+                                            <div class=""><a href="campaigns/[[val.campaign_id]]/report" class="text-default text-semibold"
                                                              ng-bind="val.campaign_name"></a>
                                             </div>
                                         </div>
