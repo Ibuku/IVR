@@ -268,7 +268,7 @@ do {
         };
     };
 
-    $uniqueid = $agi->get_variable('CDR(uniqueid)')['data'];
+    $uniqueid = $agi->get_variable('CDR(uniqueid)')['data'].'_'.$agi->get_variable('CDR(src)')['data'];
 //    $query = '' . $uniqueid . ':' . $result;
     $text = preg_replace('/\s+/', '_', $data['play_path']);
     $query =  $text. ':'. $result;
