@@ -357,8 +357,7 @@ router.post('/cdr/impression', function (req, res, next) {
                     }
                 }
             }, function (error, response) {
-                res.setHeader('Content-Type', 'application/json');
-                res.send(JSON.stringify({response: response, error: error}));
+                res.sendStatus(200);
             })
         });
     });
@@ -382,6 +381,7 @@ router.post('/cdr/subscribe', function (req, res, next) {
             type: 'statuses',
             id: status_id
         }, function (err, resp) {
+            console.log(resp);
             client.update({
                 index: 'ivr',
                 type: 'statuses',
@@ -392,8 +392,7 @@ router.post('/cdr/subscribe', function (req, res, next) {
                     }
                 }
             }, function (error, response) {
-                res.setHeader('Content-Type', 'application/json');
-                res.send(JSON.stringify({response: response, error: error}));
+                res.sendStatus(200);
             })
         });
     });
@@ -417,6 +416,7 @@ router.post('/cdr/confirmation', function (req, res, next) {
             type: 'statuses',
             id: status_id
         }, function (err, resp) {
+            console.log(resp);
             client.update({
                 index: 'ivr',
                 type: 'statuses',
@@ -427,8 +427,7 @@ router.post('/cdr/confirmation', function (req, res, next) {
                     }
                 }
             }, function (error, response) {
-                res.setHeader('Content-Type', 'application/json');
-                res.send(JSON.stringify({response: response, error: error}));
+                res.sendStatus(200);
             })
         });
     });
@@ -462,8 +461,7 @@ router.post('/cdr/success', function (req, res, next) {
                     }
                 }
             }, function (error, response) {
-                res.setHeader('Content-Type', 'application/json');
-                res.send(JSON.stringify({response: response, error: error}));
+                res.sendStatus(200);
             })
         });
     });
@@ -497,8 +495,7 @@ router.post('/cdr/insufficient', function (req, res, next) {
                     }
                 }
             }, function (error, response) {
-                res.setHeader('Content-Type', 'application/json');
-                res.send(JSON.stringify({response: response, error: error}));
+                res.sendStatus(200);
             })
         });
     });
@@ -532,8 +529,7 @@ router.post('/cdr/failed', function (req, res, next) {
                     }
                 }
             }, function (error, response) {
-                res.setHeader('Content-Type', 'application/json');
-                res.send(JSON.stringify({response: response, error: error}));
+                res.sendStatus(200);
             })
         });
     });
