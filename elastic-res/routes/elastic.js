@@ -206,7 +206,9 @@ router.post('/elasticsearch/:type/create', function (req, res, next) {
                         "already_subbed": false
                     }
                 }, function (err, resp, status) {
-                    var status_id = new Date().toDateString().replace(/ /g, '') + '-' + campaign.id;
+                    var _date = new Date();
+                    _date.setHours(_date.getHours() - 8);
+                    var status_id = _date.toDateString().replace(/ /g, '') + '-' + campaign.id;
                     client.exists({
                         index: 'ivr',
                         type: 'statuses',
@@ -345,7 +347,10 @@ router.post('/cdr/impression', function (req, res, next) {
             }
         }
     }, function (errr, respose) {
-        var status_id = new Date().toDateString().replace(/ /g, '') + '-' + req.body.userfield;
+        // var status_id = new Date().toDateString().replace(/ /g, '') + '-' + req.body.userfield;
+        var _date = new Date();
+        _date.setHours(_date.getHours() - 8);
+        var status_id = _date.toDateString().replace(/ /g, '') + '-' + req.body.userfield;
         client.get({
             index: 'ivr',
             type: 'statuses',
@@ -379,7 +384,10 @@ router.post('/cdr/subscribe', function (req, res, next) {
             }
         }
     }, function (errr, respose) {
-        var status_id = new Date().toDateString().replace(/ /g, '') + '-' + req.body.userfield;
+        // var status_id = new Date().toDateString().replace(/ /g, '') + '-' + req.body.userfield;
+        var _date = new Date();
+        _date.setHours(_date.getHours() - 8);
+        var status_id = _date.toDateString().replace(/ /g, '') + '-' + req.body.userfield;
         client.get({
             index: 'ivr',
             type: 'statuses',
@@ -414,7 +422,10 @@ router.post('/cdr/confirmation', function (req, res, next) {
             }
         }
     }, function (errr, respose) {
-        var status_id = new Date().toDateString().replace(/ /g, '') + '-' + req.body.userfield;
+        // var status_id = new Date().toDateString().replace(/ /g, '') + '-' + req.body.userfield;
+        var _date = new Date();
+        _date.setHours(_date.getHours() - 8);
+        var status_id = _date.toDateString().replace(/ /g, '') + '-' + req.body.userfield;
         client.get({
             index: 'ivr',
             type: 'statuses',
@@ -449,7 +460,10 @@ router.post('/cdr/success', function (req, res, next) {
             }
         }
     }, function (errr, respose) {
-        var status_id = new Date().toDateString().replace(/ /g, '') + '-' + req.body.userfield;
+        // var status_id = new Date().toDateString().replace(/ /g, '') + '-' + req.body.userfield;
+        var _date = new Date();
+        _date.setHours(_date.getHours() - 8);
+        var status_id = _date.toDateString().replace(/ /g, '') + '-' + req.body.userfield;
         client.get({
             index: 'ivr',
             type: 'statuses',
@@ -483,7 +497,10 @@ router.post('/cdr/insufficient', function (req, res, next) {
             }
         }
     }, function (errr, respose) {
-        var status_id = new Date().toDateString().replace(/ /g, '') + '-' + req.body.userfield;
+        // var status_id = new Date().toDateString().replace(/ /g, '') + '-' + req.body.userfield;
+        var _date = new Date();
+        _date.setHours(_date.getHours() - 8);
+        var status_id = _date.toDateString().replace(/ /g, '') + '-' + req.body.userfield;
         client.get({
             index: 'ivr',
             type: 'statuses',
@@ -517,7 +534,10 @@ router.post('/cdr/already_sub', function (req, res, next) {
             }
         }
     }, function (errr, respose) {
-        var status_id = new Date().toDateString().replace(/ /g, '') + '-' + req.body.userfield;
+        // var status_id = new Date().toDateString().replace(/ /g, '') + '-' + req.body.userfield;
+        var _date = new Date();
+        _date.setHours(_date.getHours() - 8);
+        var status_id = _date.toDateString().replace(/ /g, '') + '-' + req.body.userfield;
         client.get({
             index: 'ivr',
             type: 'statuses',
@@ -551,7 +571,10 @@ router.post('/cdr/failed', function (req, res, next) {
             }
         }
     }, function (errr, respose) {
-        var status_id = new Date().toDateString().replace(/ /g, '') + '-' + req.body.userfield;
+        // var status_id = new Date().toDateString().replace(/ /g, '') + '-' + req.body.userfield;
+        var _date = new Date();
+        _date.setHours(_date.getHours() - 8);
+        var status_id = _date.toDateString().replace(/ /g, '') + '-' + req.body.userfield;
         client.get({
             index: 'ivr',
             type: 'statuses',
