@@ -12,6 +12,43 @@ use Predis\Client;
 use App\Models\Action;
 use App\Services\Index;
 
+$actions = Action::all();
+
+foreach ($actions as $act) {
+
+    $campaign = json_decode($camp);
+    $_data = [
+        'username' => $campaign->username,
+        'start_date' => $campaign->start_date,
+        'end_date' => $campaign->end_date,
+        'name' => $campaign->name,
+        'file_path' => $campaign->file_path,
+        'play_path' => $campaign->play_path,
+        'description' => $campaign->description,
+        'id' => $campaign->id,
+        'created_at' => $campaign->created_at,
+        'updated_at' => $campaign->updated_at,
+        'is_active' => $campaign->is_active
+    ];
+
+    Index::save_redis($campaign->play_path, $_data);
+
+    $action = Action::where('campaign_id', $campaign->id)->first();
+    if ($action) {
+        Index::save_redis($campaign->play_path. ':'. $action->number, [
+            'number' => $action->number,
+            'value' => $action->value,
+            'body' => $action->body,
+            'repeat_param' => $action->repeat_param,
+            'confirm' => $action->confirm,
+            'parameter' => $action->parameter,
+            'request' => $action->request,
+            'campaign_id' => $campaign->id,
+            'id' => $action->id,
+        ]);
+    }
+}
+
 $redis = new Client();
 
 $data = [
@@ -41,9 +78,6 @@ foreach ($data as $camp) {
         'updated_at' => $campaign->updated_at,
         'is_active' => $campaign->is_active
     ];
-
-    var_dump($_data);
-    exit();
 
     Index::save_redis($campaign->play_path, $_data);
 
