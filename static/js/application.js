@@ -598,7 +598,7 @@ app.controller("ReportsController", function ($scope, $timeout, $q) {
                     "text": "Failed Subscriptions over a week",
                     "subtitle": "All campaigns",
                     "yaxis_text": "Failed Subscriptions",
-                    "series": $scope.camp_data.insufficient_data
+                    "series": $scope.camp_data.failed_data
                 };
                 $('#failed').highcharts(buildData(failed_data));
             });
@@ -729,7 +729,7 @@ app.controller("ReportController", function ($scope) {
             var impression_data = {
                 "categories": week_map,
                 "text": "Impressions over a week",
-                "subtitle": "Campaign",
+                "subtitle": data.result[0].campaign_name,
                 "yaxis_text": "Call Impressions",
                 "series": camp_data.impression_data
             };
@@ -739,7 +739,7 @@ app.controller("ReportController", function ($scope) {
             var subscribed_data = {
                 "categories": week_map,
                 "text": "Subscription Attempts over a week",
-                "subtitle": "Campaign",
+                "subtitle": data.result[0].campaign_name,
                 "yaxis_text": "Subscription Attempts",
                 "series": camp_data.subscribed_data
             };
@@ -759,7 +759,7 @@ app.controller("ReportController", function ($scope) {
             var subbed_data = {
                 "categories": week_map,
                 "text": "Already Subscribed over a week",
-                "subtitle": "Campaign",
+                "subtitle": data.result[0].campaign_name,
                 "yaxis_text": "Already Subscribed",
                 "series": camp_data.subbed_data
             };
@@ -769,7 +769,7 @@ app.controller("ReportController", function ($scope) {
             var insufficient_data = {
                 "categories": week_map,
                 "text": "Insufficient Balance over a week",
-                "subtitle": "Campaign",
+                "subtitle": data.result[0].campaign_name,
                 "yaxis_text": "Insufficient Balance",
                 "series": camp_data.insufficient_data
             };
@@ -779,7 +779,7 @@ app.controller("ReportController", function ($scope) {
             var success_data = {
                 "categories": week_map,
                 "text": "Successful Subscriptions over a week",
-                "subtitle": "Campaign",
+                "subtitle": data.result[0].campaign_name,
                 "yaxis_text": "Successful Subscriptions",
                 "series": camp_data.success_data
             };
@@ -789,7 +789,7 @@ app.controller("ReportController", function ($scope) {
             var failed_data = {
                 "categories": week_map,
                 "text": "Failed Subscriptions over a week",
-                "subtitle": "Campaign",
+                "subtitle": data.result[0].campaign_name,
                 "yaxis_text": "Failed Subscriptions",
                 "series": camp_data.failed_data
             };
