@@ -98,24 +98,29 @@ class ReportController extends BaseController
         $excel = new \PHPExcel();
         $excel->getProperties()
             ->setCreator('IVR Marketing Platform')
-            ->setTitle('PHPExcel Demo')
-            ->setSubject('PHP Excel manipulation');
+            ->setTitle('Report For '.$campaign->name. $start_date. '_'. $end_date)
+            ->setSubject('IVR Marketing Platform Report');
 
         $worksheet = $excel->getSheet(0);
-        $worksheet->setTitle('Sheet');
+        $worksheet->setTitle('Report');
         $worksheet->setCellValue('a1', 'Date');
         $worksheet->setCellValue('b1', 'CDR Count');
         $worksheet->setCellValue('c1', 'Impression Count');
-        $worksheet->setCellValue('d1', 'Success Count');
+        $worksheet->setCellValue('d1', 'Subscription Count');
+        $worksheet->setCellValue('e1', 'Confirmation Count');
+        $worksheet->setCellValue('f1', 'Already Subscribed Count');
+        $worksheet->setCellValue('g1', 'Insufficient Count');
+        $worksheet->setCellValue('h1', 'Success Count');
+        $worksheet->setCellValue('i1', 'Failed Count');
 
-        $header = 'a1:d1';
+        $header = 'a1:i1';
         $style = array(
             'font' => array('bold' => true,),
             'alignment' => array('horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_CENTER,),
         );
         $worksheet->getStyle($header)->applyFromArray($style);
 
-        for ($col = ord('a'); $col <= ord('h'); $col++)
+        for ($col = ord('a'); $col <= ord('m'); $col++)
         {
             $worksheet->getColumnDimension(chr($col))->setAutoSize(true);
         }
@@ -174,30 +179,44 @@ class ReportController extends BaseController
 
         foreach ($res as $v) {
             array_push($data, array('date'=>$v->created_at,
-                'impression_count'=>$v->impression_count, 'cdr_count'=>$v->cdr_count, 'success_count'=>$v->success_count));
+                    'cdr_count'=>$v->cdr_count,
+                    'impression_count'=>$v->impression_count,
+                    'subscription_count'=>$v->subscription_count,
+                    'confirmation_count'=>$v->confirmation_count,
+                    'already_subscribed_count'=>$v->already_subscribed_count,
+                    'insufficient_count'=>$v->insufficient_count,
+                    'success_count'=>$v->success_count,
+                    'failed_count'=>$v->failed_count
+                )
+            );
         }
 
         $excel = new \PHPExcel();
         $excel->getProperties()
             ->setCreator('IVR Marketing Platform')
-            ->setTitle('PHPExcel Demo')
-            ->setSubject('PHP Excel manipulation');
+            ->setTitle('Report For '.$campaign->name. $start_date. '_'. $end_date)
+            ->setSubject('IVR Marketing Platform Report');
 
         $worksheet = $excel->getSheet(0);
-        $worksheet->setTitle('Sheet');
+        $worksheet->setTitle('Report');
         $worksheet->setCellValue('a1', 'Date');
         $worksheet->setCellValue('b1', 'CDR Count');
         $worksheet->setCellValue('c1', 'Impression Count');
-        $worksheet->setCellValue('d1', 'Success Count');
+        $worksheet->setCellValue('d1', 'Subscription Count');
+        $worksheet->setCellValue('e1', 'Confirmation Count');
+        $worksheet->setCellValue('f1', 'Already Subscribed Count');
+        $worksheet->setCellValue('g1', 'Insufficient Count');
+        $worksheet->setCellValue('h1', 'Success Count');
+        $worksheet->setCellValue('i1', 'Failed Count');
 
-        $header = 'a1:d1';
+        $header = 'a1:i1';
         $style = array(
             'font' => array('bold' => true,),
             'alignment' => array('horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_CENTER,),
         );
         $worksheet->getStyle($header)->applyFromArray($style);
 
-        for ($col = ord('a'); $col <= ord('h'); $col++)
+        for ($col = ord('a'); $col <= ord('m'); $col++)
         {
             $worksheet->getColumnDimension(chr($col))->setAutoSize(true);
         }
