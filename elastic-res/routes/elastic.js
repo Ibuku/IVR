@@ -179,7 +179,7 @@ router.post('/elasticsearch/:type/create', function (req, res, next) {
             if (resp.hits.hits.length > 0) {
                 var campaign = resp.hits.hits[0]._source;
                 // var created = new Date();
-                var created = new Date(new Date().getTime() - (8 * 60 * 60 * 1000));
+                var created = new Date(new Date().getTime() - (9 * 60 * 60 * 1000));
                 created.toDateString;
 
                 client.index({
