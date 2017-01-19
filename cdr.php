@@ -122,7 +122,9 @@ do {
 
     $agi->noop();
 
-    $agi->stream_file("incorrect",  2000, 1);
+    if ($sys_count == 1) {
+        $agi->stream_file("incorrect",  2000, 1);
+    }
 
     $agi->stream_file("files/" . $name . "/" . current($_files), 2000, 1);
 
