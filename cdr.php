@@ -24,7 +24,7 @@ function append_line_to_limited_text_file($text, $filename='/opt/ivr/logs/call_r
         touch($name);
         chmod($name,0777);
     }
-    file_put_contents($name, $text, FILE_APPEND | LOCK_EX);
+    file_put_contents($name, $text . PHP_EOL, FILE_APPEND | LOCK_EX);
 }
 
 set_time_limit(30);
@@ -161,7 +161,7 @@ do {
         if ($result_data == 'timeout') {
 
             $rp = $agi->get_data("defaults/repeat", 3000, 1);
-            $record = '[DATETIME:'.time().'][STATUS: Repeat Advert'.$sub_counter . '][MSISDN:'.$agi->get_variable('CDR(src)')['data'].'][MSG: Repeat Advert Prompt For '.$agi->get_variable('CDR(src)')['data'].'][FILE_PATH:'.$file_path.'][CAMPAIGN:'.$data['name'].'][COUNT:'.$sys_count.'][ServiceProvider:'.$name.']';
+            $record = '[DATETIME:'.time().'][STATUS: Repeat Advert'.$sub_counter.'][MSISDN:'.$agi->get_variable('CDR(src)')['data'].'][MSG: Repeat Advert Prompt For '.$agi->get_variable('CDR(src)')['data'].'][FILE_PATH:'.$file_path.'][CAMPAIGN:'.$data['name'].'][COUNT:'.$sys_count.'][ServiceProvider:'.$name.']';
             append_line_to_limited_text_file($record);
 
             $sub_counter = 1;
@@ -173,8 +173,9 @@ do {
 
                     $agi->stream_file("files/" . $name . "/" . current($_files));
                     $resp = $agi->get_data("defaults/subscribe", 5000, 1);
-                    $record = '[DATETIME:'.time().'][STATUS: Subscription Prompt'.$sub_counter . '][MSISDN:'.$agi->get_variable('CDR(src)')['data'].'][MSG: Subscription Prompt For '.$agi->get_variable('CDR(src)')['data'].'][FILE_PATH:'.$file_path.'][CAMPAIGN:'.$data['name'].'][COUNT:'.$sys_count.'][ServiceProvider:'.$name.']';
+                    $record = '[DATETIME:'.time().'][STATUS: Subscription Prompt'.$sub_counter.'][MSISDN:'.$agi->get_variable('CDR(src)')['data'].'][MSG: Subscription Prompt For '.$agi->get_variable('CDR(src)')['data'].'][FILE_PATH:'.$file_path.'][CAMPAIGN:'.$data['name'].'][COUNT:'.$sys_count.'][ServiceProvider:'.$name.']';
                     append_line_to_limited_text_file($record);
+                    $agi->noop();
 
                     $result = $resp['result'];
                     if ($result == '*') {
@@ -182,21 +183,24 @@ do {
                     } else {
                         // wrong digit prompt
                         $agi->stream_file("defaults/wrong");
-                        $record = '[DATETIME:'.time().'][STATUS: Wrong Digit Prompt'.$sub_counter . '][MSISDN:'.$agi->get_variable('CDR(src)')['data'].'][MSG: Play Wrong Digit Prompt For '.$agi->get_variable('CDR(src)')['data'].'][FILE_PATH:'.$file_path.'][CAMPAIGN:'.$data['name'].'][COUNT:'.$sys_count.'][ServiceProvider:'.$name.']';
+                        $record = '[DATETIME:'.time().'][STATUS: Wrong Digit Prompt'.$sub_counter.'][MSISDN:'.$agi->get_variable('CDR(src)')['data'].'][MSG: Play Wrong Digit Prompt For '.$agi->get_variable('CDR(src)')['data'].'][FILE_PATH:'.$file_path.'][CAMPAIGN:'.$data['name'].'][COUNT:'.$sys_count.'][ServiceProvider:'.$name.']';
                         append_line_to_limited_text_file($record);
+                        $agi->noop();
 
                         // listen again prompt
                         $rp = $agi->get_data("defaults/listen_again", 3000, 1);
-                        $record = '[DATETIME:'.time().'][STATUS: Listen Again Prompt'.$sub_counter . '][MSISDN:'.$agi->get_variable('CDR(src)')['data'].'][MSG: Play Listen Again Prompt For '.$agi->get_variable('CDR(src)')['data'].'][FILE_PATH:'.$file_path.'][CAMPAIGN:'.$data['name'].'][COUNT:'.$sys_count.'][ServiceProvider:'.$name.']';
+                        $record = '[DATETIME:'.time().'][STATUS: Listen Again Prompt'.$sub_counter.'][MSISDN:'.$agi->get_variable('CDR(src)')['data'].'][MSG: Play Listen Again Prompt For '.$agi->get_variable('CDR(src)')['data'].'][FILE_PATH:'.$file_path.'][CAMPAIGN:'.$data['name'].'][COUNT:'.$sys_count.'][ServiceProvider:'.$name.']';
                         append_line_to_limited_text_file($record);
+                        $agi->noop();
 
                         if ($sub_counter == 3) {
                             break;
                         };
 
                         $rp = $agi->get_data("defaults/listen_again", 3000, 1);
-                        $record = '[DATETIME:'.time().'][STATUS: Listen Again Prompt'.$sub_counter . '][MSISDN:'.$agi->get_variable('CDR(src)')['data'].'][MSG: Play Listen Again Prompt For '.$agi->get_variable('CDR(src)')['data'].'][FILE_PATH:'.$file_path.'][CAMPAIGN:'.$data['name'].'][COUNT:'.$sys_count.'][ServiceProvider:'.$name.']';
+                        $record = '[DATETIME:'.time().'][STATUS: Listen Again Prompt'.$sub_counter.'][MSISDN:'.$agi->get_variable('CDR(src)')['data'].'][MSG: Play Listen Again Prompt For '.$agi->get_variable('CDR(src)')['data'].'][FILE_PATH:'.$file_path.'][CAMPAIGN:'.$data['name'].'][COUNT:'.$sys_count.'][ServiceProvider:'.$name.']';
                         append_line_to_limited_text_file($record);
+                        $agi->noop();
                     }
                 } else {
                     if ($sub_counter == 3) {
@@ -204,18 +208,20 @@ do {
                     };
                     // repeat advert log
                     $rp = $agi->get_data("defaults/repeat", 3000, 1);
-                    $record = '[DATETIME:'.time().'][STATUS: Play Repeat Advert Prompt'.$sub_counter . '][MSISDN:'.$agi->get_variable('CDR(src)')['data'].'][MSG: Play Repeat Advert Prompt For '.$agi->get_variable('CDR(src)')['data'].'][FILE_PATH:'.$file_path.'][CAMPAIGN:'.$data['name'].'][COUNT:'.$sys_count.'][ServiceProvider:'.$name.']';
+                    $record = '[DATETIME:'.time().'][STATUS: Play Repeat Advert Prompt'.$sub_counter.'][MSISDN:'.$agi->get_variable('CDR(src)')['data'].'][MSG: Play Repeat Advert Prompt For '.$agi->get_variable('CDR(src)')['data'].'][FILE_PATH:'.$file_path.'][CAMPAIGN:'.$data['name'].'][COUNT:'.$sys_count.'][ServiceProvider:'.$name.']';
                     append_line_to_limited_text_file($record);
                 };
             } while ($sub_counter < 3);
         } else if ($result != '*') {
             $agi->stream_file("defaults/wrong");
-            $record = '[DATETIME:'.time().'][STATUS: Wrong Digit Prompt'.$sub_counter . '][MSISDN:'.$agi->get_variable('CDR(src)')['data'].'][MSG: Play Wrong Digit Prompt For '.$agi->get_variable('CDR(src)')['data'].'][FILE_PATH:'.$file_path.'][CAMPAIGN:'.$data['name'].'][COUNT:'.$sys_count.'][ServiceProvider:'.$name.']';
+            $record = '[DATETIME:'.time().'][STATUS: Wrong Digit Prompt'.$sub_counter.'][MSISDN:'.$agi->get_variable('CDR(src)')['data'].'][MSG: Play Wrong Digit Prompt For '.$agi->get_variable('CDR(src)')['data'].'][FILE_PATH:'.$file_path.'][CAMPAIGN:'.$data['name'].'][COUNT:'.$sys_count.'][ServiceProvider:'.$name.']';
             append_line_to_limited_text_file($record);
+            $agi->noop();
 
             $sp = $agi->get_data("defaults/listen_again", 3000, 1);
-            $record = '[DATETIME:'.time().'][STATUS: Listen Again Prompt'.$sub_counter . '][MSISDN:'.$agi->get_variable('CDR(src)')['data'].'][MSG: Play Listen Again Prompt For '.$agi->get_variable('CDR(src)')['data'].'][FILE_PATH:'.$file_path.'][CAMPAIGN:'.$data['name'].'][COUNT:'.$sys_count.'][ServiceProvider:'.$name.']';
+            $record = '[DATETIME:'.time().'][STATUS: Listen Again Prompt'.$sub_counter.'][MSISDN:'.$agi->get_variable('CDR(src)')['data'].'][MSG: Play Listen Again Prompt For '.$agi->get_variable('CDR(src)')['data'].'][FILE_PATH:'.$file_path.'][CAMPAIGN:'.$data['name'].'][COUNT:'.$sys_count.'][ServiceProvider:'.$name.']';
             append_line_to_limited_text_file($record);
+            $agi->noop();
 
             $sub_counter = 1;
             do {
@@ -226,31 +232,35 @@ do {
 
                     $agi->stream_file("files/" . $name . "/" . current($_files));
                     $sesp = $agi->get_data("defaults/subscribe", 5000, 1);
-                    $record = '[DATETIME:'.time().'][STATUS: Subscription Prompt'.$sub_counter . '][MSISDN:'.$agi->get_variable('CDR(src)')['data'].'][MSG: Subscription Prompt For '.$agi->get_variable('CDR(src)')['data'].'][FILE_PATH:'.$file_path.'][CAMPAIGN:'.$data['name'].'][COUNT:'.$sys_count.'][ServiceProvider:'.$name.']';
+                    $record = '[DATETIME:'.time().'][STATUS: Subscription Prompt'.$sub_counter.'][MSISDN:'.$agi->get_variable('CDR(src)')['data'].'][MSG: Subscription Prompt For '.$agi->get_variable('CDR(src)')['data'].'][FILE_PATH:'.$file_path.'][CAMPAIGN:'.$data['name'].'][COUNT:'.$sys_count.'][ServiceProvider:'.$name.']';
                     append_line_to_limited_text_file($record);
+                    $agi->noop();
 
                     $resul = $sesp['result'];
                     if ($resul == '*') {
                         break;
                     } else {
                         $agi->stream_file("defaults/wrong");
-                        $record = '[DATETIME:'.time().'][STATUS: Wrong Digit Prompt'.$sub_counter . '][MSISDN:'.$agi->get_variable('CDR(src)')['data'].'][MSG: Play Wrong Digit Prompt For '.$agi->get_variable('CDR(src)')['data'].'][FILE_PATH:'.$file_path.'][CAMPAIGN:'.$data['name'].'][COUNT:'.$sys_count.'][ServiceProvider:'.$name.']';
+                        $record = '[DATETIME:'.time().'][STATUS: Wrong Digit Prompt'.$sub_counter.'][MSISDN:'.$agi->get_variable('CDR(src)')['data'].'][MSG: Play Wrong Digit Prompt For '.$agi->get_variable('CDR(src)')['data'].'][FILE_PATH:'.$file_path.'][CAMPAIGN:'.$data['name'].'][COUNT:'.$sys_count.'][ServiceProvider:'.$name.']';
                         append_line_to_limited_text_file($record);
+                        $agi->noop();
 
                         if ($sub_counter == 2) {
                             break;
                         };
                         $sp = $agi->get_data("defaults/listen_again", 3000, 1);
-                        $record = '[DATETIME:'.time().'][STATUS: Listen Again Prompt'.$sub_counter . '][MSISDN:'.$agi->get_variable('CDR(src)')['data'].'][MSG: Play Listen Again Prompt For '.$agi->get_variable('CDR(src)')['data'].'][FILE_PATH:'.$file_path.'][CAMPAIGN:'.$data['name'].'][COUNT:'.$sys_count.'][ServiceProvider:'.$name.']';
+                        $record = '[DATETIME:'.time().'][STATUS: Listen Again Prompt'.$sub_counter.'][MSISDN:'.$agi->get_variable('CDR(src)')['data'].'][MSG: Play Listen Again Prompt For '.$agi->get_variable('CDR(src)')['data'].'][FILE_PATH:'.$file_path.'][CAMPAIGN:'.$data['name'].'][COUNT:'.$sys_count.'][ServiceProvider:'.$name.']';
                         append_line_to_limited_text_file($record);
+                        $agi->noop();
                     }
                 } else {
                     if ($sub_counter == 3) {
                         break;
                     };
                     $sp = $agi->get_data("defaults/repeat", 3000, 1);
-                    $record = '[DATETIME:'.time().'][STATUS: Play Repeat Advert Prompt'.$sub_counter . '][MSISDN:'.$agi->get_variable('CDR(src)')['data'].'][MSG: Play Repeat Advert Prompt For '.$agi->get_variable('CDR(src)')['data'].'][FILE_PATH:'.$file_path.'][CAMPAIGN:'.$data['name'].'][COUNT:'.$sys_count.'][ServiceProvider:'.$name.']';
+                    $record = '[DATETIME:'.time().'][STATUS: Play Repeat Advert Prompt'.$sub_counter.'][MSISDN:'.$agi->get_variable('CDR(src)')['data'].'][MSG: Play Repeat Advert Prompt For '.$agi->get_variable('CDR(src)')['data'].'][FILE_PATH:'.$file_path.'][CAMPAIGN:'.$data['name'].'][COUNT:'.$sys_count.'][ServiceProvider:'.$name.']';
                     append_line_to_limited_text_file($record);
+                    $agi->noop();
                 };
             } while ($sub_counter < 3);
         };
@@ -266,6 +276,7 @@ do {
         // log subscription
         $record = '[DATETIME:'.time().'][STATUS: Subscribed][Advert: ][MSISDN:'.$agi->get_variable('CDR(src)')['data'].'][MSG: Advert Subscription by '.$agi->get_variable('CDR(src)')['data'].'][FILE_PATH:'.$file_path.'][CAMPAIGN:'.$data['name'].'][COUNT:'.$sys_count.'][ServiceProvider:'.$name.']';
         append_line_to_limited_text_file($record);
+        $agi->noop();
 
         $subscribe_url = 'http://localhost:4043/elastic/cdr/subscribe';
 //        $subscribe_url = 'http://localhost:8079/cdr/subscribe';
@@ -297,27 +308,30 @@ do {
                         break;
                     } else {
                         $agi->stream_file("defaults/wrong");
-                        $record = '[DATETIME:'.time().'][STATUS: Wrong Digit Prompt'.$sub_counter . '][MSISDN:'.$agi->get_variable('CDR(src)')['data'].'][MSG: Play Wrong Digit Prompt For '.$agi->get_variable('CDR(src)')['data'].'][FILE_PATH:'.$file_path.'][CAMPAIGN:'.$data['name'].'][COUNT:'.$sys_count.'][ServiceProvider:'.$name.']';
+                        $record = '[DATETIME:'.time().'][STATUS: Wrong Digit Prompt'.$sub_counter.'][MSISDN:'.$agi->get_variable('CDR(src)')['data'].'][MSG: Play Wrong Digit Prompt For '.$agi->get_variable('CDR(src)')['data'].'][FILE_PATH:'.$file_path.'][CAMPAIGN:'.$data['name'].'][COUNT:'.$sys_count.'][ServiceProvider:'.$name.']';
                         append_line_to_limited_text_file($record);
                         $agi->noop();
                         if ($zero_counter == 3) {
                             break;
                         };
                         $zero_rp = $agi->get_data("defaults/confirmation", 3000, 1);
-                        $record = '[DATETIME:'.time().'][STATUS: Confirmation Prompt'.$sub_counter . '][MSISDN:'.$agi->get_variable('CDR(src)')['data'].'][MSG: Confirmation Prompt For '.$agi->get_variable('CDR(src)')['data'].'][FILE_PATH:'.$file_path.'][CAMPAIGN:'.$data['name'].'][COUNT:'.$sys_count.'][ServiceProvider:'.$name.']';
+                        $record = '[DATETIME:'.time().'][STATUS: Confirmation Prompt'.$sub_counter.'][MSISDN:'.$agi->get_variable('CDR(src)')['data'].'][MSG: Confirmation Prompt For '.$agi->get_variable('CDR(src)')['data'].'][FILE_PATH:'.$file_path.'][CAMPAIGN:'.$data['name'].'][COUNT:'.$sys_count.'][ServiceProvider:'.$name.']';
                         append_line_to_limited_text_file($record);
+                        $agi->noop();
                     }
                 } else {
                     $zero_rp = $agi->get_data("defaults/selection_confirmation", 3000, 1);
-                    $record = '[DATETIME:'.time().'][STATUS: Select Confirmation Prompt'.$sub_counter . '][MSISDN:'.$agi->get_variable('CDR(src)')['data'].'][MSG: Select Confirmation Prompt For '.$agi->get_variable('CDR(src)')['data'].'][FILE_PATH:'.$file_path.'][CAMPAIGN:'.$data['name'].'][COUNT:'.$sys_count.'][ServiceProvider:'.$name.']';
+                    $record = '[DATETIME:'.time().'][STATUS: Select Confirmation Prompt'.$sub_counter.'][MSISDN:'.$agi->get_variable('CDR(src)')['data'].'][MSG: Select Confirmation Prompt For '.$agi->get_variable('CDR(src)')['data'].'][FILE_PATH:'.$file_path.'][CAMPAIGN:'.$data['name'].'][COUNT:'.$sys_count.'][ServiceProvider:'.$name.']';
                     append_line_to_limited_text_file($record);
+                    $agi->noop();
                 };
             } while ($zero_counter < 3);
         } else if ($zero_result != 0) {
             $agi->stream_file("defaults/wrong");
             $zero_resp = $agi->get_data("defaults/confirmation", 3000, 1);
-            $record = '[DATETIME:'.time().'][STATUS: Confirmation Prompt'.$sub_counter . '][MSISDN:'.$agi->get_variable('CDR(src)')['data'].'][MSG: Confirmation Prompt For '.$agi->get_variable('CDR(src)')['data'].'][FILE_PATH:'.$file_path.'][CAMPAIGN:'.$data['name'].'][COUNT:'.$sys_count.'][ServiceProvider:'.$name.']';
+            $record = '[DATETIME:'.time().'][STATUS: Confirmation Prompt'.$sub_counter.'][MSISDN:'.$agi->get_variable('CDR(src)')['data'].'][MSG: Confirmation Prompt For '.$agi->get_variable('CDR(src)')['data'].'][FILE_PATH:'.$file_path.'][CAMPAIGN:'.$data['name'].'][COUNT:'.$sys_count.'][ServiceProvider:'.$name.']';
             append_line_to_limited_text_file($record);
+            $agi->noop();
 
             $zero_counter = 1;
             do {
@@ -330,23 +344,25 @@ do {
                         break;
                     } else {
                         $agi->stream_file("defaults/wrong");
-                        $record = '[DATETIME:'.time().'][STATUS: Wrong Digit Prompt'.$sub_counter . '][MSISDN:'.$agi->get_variable('CDR(src)')['data'].'][MSG: Play Wrong Digit Prompt For '.$agi->get_variable('CDR(src)')['data'].'][FILE_PATH:'.$file_path.'][CAMPAIGN:'.$data['name'].'][COUNT:'.$sys_count.'][ServiceProvider:'.$name.']';
+                        $record = '[DATETIME:'.time().'][STATUS: Wrong Digit Prompt'.$sub_counter.'][MSISDN:'.$agi->get_variable('CDR(src)')['data'].'][MSG: Play Wrong Digit Prompt For '.$agi->get_variable('CDR(src)')['data'].'][FILE_PATH:'.$file_path.'][CAMPAIGN:'.$data['name'].'][COUNT:'.$sys_count.'][ServiceProvider:'.$name.']';
                         append_line_to_limited_text_file($record);
 
                         if ($zero_counter == 3) {
                             break;
                         };
                         $zero_resp = $agi->get_data("defaults/confirmation", 3000, 1);
-                        $record = '[DATETIME:'.time().'][STATUS: Confirmation Prompt'.$sub_counter . '][MSISDN:'.$agi->get_variable('CDR(src)')['data'].'][MSG: Confirmation Prompt For '.$agi->get_variable('CDR(src)')['data'].'][FILE_PATH:'.$file_path.'][CAMPAIGN:'.$data['name'].'][COUNT:'.$sys_count.'][ServiceProvider:'.$name.']';
+                        $record = '[DATETIME:'.time().'][STATUS: Confirmation Prompt'.$sub_counter.'][MSISDN:'.$agi->get_variable('CDR(src)')['data'].'][MSG: Confirmation Prompt For '.$agi->get_variable('CDR(src)')['data'].'][FILE_PATH:'.$file_path.'][CAMPAIGN:'.$data['name'].'][COUNT:'.$sys_count.'][ServiceProvider:'.$name.']';
                         append_line_to_limited_text_file($record);
+                        $agi->noop();
                     }
                 } else {
                     if ($zero_counter == 3) {
                         break;
                     };
                     $zero_resp = $agi->get_data("defaults/selection_confirmation", 3000, 1);
-                    $record = '[DATETIME:'.time().'][STATUS: Select Confirmation Prompt'.$sub_counter . '][MSISDN:'.$agi->get_variable('CDR(src)')['data'].'][MSG: Select Confirmation Prompt For '.$agi->get_variable('CDR(src)')['data'].'][FILE_PATH:'.$file_path.'][CAMPAIGN:'.$data['name'].'][COUNT:'.$sys_count.'][ServiceProvider:'.$name.']';
+                    $record = '[DATETIME:'.time().'][STATUS: Select Confirmation Prompt'.$sub_counter.'][MSISDN:'.$agi->get_variable('CDR(src)')['data'].'][MSG: Select Confirmation Prompt For '.$agi->get_variable('CDR(src)')['data'].'][FILE_PATH:'.$file_path.'][CAMPAIGN:'.$data['name'].'][COUNT:'.$sys_count.'][ServiceProvider:'.$name.']';
                     append_line_to_limited_text_file($record);
+                    $agi->noop();
                 };
             } while ($zero_counter < 3);
         };
@@ -356,6 +372,7 @@ do {
             // record confirmation
             $record = '[DATETIME:'.time().'][STATUS: Confirmation][Advert: ][MSISDN:'.$agi->get_variable('CDR(src)')['data'].'][MSG: Advert Subscription Confirmation by '.$agi->get_variable('CDR(src)')['data'].'][FILE_PATH:'.$file_path.'][CAMPAIGN:'.$data['name'].'][COUNT:'.$sys_count.'][ServiceProvider:'.$name.']';
             append_line_to_limited_text_file($record);
+            $agi->noop();
 
             try {
                 $url = 'http://localhost:4043/elastic/cdr/confirmation';
@@ -407,6 +424,7 @@ do {
                             // confirming subscription
                             $record = '[DATETIME:'.time().'][STATUS: Successful][Advert: ][MSISDN:'.$agi->get_variable('CDR(src)')['data'].'][MSG: Advert Subscription Successful by '.$agi->get_variable('CDR(src)')['data'].'][FILE_PATH:'.$file_path.'][CAMPAIGN:'.$data['name'].'][COUNT:'.$sys_count.'][ServiceProvider:'.$name.']';
                             append_line_to_limited_text_file($record);
+                            $agi->noop();
 
                             $success_url = 'http://localhost:4043/elastic/cdr/success';
 //                            $success_url = 'http://localhost:8079/cdr/success';
