@@ -380,7 +380,7 @@ app.controller("ReportsController", function ($scope, $timeout, $q) {
             legend: {
                 layout: 'vertical',
                 align: 'right',
-                verticalAlign: 'middle',
+                verticalAlign: 'bottom',
                 borderWidth: 0
             },
             series: data.series
@@ -646,7 +646,7 @@ app.controller("ReportController", function ($scope) {
             legend: {
                 layout: 'vertical',
                 align: 'right',
-                verticalAlign: 'middle',
+                verticalAlign: 'bottom',
                 borderWidth: 0
             },
             series: data.series
