@@ -521,6 +521,7 @@ router.post('/cdr/already_sub', function (req, res, next) {
             type: 'statuses',
             id: status_id
         }, function (err, resp) {
+            console.log(resp._source.already_subbed_count);
             client.update({
                 index: 'ivr',
                 type: 'statuses',
