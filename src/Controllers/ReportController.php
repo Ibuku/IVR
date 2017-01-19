@@ -141,8 +141,12 @@ class ReportController extends BaseController
 
         $campaigns = Campaign::all();
 
+        $user = $this->auth->user();
+
         return $this->view->render($response, 'templates/download.twig', [
-            'campaigns' => $campaigns
+            'campaigns' => $campaigns,
+            'username' => $user->username,
+            'user' => $user
         ]);
     }
 
