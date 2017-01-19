@@ -110,7 +110,8 @@ do {
             "billsec" => $agi->get_variable('CDR(billsec)')['data'],
             "uniqueid" => $agi->get_variable('CDR(uniqueid)')['data'].'_'.$agi->get_variable('CDR(src)')['data'],
             "campaign_name" => $data['name'],
-            "file_path" => $data['play_path']
+            "file_path" => $data['play_path'],
+            "user_field" => $data['id']
         );
 
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($body));
@@ -131,14 +132,15 @@ do {
         $record = '[DATETIME:'.time().'][STATUS: Advert Impression][MSISDN:'.$agi->get_variable('CDR(src)')['data'].'][MSG: Advert Impression by '.$agi->get_variable('CDR(src)')['data'].'][FILE_PATH:'.$file_path.'][CAMPAIGN:'.$data['name'].'][COUNT:'.$sys_count.'][ServiceProvider:'.$name.']';
         append_line_to_limited_text_file($record);
 
-        $uniqueid = $agi->get_variable('CDR(uniqueid)')['data'];
+        $uniqueid = $agi->get_variable('CDR(uniqueid)')['data'].'_'.$agi->get_variable('CDR(src)')['data'];
         $url = 'http://localhost:4043/elastic/cdr/impression';
 //        $url = 'http://localhost:8079/cdr/impression';
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_POST, 1);
 
         $body = array(
-            "uniqueid" => $uniqueid
+            "uniqueid" => $uniqueid,
+            "userfield" => $data['id']
         );
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($body));
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
@@ -271,7 +273,8 @@ do {
         curl_setopt($ch, CURLOPT_POST, 1);
 
         $body = array(
-            "uniqueid" => $uniqueid
+            "uniqueid" => $uniqueid,
+            "userfield" => $data['id']
         );
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($body));
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
@@ -361,7 +364,8 @@ do {
                 curl_setopt($ch, CURLOPT_POST, 1);
 
                 $body = array(
-                    "uniqueid" => $agi->get_variable('CDR(uniqueid)')['data']
+                    "uniqueid" => $agi->get_variable('CDR(uniqueid)')['data'].'_'.$agi->get_variable('CDR(src)')['data'],
+                    "userfield" => $data['id']
                 );
                 curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($body));
                 curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
@@ -410,7 +414,8 @@ do {
                             curl_setopt($ch, CURLOPT_POST, 1);
 
                             $body = array(
-                                "uniqueid" => $agi->get_variable('CDR(uniqueid)')['data']
+                                "uniqueid" => $agi->get_variable('CDR(uniqueid)')['data'].'_'.$agi->get_variable('CDR(src)')['data'],
+                                "userfield" => $data['id']
                             );
                             curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($body));
                             curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 1);
@@ -432,7 +437,8 @@ do {
                                     curl_setopt($ch, CURLOPT_POST, 1);
 
                                     $body = array(
-                                        "uniqueid" => $agi->get_variable('CDR(uniqueid)')['data']
+                                        "uniqueid" => $agi->get_variable('CDR(uniqueid)')['data'].'_'.$agi->get_variable('CDR(src)')['data'],
+                                        "userfield" => $data['id']
                                     );
                                     curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($body));
                                     curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 1);
@@ -453,7 +459,8 @@ do {
                                     curl_setopt($ch, CURLOPT_POST, 1);
 
                                     $body = array(
-                                        "uniqueid" => $agi->get_variable('CDR(uniqueid)')['data']
+                                        "uniqueid" => $agi->get_variable('CDR(uniqueid)')['data'].'_'.$agi->get_variable('CDR(src)')['data'],
+                                        "userfield" => $data["id"]
                                     );
                                     curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($body));
                                     curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 1);
@@ -473,7 +480,8 @@ do {
                                 curl_setopt($ch, CURLOPT_POST, 1);
 
                                 $body = array(
-                                    "uniqueid" => $agi->get_variable('CDR(uniqueid)')['data']
+                                    "uniqueid" => $agi->get_variable('CDR(uniqueid)')['data'].'_'.$agi->get_variable('CDR(src)')['data'],
+                                    "userfield" => $data['id']
                                 );
                                 curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($body));
                                 curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 1);
@@ -495,7 +503,8 @@ do {
                         curl_setopt($ch, CURLOPT_POST, 1);
 
                         $body = array(
-                            "uniqueid" => $agi->get_variable('CDR(uniqueid)')['data']
+                            "uniqueid" => $agi->get_variable('CDR(uniqueid)')['data'].'_'.$agi->get_variable('CDR(src)')['data'],
+                            "userfield" => $data['id']
                         );
                         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($body));
                         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 1);

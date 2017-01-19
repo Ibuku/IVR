@@ -331,252 +331,210 @@ router.post('/elasticsearch/:type/create', function (req, res, next) {
 
 router.post('/cdr/impression', function (req, res, next) {
 
-    client.get({
+    client.update({
         index: 'ivr',
         type: 'cdr',
-        id: req.body.uniqueid
-    }, function (err, resp) {
-        client.update({
-            index: 'ivr',
-            type: 'cdr',
-            id: req.body.uniqueid,
-            body: {
-                doc: {
-                    impression: true
-                }
+        id: req.body.uniqueid,
+        body: {
+            doc: {
+                impression: true
             }
-        }, function (errr, respose) {
-            var campaign_id = resp._source.userfield;
-            var status_id = new Date().toDateString().replace(/ /g, '') + '-' + campaign_id;
-            client.get({
+        }
+    }, function (errr, respose) {
+        var status_id = new Date().toDateString().replace(/ /g, '') + '-' + req.body.userfield;
+        client.get({
+            index: 'ivr',
+            type: 'statuses',
+            id: status_id
+        }, function (error, response) {
+            client.update({
                 index: 'ivr',
                 type: 'statuses',
-                id: status_id
-            }, function (error, response) {
-                client.update({
-                    index: 'ivr',
-                    type: 'statuses',
-                    id: status_id,
-                    body: {
-                        doc: {
-                            impression_count: response._source.impression_count + 1
-                        }
+                id: status_id,
+                body: {
+                    doc: {
+                        impression_count: response._source.impression_count + 1
                     }
-                }, function (error, response) {
-                    res.setHeader('Content-Type', 'application/json');
-                    res.send(JSON.stringify({response: response, error: error}));
-                })
-            });
+                }
+            }, function (error, response) {
+                res.setHeader('Content-Type', 'application/json');
+                res.send(JSON.stringify({response: response, error: error}));
+            })
         });
     });
 });
 
 router.post('/cdr/subscribe', function (req, res, next) {
 
-    client.get({
+    client.update({
         index: 'ivr',
         type: 'cdr',
-        id: req.body.uniqueid
-    }, function (err, resp) {
-        client.update({
-            index: 'ivr',
-            type: 'cdr',
-            id: req.body.uniqueid,
-            body: {
-                doc: {
-                    is_subscribed: true
-                }
+        id: req.body.uniqueid,
+        body: {
+            doc: {
+                is_subscribed: true
             }
-        }, function (errr, respose) {
-            var campaign_id = resp._source.userfield;
-            var status_id = new Date().toDateString().replace(/ /g, '') + '-' + campaign_id;
-            client.get({
+        }
+    }, function (errr, respose) {
+        var status_id = new Date().toDateString().replace(/ /g, '') + '-' + req.body.userfield;
+        client.get({
+            index: 'ivr',
+            type: 'statuses',
+            id: status_id
+        }, function (err, resp) {
+            client.update({
                 index: 'ivr',
                 type: 'statuses',
-                id: status_id
-            }, function (error, response) {
-                client.update({
-                    index: 'ivr',
-                    type: 'statuses',
-                    id: status_id,
-                    body: {
-                        doc: {
-                            subscription_count: response._source.subscription_count + 1
-                        }
+                id: status_id,
+                body: {
+                    doc: {
+                        subscription_count: resp._source.subscription_count + 1
                     }
-                }, function (error, response) {
-                    res.setHeader('Content-Type', 'application/json');
-                    res.send(JSON.stringify({response: response, error: error}));
-                })
-            });
+                }
+            }, function (error, response) {
+                res.setHeader('Content-Type', 'application/json');
+                res.send(JSON.stringify({response: response, error: error}));
+            })
         });
     });
 });
 
 router.post('/cdr/confirmation', function (req, res, next) {
 
-    client.get({
+    client.update({
         index: 'ivr',
         type: 'cdr',
-        id: req.body.uniqueid
-    }, function (err, resp) {
-        client.update({
-            index: 'ivr',
-            type: 'cdr',
-            id: req.body.uniqueid,
-            body: {
-                doc: {
-                    is_confirmed: true
-                }
+        id: req.body.uniqueid,
+        body: {
+            doc: {
+                is_confirmed: true
             }
-        }, function (errr, respose) {
-            var campaign_id = resp._source.userfield;
-            var status_id = new Date().toDateString().replace(/ /g, '') + '-' + campaign_id;
-            client.get({
+        }
+    }, function (errr, respose) {
+        var status_id = new Date().toDateString().replace(/ /g, '') + '-' + req.body.userfield;
+        client.get({
+            index: 'ivr',
+            type: 'statuses',
+            id: status_id
+        }, function (err, resp) {
+            client.update({
                 index: 'ivr',
                 type: 'statuses',
-                id: status_id
-            }, function (error, response) {
-                client.update({
-                    index: 'ivr',
-                    type: 'statuses',
-                    id: status_id,
-                    body: {
-                        doc: {
-                            confirmation_count: response._source.confirmation_count + 1
-                        }
+                id: status_id,
+                body: {
+                    doc: {
+                        confirmation_count: resp._source.confirmation_count + 1
                     }
-                }, function (error, response) {
-                    res.setHeader('Content-Type', 'application/json');
-                    res.send(JSON.stringify({response: response, error: error}));
-                })
-            });
+                }
+            }, function (error, response) {
+                res.setHeader('Content-Type', 'application/json');
+                res.send(JSON.stringify({response: response, error: error}));
+            })
         });
     });
 });
 
 router.post('/cdr/success', function (req, res, next) {
 
-    client.get({
+    client.update({
         index: 'ivr',
         type: 'cdr',
-        id: req.body.uniqueid
-    }, function (err, resp) {
-        client.update({
-            index: 'ivr',
-            type: 'cdr',
-            id: req.body.uniqueid,
-            body: {
-                doc: {
-                    is_successful: true
-                }
+        id: req.body.uniqueid,
+        body: {
+            doc: {
+                is_successful: true
             }
-        }, function (errr, respose) {
-            var campaign_id = resp._source.userfield;
-            var status_id = new Date().toDateString().replace(/ /g, '') + '-' + campaign_id;
-            client.get({
+        }
+    }, function (errr, respose) {
+        var status_id = new Date().toDateString().replace(/ /g, '') + '-' + req.body.userfield;
+        client.get({
+            index: 'ivr',
+            type: 'statuses',
+            id: status_id
+        }, function (err, resp) {
+            client.update({
                 index: 'ivr',
                 type: 'statuses',
-                id: status_id
-            }, function (error, response) {
-                client.update({
-                    index: 'ivr',
-                    type: 'statuses',
-                    id: status_id,
-                    body: {
-                        doc: {
-                            success_count: response._source.success_count + 1
-                        }
+                id: status_id,
+                body: {
+                    doc: {
+                        success_count: resp._source.success_count + 1
                     }
-                }, function (error, response) {
-                    res.setHeader('Content-Type', 'application/json');
-                    res.send(JSON.stringify({response: response, error: error}));
-                })
-            });
+                }
+            }, function (error, response) {
+                res.setHeader('Content-Type', 'application/json');
+                res.send(JSON.stringify({response: response, error: error}));
+            })
         });
     });
 });
 
 router.post('/cdr/insufficient', function (req, res, next) {
 
-    client.get({
+    client.update({
         index: 'ivr',
         type: 'cdr',
-        id: req.body.uniqueid
-    }, function (err, resp) {
-        client.update({
-            index: 'ivr',
-            type: 'cdr',
-            id: req.body.uniqueid,
-            body: {
-                doc: {
-                    is_insufficient: true
-                }
+        id: req.body.uniqueid,
+        body: {
+            doc: {
+                is_insufficient: true
             }
-        }, function (errr, respose) {
-            var campaign_id = resp._source.userfield;
-            var status_id = new Date().toDateString().replace(/ /g, '') + '-' + campaign_id;
-            client.get({
+        }
+    }, function (errr, respose) {
+        var status_id = new Date().toDateString().replace(/ /g, '') + '-' + req.body.userfield;
+        client.get({
+            index: 'ivr',
+            type: 'statuses',
+            id: status_id
+        }, function (err, resp) {
+            client.update({
                 index: 'ivr',
                 type: 'statuses',
-                id: status_id
-            }, function (error, response) {
-                client.update({
-                    index: 'ivr',
-                    type: 'statuses',
-                    id: status_id,
-                    body: {
-                        doc: {
-                            insufficient_count: response._source.insufficient_count + 1
-                        }
+                id: status_id,
+                body: {
+                    doc: {
+                        insufficient_count: resp._source.insufficient_count + 1
                     }
-                }, function (error, response) {
-                    res.setHeader('Content-Type', 'application/json');
-                    res.send(JSON.stringify({response: response, error: error}));
-                })
-            });
+                }
+            }, function (error, response) {
+                res.setHeader('Content-Type', 'application/json');
+                res.send(JSON.stringify({response: response, error: error}));
+            })
         });
     });
 });
 
 router.post('/cdr/failed', function (req, res, next) {
 
-    client.get({
+    client.update({
         index: 'ivr',
         type: 'cdr',
-        id: req.body.uniqueid
-    }, function (err, resp) {
-        client.update({
-            index: 'ivr',
-            type: 'cdr',
-            id: req.body.uniqueid,
-            body: {
-                doc: {
-                    has_failed: true
-                }
+        id: req.body.uniqueid,
+        body: {
+            doc: {
+                has_failed: true
             }
-        }, function (errr, respose) {
-            var campaign_id = resp._source.userfield;
-            var status_id = new Date().toDateString().replace(/ /g, '') + '-' + campaign_id;
-            client.get({
+        }
+    }, function (errr, respose) {
+        var status_id = new Date().toDateString().replace(/ /g, '') + '-' + req.body.userfield;
+        client.get({
+            index: 'ivr',
+            type: 'statuses',
+            id: status_id
+        }, function (err, resp) {
+            client.update({
                 index: 'ivr',
                 type: 'statuses',
-                id: status_id
-            }, function (error, response) {
-                client.update({
-                    index: 'ivr',
-                    type: 'statuses',
-                    id: status_id,
-                    body: {
-                        doc: {
-                            failed_count: response._source.failed_count + 1
-                        }
+                id: status_id,
+                body: {
+                    doc: {
+                        failed_count: resp._source.failed_count + 1
                     }
-                }, function (error, response) {
-                    res.setHeader('Content-Type', 'application/json');
-                    res.send(JSON.stringify({response: response, error: error}));
-                })
-            });
+                }
+            }, function (error, response) {
+                res.setHeader('Content-Type', 'application/json');
+                res.send(JSON.stringify({response: response, error: error}));
+            })
         });
     });
 });
