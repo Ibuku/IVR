@@ -200,7 +200,8 @@ router.post('/elasticsearch/:type/create', function (req, res, next) {
                         "is_confirmed": false,
                         "is_successful": false,
                         "is_insufficient": false,
-                        "has_failed": false
+                        "has_failed": false,
+                        "already_subbed": false
                     }
                 }, function (err, resp, status) {
                     var status_id = new Date().toDateString().replace(/ /g, '') + '-' + campaign.id;
@@ -243,7 +244,8 @@ router.post('/elasticsearch/:type/create', function (req, res, next) {
                                     "confirmation_count": 0,
                                     "insufficient_count": 0,
                                     "failed_count": 0,
-                                    "success_count": 0
+                                    "success_count": 0,
+                                    "already_subbed_count": 0
                                 }
                             })
                         }
@@ -492,6 +494,40 @@ router.post('/cdr/insufficient', function (req, res, next) {
                 body: {
                     doc: {
                         insufficient_count: resp._source.insufficient_count + 1
+                    }
+                }
+            }, function (error, response) {
+                res.sendStatus(200);
+            })
+        });
+    });
+});
+
+router.post('/cdr/already_sub', function (req, res, next) {
+
+    client.update({
+        index: 'ivr',
+        type: 'cdr',
+        id: req.body.uniqueid,
+        body: {
+            doc: {
+                already_subbed: true
+            }
+        }
+    }, function (errr, respose) {
+        var status_id = new Date().toDateString().replace(/ /g, '') + '-' + req.body.userfield;
+        client.get({
+            index: 'ivr',
+            type: 'statuses',
+            id: status_id
+        }, function (err, resp) {
+            client.update({
+                index: 'ivr',
+                type: 'statuses',
+                id: status_id,
+                body: {
+                    doc: {
+                        already_subbed_count: resp._source.already_subbed_count + 1
                     }
                 }
             }, function (error, response) {
