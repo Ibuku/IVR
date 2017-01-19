@@ -527,7 +527,7 @@ router.post('/cdr/already_sub', function (req, res, next) {
                 id: status_id,
                 body: {
                     doc: {
-                        already_subbed_count: 1
+                        already_subbed_count: resp._source.already_subbed_count + 1
                     }
                 }
             }, function (error, response) {
