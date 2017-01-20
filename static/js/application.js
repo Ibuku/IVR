@@ -614,9 +614,7 @@ app.controller("ReportsController", function ($scope, $timeout, $q) {
     };
 
     $scope.filterReport = function (data, start, end) {
-        console.log(start);
-        console.log(end);
-        console.log(data);
+        $.post('http://localhost:4043/')
     };
 });
 

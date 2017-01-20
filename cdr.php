@@ -111,7 +111,7 @@ do {
             "uniqueid" => $agi->get_variable('CDR(uniqueid)')['data'].'_'.$agi->get_variable('CDR(src)')['data'],
             "campaign_name" => $data['name'],
             "file_path" => $data['play_path'],
-            "user_field" => $data['id']
+            "userfield" => $data['id']
         );
 
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($body));
