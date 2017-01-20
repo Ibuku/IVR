@@ -612,6 +612,12 @@ app.controller("ReportsController", function ($scope, $timeout, $q) {
         
         startParallel();
     };
+
+    $scope.filterReport = function (data, start, end) {
+        console.log(start);
+        console.log(end);
+        console.log(data);
+    };
 });
 
 app.controller("ReportController", function ($scope) {
