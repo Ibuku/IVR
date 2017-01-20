@@ -10,10 +10,11 @@ amqp.connect('amqp://localhost', function(err, conn) {
         console.log(" [*] Waiting for messages in %s. To exit press CTRL+C", q);
         ch.consume(q, function(msg) {
             var _data = msg.content.toString();
+            var data = JSON.parse(_data).body;
             request({
-                url: _data.body.url, //URL to hit
+                url: data.url, //URL to hit
                 method: 'POST',
-                data: _data.body
+                data: data
             }, function (error, response, body) {
                 console.log(body);
                 console.log(error);
