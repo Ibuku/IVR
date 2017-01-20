@@ -9,11 +9,11 @@ amqp.connect('amqp://localhost', function(err, conn) {
         ch.assertQueue(q, {durable: false});
         console.log(" [*] Waiting for messages in %s. To exit press CTRL+C", q);
         ch.consume(q, function(msg) {
-            var body = JSON.parse(msg.content.toString());
+            var _data = msg.content.toString();
             request({
-                url: body.url, //URL to hit
+                url: _data.body.url, //URL to hit
                 method: 'POST',
-                data: body
+                data: _data.body
             }, function (error, response, body) {
                 console.log(body);
                 console.log(error);
