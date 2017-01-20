@@ -212,24 +212,6 @@ router.get('/no_of_campaign', function (req, res, next) {
         index: "ivr",
         type: "statuses",
         body: {
-            // "query": {
-            //     "constant_score": {
-            //         "filter": {
-            //             "bool": {
-            //                 "should": [
-            //                     {
-            //                         "range": {
-            //                             "created_at": {
-            //                                 "from": sevenDays,
-            //                                 "to": today
-            //                             }
-            //                         }
-            //                     }
-            //                 ]
-            //             }
-            //         }
-            //     }
-            // }
             "query": {
                 "filtered": {
                     "query": {
@@ -272,24 +254,6 @@ router.get('/campaign/:id/data', function (req, res, next) {
         index: "ivr",
         type: "statuses",
         body: {
-            // "query": {
-            //     "constant_score": {
-            //         "filter": {
-            //             "bool": {
-            //                 "should": [
-            //                     {
-            //                         "range": {
-            //                             "created_at": {
-            //                                 "from": sevenDays,
-            //                                 "to": today
-            //                             }
-            //                         }
-            //                     }
-            //                 ]
-            //             }
-            //         }
-            //     }
-            // }
             "query": {
                 "filtered": {
                     "query": {
