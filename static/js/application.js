@@ -132,6 +132,15 @@ app.controller('FileCtrl', function ($scope, WebAudio, $location) {
         }
     };
 
+    $scope.activateCampaign = function (campaign_id) {
+        var choice = window.confirm('Are you sure you want to continue.');
+        if (choice) {
+            $.post('/campaign/' + campaign_id + '/activate', {}, function (data, status) {
+                location.href = '/campaigns';
+            });
+        }
+    };
+
 });
 
 app.controller('HomeController', function ($scope, $http, $timeout, $q) {
@@ -348,7 +357,7 @@ app.controller('HomeController', function ($scope, $http, $timeout, $q) {
     };
 });
 
-app.controller("ReportsController", function ($scope, $timeout, $q) {
+app.controller("ReportsController", function ($scope, $timeout, $q, $parse) {
 
     function buildData(data) {
         return {
@@ -613,8 +622,18 @@ app.controller("ReportsController", function ($scope, $timeout, $q) {
         startParallel();
     };
 
-    $scope.filterReport = function (data, start, end) {
-        $.post('http://localhost:4043/')
+    $scope.filterReport = function (variable, start, end) {
+        $.post('/record/filter', {
+            start: start,
+            end: end
+        }, function (data, status) {
+            console.log(data);
+            console.log(status);
+            // if(data) {
+            //     var model = $parse(variable);
+            //     model.assign($scope, );
+            // }
+        })
     };
 });
 

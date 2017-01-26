@@ -292,7 +292,7 @@
                         </div>
                         <div  ng-hide="camp_data.impression_data.length > 0" class="chart-container">
                             <div class="row">
-                                <form class="form-inline" style="zoom: 0.8; float: right" ng-submit="filterReport(camp_data.impression_data,impression_start, impression_end)">
+                                <form class="form-inline" style="zoom: 0.8; float: right" ng-submit="filterReport('camp_data.impression_data',impression_start, impression_end)">
                                     <div class="form-group">
                                         <label for="impression_start">Start Date</label>
                                         <input type="text" class="form-control" name="start_date" id="impression_start" ng-model="impression_start" required>

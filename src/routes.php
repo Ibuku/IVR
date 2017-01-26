@@ -118,6 +118,21 @@ $app->group('', function (){
     $this->post('/file/{file_id}/delete', 'FileController:deleteFile');
 
     $this->post('/campaign/{campaign_id}/deactivate', 'CampaignController:deactivateCampaign');
+
+    $this->post('/campaign/{campaign_id}/activate', 'CampaignController:activateCampaign');
+
+    $this->post('/record/filter', function($request, $response) {
+        $ch = curl_init();
+        $url = 'http://localhost:4043/record/filter';
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
+        $res = curl_exec($ch);
+        $info = curl_getinfo($ch);
+        var_dump($res);
+        var_dump($info);
+        exit();
+    });
     
 })->add(new AuthMiddleware($container));
 

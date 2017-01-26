@@ -77,7 +77,12 @@ class CampaignController extends BaseController
             ]);
         }
 
-        $start_date = DateTime::createFromFormat('d/m/Y', $request->getParam('start_date'))->format('Y-m-d');
+        $start_date = date('Y-m-d');
+
+        if ($request->getParam('start_date')) {
+            $start_date = DateTime::createFromFormat('d/m/Y', $request->getParam('start_date'))->format('Y-m-d');
+        }
+
         $end_date = null;
 
         if ($request->getParam('end_date')) {
@@ -95,7 +100,7 @@ class CampaignController extends BaseController
         $file_split = explode('/', $file->file_path);
         $file_name = end($file_split);
 
-        $command = 'cp '. $file->file_path. ' '. "/var/lib/asterisk/sounds/files/" . $user->username . '/'. $file_name;
+        $command = 'cp '. $file->file_path. ' '. "/var/lib/asterisk/sounds/files/inactive/" . $user->username . '/'. $file_name;
 
         shell_exec($command);
 
@@ -108,6 +113,7 @@ class CampaignController extends BaseController
             'description' => $request->getParam('description'),
             'value' => $request->getParam('value'),
             'body' => $request->getParam('body'),
+            'is_active' => false,
             'play_path' => "/var/lib/asterisk/sounds/files/" . $user->username . '/'. $file_name
         ]);
 

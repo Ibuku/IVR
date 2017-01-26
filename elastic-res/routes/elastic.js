@@ -1242,6 +1242,46 @@ router.post('/elasticsearch/campaign/path', function (req, res, next) {
     });
 });
 
+router.post('/record/filter', function (req, res, next) {
+
+    var start = new Date(new Date(req.body.start));
+    start.setUTCHours(0,0,0,0);
+    var end = new Date(req.body.end);
+    end.setUTCHours(23,59,59,999);
+    client.search({
+        index: "ivr",
+        type: "statuses",
+        body: {
+            "query": {
+                "filtered": {
+                    "query": {
+                        "match_all": {
+                        }
+                    },
+                    "filter": {
+                        "range": {
+                            "created_at": {
+                                "gte": start,
+                                "lte": end
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }).then(function (resp) {
+        var result = resp.hits.hits;
+
+        var data = result.map(function (_obj) {
+            return _obj._source
+        });
+
+        var ar = groupBy(data, "campaign_name");
+
+        res.setHeader('Content-Type', 'application/json');
+        res.send(JSON.stringify({result: ar}));
+    });
+});
 
 // router.get('/elasticsearch/:campaign_id/filter', function (req, res, next) {
 //     //impression_count =sum all imression_count in campign_status that matchs campaign_id

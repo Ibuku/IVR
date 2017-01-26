@@ -271,6 +271,7 @@
                                 <th class="col-md-2">Impression Count</th>
                                 <th class="col-md-2">Dropped Calls</th>
                                 <th class="col-md-2">Success Count</th>
+                                <th class="col-md-2">Success Rate</th>
                                 <th class="col-md-2"></th>
                                 <th class="text-center" style="width: 20px;"><i class="icon-arrow-down12"></i></th>
                             </tr>
@@ -293,16 +294,13 @@
                                         <div class=""><a href="campaigns/[[val.campaign_id]]/report" class="text-default text-semibold"
                                                          ng-bind="val.campaign_name"></a>
                                         </div>
-                                        {#<div class="text-muted text-size-small">#}
-                                        {#<span class="status-mark border-blue position-left"></span>#}
-                                        {#02:00 - 03:00#}
-                                        {#</div>#}
                                     </div>
                                 </td>
                                 <td><span class="text-muted" ng-bind="val.cdr_count"></span></td>
                                 <td><span class="text-warning-600" ng-bind="val.impression_count"></span></td>
-                                <td><span class="text-muted">[[ val.cdr_count - val.impression_count | number ]]</span></td>
+                                <td><span class="text-muted" ng-cloak>[[ val.cdr_count - val.impression_count | number ]]</span></td>
                                 <td><h6 class="text-semibold" ng-bind="val.success_count"></h6></td>
+                                <td><h6 class="text-semibold" ng-cloak>[[ (val.success_count / val.impression_count) * 100 ]]%</h6></td>
                                 <td><span class="label bg-blue"></span></td>
                                 <td class="text-center">
                                     <ul class="icons-list">
@@ -353,6 +351,7 @@
                                     </td>
                                     <td><span class="text-muted">[[ val.cdr_count - val.impression_count | number ]]</span></td>
                                     <td><h6 class="text-semibold" ng-bind="val.success_count"></h6></td>
+                                    <td><h6 class="text-semibold" ng-cloak>[[ (val.success_count / val.impression_count) * 100 ]]%</h6></td>
                                     <td><span class="label bg-blue"></span></td>
                                     <td class="text-center">
                                     <ul class="icons-list">
@@ -399,6 +398,7 @@
                                     </td>
                                     <td><span class="text-muted">[[ val.cdr_count - val.impression_count | number ]]</span></td>
                                     <td><h6 class="text-semibold" ng-bind="val.success_count"></h6></td>
+                                    <td><h6 class="text-semibold" ng-cloak>[[ (val.success_count / val.impression_count) * 100 ]]%</h6></td>
                                     <td><span class="label bg-blue"></span></td>
                                     <td class="text-center">
                                         <ul class="icons-list">
@@ -502,6 +502,7 @@
                                     </td>
                                     <td><span class="text-muted">[[ val.cdr_count - val.impression_count | number ]]</span></td>
                                     <td><h6 class="text-semibold" ng-bind="val.success_count"></h6></td>
+                                    <td><h6 class="text-semibold" ng-cloak>[[ (val.success_count / val.impression_count) * 100 ]]%</h6></td>
                                     <td><span class="label bg-blue"></span></td>
                                     <td class="text-center">
                                         <ul class="icons-list">

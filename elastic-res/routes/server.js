@@ -93,6 +93,7 @@ router.post('/elasticsearch/:type/create', function (req, res, next) {
             ch.assertQueue(q, {durable: false});
             ch.sendToQueue(q, new Buffer(JSON.stringify(req.body)));
             console.log(" [x] Sent Message");
+            res.sendStatus(200);
         });
     });
 });
@@ -106,6 +107,7 @@ router.post('/elasticsearch/cdr/missing', function (req, res, next) {
             ch.assertQueue(q, {durable: false});
             ch.sendToQueue(q, new Buffer(JSON.stringify(req.body)));
             console.log(" [x] Sent Message");
+            res.sendStatus(200);
         });
     });
 });
@@ -807,6 +809,47 @@ router.post('/elasticsearch/campaign/path', function (req, res, next) {
             var result = resp.hits.hits[0]._source;
             return res.send(JSON.stringify({message: result}));
         }
+    });
+});
+
+router.post('/record/filter', function (req, res, next) {
+
+    var start = new Date(new Date(req.body.start));
+    start.setUTCHours(0,0,0,0);
+    var end = new Date(req.body.end);
+    end.setUTCHours(23,59,59,999);
+    client.search({
+        index: "ivr",
+        type: "statuses",
+        body: {
+            "query": {
+                "filtered": {
+                    "query": {
+                        "match_all": {
+                        }
+                    },
+                    "filter": {
+                        "range": {
+                            "created_at": {
+                                "gte": start,
+                                "lte": end
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }).then(function (resp) {
+        var result = resp.hits.hits;
+
+        var data = result.map(function (_obj) {
+            return _obj._source
+        });
+
+        var ar = groupBy(data, "campaign_name");
+
+        res.setHeader('Content-Type', 'application/json');
+        res.send(JSON.stringify({result: ar}));
     });
 });
 

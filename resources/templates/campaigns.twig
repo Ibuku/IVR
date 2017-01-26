@@ -253,7 +253,8 @@
                                         </a>
 
                                         <ul class="dropdown-menu dropdown-menu-right">
-                                            <li><a href="" ng-click="deactivateCampaign(campaign.id)"><i class="icon-cancel-circle2"></i> Deactivate</a></li>
+                                            <li ng-show="campaign.is_active == true"><a href="" ng-click="deactivateCampaign(campaign.id)"><i class="icon-cancel-circle2"></i> Deactivate</a></li>
+                                            <li ng-hide="campaign.is_active == true"><a href="" ng-click="activateCampaign(campaign.id)"><i class="icon-check2"></i> Activate</a></li>
                                             <li><a href="{{ path_for('campaign_report', {'campaign_id': '[[ campaign.id ]]'}) }}"><i class="icon-file-pdf"></i>View Reports</a></li>
                                             <li><a href="{{ path_for('download') }}"><i class="icon-download"></i> Download</a></li>
                                         </ul>
