@@ -225,32 +225,22 @@
                                     <!-- /.input group -->
                                 </div>
 
-                                {#<div class="form-group">#}
-                                    {#<label class="control-label col-lg-2">Scheduled time:</label>#}
-                                    {#<div class="col-lg-10">#}
-                                        {#<div class="input-group">#}
-                                            {#<span class="input-group-addon"><i class="icon-alarm"></i></span>#}
-                                            {#<input type="text" class="form-control pickatime-hidden" placeholder="time" required>#}
-                                        {#</div>#}
-                                    {#</div>#}
-                                {#</div>#}
-
-                                {#<div class="form-group {% if form.scheduled_time.errors %}has-error{% endif %}">#}
-                                    {#<div class="alert-error">#}
-                                        {#{{ form.scheduled_time.errors }}#}
-                                    {#</div>#}
-                                    {#<label class="control-label col-lg-2"><strong>Scheduled time:</strong></label>#}
-                                    {#<div class="col-lg-10">#}
-                                        {#<div class="input-group bootstrap-timepicker timepicker">#}
-                                            {#<input id="scheduled_time" name="scheduled_time" type="text"#}
-                                                   {#class="form-control input-small" value="{{ campaign.scheduled_time }}">#}
-                                            {#<span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>#}
-                                        {#</div>#}
-                                    {#</div>#}
-                                {#</div>#}
-
-
                             </fieldset>
+
+                            {% if user.username == 'etisalat' %}
+                            <fieldset class="content-group">
+                                <div class="form-group">
+                                    <label class="control-label col-lg-2"><strong>Select Campaign Owner</strong></label>
+                                    <div class="col-lg-10">
+                                        <select name="username" class="form-control" id="username" required>
+                                            {% for account in users  %}
+                                                <option value="{{ account.username }}">{{ account.username }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            {% endif %}
 
                             <fieldset class="content-group">
                                 <div class="form-group">

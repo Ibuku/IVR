@@ -9,8 +9,10 @@
 namespace App\Controllers;
 use App\Models\Campaign;
 use App\Models\Files;
+use App\Models\User;
 use App\Services\Index;
 use DateTime;
+use Illuminate\Support\Facades\File;
 use Respect\Validation\Validator as Val;
 use App\Models\Action;
 
@@ -32,20 +34,23 @@ class CampaignController extends BaseController
 
         $user = $this->auth->user();
 
-        $files = Files::where('username', $user->username)->get();
+        $files = Files::all();
+
+        if ($user->username != 'etisalat') {
+            $files = Files::where('username', $user->username)->get();
+        }
+
+        $users = User::all();
 
         $options = [
             array("name" => "Subscribe", "value" => "subscribe")
-//            array("name" => "Send Message", "value" => "send_message"),
-//            array("name" => "Send Image", "value" => "send_image"),
-//            array("name" => "Transfer Call", "value" => "transfer_call"),
-//            array("name" => "Play File", "value" => "play_file")
         ];
 
         return $this->view->render($response, 'templates/forms/campaign.twig', [
             'files' => $files,
             'options' => $options,
-            'user' => $user
+            'user' => $user,
+            'users' => $users
         ]);
     }
 
@@ -53,27 +58,42 @@ class CampaignController extends BaseController
 
         $user = $this->auth->user();
 
-        $match = ['name' => $request->getParam('file'), 'username' => $user->username];
+        $username = $user->username;
 
+        if ($request->getParam('username')) {
+            $username = $request->getParam('username');
+        }
 
-        $file = Files::where($match)->first();
+        $file_match = ['name' => $request->getParam('file'), 'username' => $username];
+
+        $file = Files::where($file_match)->first();
         
-        $match = ['file_path' => $file->file_path, 'username' => $user->username];
+        $match = ['file_path' => $file->file_path, 'username' => $username];
         
         $campaign = Campaign::where($match)->first();
 
         if ($campaign)
         {
-            $files = Files::where('username', $user->username)->get();
+            $files = Files::all();
+
+            if ($user->username != 'etisalat') {
+                $files = Files::where('username', $user->username)->get();
+            }
+
             $options = [
                 array("name" => "Subscribe", "value" => "subscribe")
             ];
+
+            $users = User::all();
+
             $error =  "A campaign using this audio file already exists";
+
             return $this->view->render($response, 'templates/forms/campaign.twig', [
                 'files' => $files,
                 'options' => $options,
                 'user' => $user,
-                'error' => $error
+                'error' => $error,
+                'users' => $users
             ]);
         }
 
@@ -100,12 +120,12 @@ class CampaignController extends BaseController
         $file_split = explode('/', $file->file_path);
         $file_name = end($file_split);
 
-        $command = 'cp '. $file->file_path. ' '. "/var/lib/asterisk/sounds/files/inactive/" . $user->username . '/'. $file_name;
+        $command = 'cp '. $file->file_path. ' '. "/var/lib/asterisk/sounds/files/inactive/" . $username . '/'. $file_name;
 
         shell_exec($command);
 
         $campaign = Campaign::create([
-            'username' => $user->username,
+            'username' => $username,
             'start_date' => $start_date,
             'end_date' => $end_date,
             'name' => $request->getParam('name'),
@@ -114,7 +134,7 @@ class CampaignController extends BaseController
             'value' => $request->getParam('value'),
             'body' => $request->getParam('body'),
             'is_active' => false,
-            'play_path' => "/var/lib/asterisk/sounds/files/" . $user->username . '/'. $file_name
+            'play_path' => "/var/lib/asterisk/sounds/files/" . $username . '/'. $file_name
         ]);
 
         if ($request->getParam('body') && $request->getParam('number') && $request->getParam('value')) {
