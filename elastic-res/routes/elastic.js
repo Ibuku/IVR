@@ -240,7 +240,7 @@ router.post('/elasticsearch/:type/create', function (req, res, next) {
                                 body: {
                                     "campaign_id": campaign.id,
                                     "campaign_name": campaign.name,
-                                    "created_at": created,
+                                    "created_at": _date,
                                     "username": campaign.username,
                                     "cdr_count": 1,
                                     "impression_count": 0,

@@ -28,6 +28,24 @@ class Auth
         return User::where('username', $user->username)->first();
     }
 
+    public function compare($new_password, $repeat_password) {
+        return $new_password === $repeat_password;
+    }
+
+    public function check_password($username, $password) {
+
+        $user = User::where('username', $username)->first();
+
+        if (!$user) {
+            return false;
+        }
+
+        if ($user->password == openssl_digest($password, 'sha512')) {
+            return true;
+        }
+        return false;
+    }
+
     public function attempt($username, $password) {
 
         $user = User::where('username', $username)->first();

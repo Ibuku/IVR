@@ -11,34 +11,15 @@ use App\Middleware\GuestMiddleware;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 
-
-//$app->get('/cdr/success', function($request, $response){
-//
-//    $connection = new AMQPStreamConnection('localhost', 5672, 'guest', 'guest');
-//    $channel = $connection->channel();
-//    $channel->exchange_declare('ivr', 'headers', false, true, false);
-//    $channel->queue_declare('ivr', false, true, false, false);
-//    $channel->queue_bind('ivr', 'ivr');
-//
-//    $data = array('clid' => $request->getParam('clid'),
-//        'serv_id'=> $serviceID,
-//        'scrm' => $srcModule,
-//        'dlr' => $dlr,
-//        'sender_id' => $senderID,
-//        'smsc' => $smsc,
-//        'request_time'=>$requestTime
-//    );
-//    $_data = json_encode($data);
-//
-//    $msg = new AMQPMessage($_data);
-//    $channel->basic_publish($msg, '', $que);
-//});
-
 $app->group('', function (){
     
     $this->get('/login', 'LoginController:getPage')->setName('login');
     
     $this->post('/login', 'LoginController:postData');
+
+    $this->get('/forgot', 'LoginController:forgotPassword')->setName('forgot');
+
+    $this->post('/forgot', 'LoginController:postForgot');
 
 })->add(new GuestMiddleware($container));
     
