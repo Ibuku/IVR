@@ -16,7 +16,9 @@ class User extends Model
 
     protected $fillable = [
         "phone",
-        "password"
+        "password",
+        "is_admin",
+        "is_active"
     ];
 
     public function setPassword($password) {

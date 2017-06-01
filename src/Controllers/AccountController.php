@@ -1,57 +1,40 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: stikks
- * Date: 9/29/16
- * Time: 11:48 AM
+ * User: stikks-workstation
+ * Date: 6/1/17
+ * Time: 5:05 PM
  */
 
 namespace App\Controllers;
-use App\Models\Campaign;
-use App\Models\Files;
+use App\Controllers\BaseController;
 use App\Models\User;
-use App\Services\Index;
-use DateTime;
-use Illuminate\Support\Facades\File;
-use Respect\Validation\Validator as Val;
-use App\Models\Action;
 
-class CampaignController extends BaseController
+class AccountController extends BaseController
 {
     public function getPage($request, $response){
 
         $user = $this->auth->user();
 
-        $campaigns = json_encode(Campaign::all());
+        $users = User::all();
 
-        return $this->view->render($response, 'templates/campaigns.twig', [
+        if (!$user->is_admin) {
+            return $response->withRedirect($this->router->pathFor('index'));
+        }
+
+        return $this->view->render($response, 'templates/accounts.twig', [
             'user' => $user,
-            'campaigns' => $campaigns,
+            'accounts' => $users,
             'username' => $user->username
         ]);
     }
 
-    public function createCampaign($request, $response){
+    public function createAccount($request, $response){
 
         $user = $this->auth->user();
 
-        $files = Files::all();
-
-        if ($user->username != 'etisalat') {
-            $files = Files::where('username', $user->username)->get();
-        }
-
-        $users = User::all();
-
-        $options = [
-            array("name" => "Subscribe", "value" => "subscribe")
-        ];
-
-        return $this->view->render($response, 'templates/forms/campaign.twig', [
-            'files' => $files,
-            'options' => $options,
-            'user' => $user,
-            'users' => $users
+        return $this->view->render($response, 'templates/forms/account.twig', [
+            'user' => $user
         ]);
     }
 
@@ -68,9 +51,9 @@ class CampaignController extends BaseController
         $file_match = ['name' => $request->getParam('file'), 'username' => $username];
 
         $file = Files::where($file_match)->first();
-        
+
         $match = ['file_path' => $file->file_path, 'username' => $username];
-        
+
         $campaign = Campaign::where($match)->first();
 
         if ($campaign)
@@ -336,73 +319,8 @@ class CampaignController extends BaseController
                 'id' => $action->id,
             ]);
         }
-        
+
         return $response->withRedirect($this->router->pathFor('campaigns'));
 
-    }
-
-    public function deactivateCampaign($request, $response, $args) {
-
-        if (!isset($args['campaign_id'])) {
-            return $response->withStatus(404);
-        };
-
-        $user = $this->auth->user();
-        $match = ['username' => $user->username, 'id' => $args['campaign_id']];
-
-        $campaign = Campaign::where($match)->first();
-
-        if (!$campaign) {
-            return $response->withStatus(404);
-        };
-
-        $campaign->update([
-            'is_active' => false,
-            'end_date' => date("Y-m-d")
-        ]);
-
-        $file_split = explode('/', $campaign->play_path);
-        $file_name = end($file_split);
-
-        try {
-            rename($campaign->play_path, '/var/lib/asterisk/sounds/files/inactive/'. $campaign->username. '/'. $file_name);
-        }
-        catch (\Exception $e) {
-        }
-
-        return $response->withStatus(200);
-    }
-
-    public function activateCampaign($request, $response, $args) {
-
-        if (!isset($args['campaign_id'])) {
-            return $response->withStatus(404);
-        };
-
-        $user = $this->auth->user();
-        $match = ['username' => $user->username, 'id' => $args['campaign_id']];
-
-        $campaign = Campaign::where($match)->first();
-
-        if (!$campaign) {
-            return $response->withStatus(404);
-        };
-
-        $campaign->update([
-            'is_active' => true,
-            'start_date' => date("Y-m-d"),
-            'end_date' => null
-        ]);
-
-        $file_split = explode('/', $campaign->play_path);
-        $file_name = end($file_split);
-
-        try {
-            rename('/var/lib/asterisk/sounds/files/inactive/'. $campaign->username. '/'. $file_name, $campaign->play_path);
-        }
-        catch (\Exception $e) {
-        }
-
-        return $response->withStatus(200);
     }
 }

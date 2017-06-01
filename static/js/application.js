@@ -143,6 +143,55 @@ app.controller('FileCtrl', function ($scope, WebAudio, $location) {
 
 });
 
+
+app.controller('AccountCtrl', function ($scope) {
+
+    $scope.changeActive = function (value) {
+        $scope.username = value;
+        $scope.etisalat = false;
+        $scope.tm30 = false;
+        $scope.all = false;
+
+        if (value == 'etisalat') {
+            $scope.etisalat = true;
+        }
+        else if (value == 'tm30') {
+            $scope.tm30 = true;
+        }
+        else {
+            $scope.all = true
+        }
+
+        if (value != 'all') {
+            $scope.data = $scope.data_bank.filter(function (value) {
+                return value.username == $scope.username;
+            });
+        }
+        else {
+            $scope.data = $scope.data_bank;
+        }
+    };
+
+    $scope.deactivateCampaign = function (campaign_id) {
+        var choice = window.confirm('Are you sure you want to continue.');
+        if (choice) {
+            $.post('/campaign/' + campaign_id + '/deactivate', {}, function (data, status) {
+                location.href = '/campaigns';
+            });
+        }
+    };
+
+    $scope.activateCampaign = function (campaign_id) {
+        var choice = window.confirm('Are you sure you want to continue.');
+        if (choice) {
+            $.post('/campaign/' + campaign_id + '/activate', {}, function (data, status) {
+                location.href = '/campaigns';
+            });
+        }
+    };
+
+});
+
 app.controller('HomeController', function ($scope, $http, $timeout, $q) {
 
     var sum = function(items, prop){
