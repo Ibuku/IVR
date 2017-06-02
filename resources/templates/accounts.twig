@@ -228,17 +228,17 @@
                                                 <i class="icon-menu9"></i>
                                             </a>
                                             <ul class="dropdown-menu dropdown-menu-right">
-                                                <li>
-                                                    {% if account.is_admin %}
-                                                        <a style="color: red" href="" ng-click="removeRights('{{ account.id }}')">
-                                                            <i class="icon-cancel-circle2"></i> Remove Admin Rights
-                                                        </a>
-                                                    {% else %}
-                                                        <a href="" ng-click="grantRights('{{ account.id }}')">
-                                                            <i class="icon-checkmark-circle2"></i> Make Admin
-                                                        </a>
-                                                    {% endif %}
-                                                </li>
+                                                {#<li>#}
+                                                    {#{% if account.is_admin %}#}
+                                                        {#<a style="color: red" href="" ng-click="removeRights('{{ account.id }}')">#}
+                                                            {#<i class="icon-cancel-circle2"></i> Remove Admin Rights#}
+                                                        {#</a>#}
+                                                    {#{% else %}#}
+                                                        {#<a href="" ng-click="grantRights('{{ account.id }}')">#}
+                                                            {#<i class="icon-checkmark-circle2"></i> Make Admin#}
+                                                        {#</a>#}
+                                                    {#{% endif %}#}
+                                                {#</li>#}
                                                 <li>
                                                     {% if account.is_active %}
                                                         <a style="color: red" href="" ng-click="deactivateAccount('{{ account.id }}')">

@@ -15,7 +15,7 @@ class User extends Model
     protected $table = 'users';
 
     protected $fillable = [
-        "phone",
+        'username',
         "password",
         "is_admin",
         "is_active"

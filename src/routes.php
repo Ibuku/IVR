@@ -30,6 +30,8 @@ $app->group('', function (){
     $this->get('/accounts', 'AccountController:getPage')->setName('accounts');
     $this->get('/accounts/create', 'AccountController:createAccount')->setName('create_account');
     $this->post('/accounts/create', 'AccountController:postData')->setName('post_account');
+    $this->post('/accounts/{account_id}/activate', 'AccountController:Activate');
+    $this->post('/accounts/{account_id}/deactivate', 'AccountController:Deactivate');
 
     $this->get('/campaigns', 'CampaignController:getPage')->setName('campaigns');
     $this->get('/campaigns/create', 'CampaignController:createCampaign')->setName('create_campaign');

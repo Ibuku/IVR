@@ -136,13 +136,13 @@ foreach ($list as $data) {
     $pdo->exec($data);
 }
 
-$tm30 = "INSERT INTO users
-  (username , password)
-VALUES
-  ('tm30', '3243f9d5a6af570fc9ed94186a3749bb8c562c848c6db3b658706c442fd397c02fc4f798a75c5c655fd6870e5cc41ede5d27948327a00b64654ee1a688a755ca');";
-
-$obj = $pdo->prepare($tm30);
-$obj->execute();
+//$tm30 = "INSERT INTO users
+//  (username , password)
+//VALUES
+//  ('tm30', '3243f9d5a6af570fc9ed94186a3749bb8c562c848c6db3b658706c442fd397c02fc4f798a75c5c655fd6870e5cc41ede5d27948327a00b64654ee1a688a755ca');";
+//
+//$obj = $pdo->prepare($tm30);
+//$obj->execute();
 
 $et = "INSERT INTO users
   (username , password, is_admin)

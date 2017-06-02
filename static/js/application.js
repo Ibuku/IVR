@@ -172,20 +172,20 @@ app.controller('AccountCtrl', function ($scope) {
         }
     };
 
-    $scope.deactivateCampaign = function (campaign_id) {
+    $scope.deactivateAccount = function (account_id) {
         var choice = window.confirm('Are you sure you want to continue.');
         if (choice) {
-            $.post('/campaign/' + campaign_id + '/deactivate', {}, function (data, status) {
-                location.href = '/campaigns';
+            $.post('/accounts/' + account_id + '/deactivate', {}, function (data, status) {
+                location.href = '/accounts';
             });
         }
     };
 
-    $scope.activateCampaign = function (campaign_id) {
+    $scope.activateCampaign = function (account_id) {
         var choice = window.confirm('Are you sure you want to continue.');
         if (choice) {
-            $.post('/campaign/' + campaign_id + '/activate', {}, function (data, status) {
-                location.href = '/campaigns';
+            $.post('/accounts/' + account_id + '/activate', {}, function (data, status) {
+                location.href = '/accounts';
             });
         }
     };

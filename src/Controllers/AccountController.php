@@ -10,6 +10,7 @@ namespace App\Controllers;
 use App\Controllers\BaseController;
 use App\Models\User;
 
+
 class AccountController extends BaseController
 {
     public function getPage($request, $response){
@@ -40,287 +41,111 @@ class AccountController extends BaseController
 
     public function postData($request, $response){
 
-        $user = $this->auth->user();
+        $match = ['username' => $request->getParam('name')];
 
-        $username = $user->username;
+        $account = User::where($match)->first();
 
-        if ($request->getParam('username')) {
-            $username = $request->getParam('username');
-        }
-
-        $file_match = ['name' => $request->getParam('file'), 'username' => $username];
-
-        $file = Files::where($file_match)->first();
-
-        $match = ['file_path' => $file->file_path, 'username' => $username];
-
-        $campaign = Campaign::where($match)->first();
-
-        if ($campaign)
+        if ($account)
         {
-            $files = Files::all();
-
-            if ($user->username != 'etisalat') {
-                $files = Files::where('username', $user->username)->get();
-            }
-
-            $options = [
-                array("name" => "Subscribe", "value" => "subscribe")
-            ];
-
-            $users = User::all();
-
-            $error =  "A campaign using this audio file already exists";
-
-            return $this->view->render($response, 'templates/forms/campaign.twig', [
-                'files' => $files,
-                'options' => $options,
-                'user' => $user,
-                'error' => $error,
-                'users' => $users
+            return $this->view->render($response, 'templates/forms/account.twig', [
+                'user' => $this->auth->user(),
+                'error' => "An account with this name already exists"
             ]);
         }
 
-        $start_date = date('Y-m-d');
-
-        if ($request->getParam('start_date')) {
-            $start_date = DateTime::createFromFormat('d/m/Y', $request->getParam('start_date'))->format('Y-m-d');
+        $res = 0;
+        if (!file_exists(realpath(__DIR__ . '/../..'). '/files/'. $request->getParam('name'))) {
+            $res = mkdir(realpath(__DIR__ . '/../..'). '/files/'. $request->getParam('name'), 0777, true);
         }
 
-        $end_date = null;
-
-        if ($request->getParam('end_date')) {
-            $end_date = DateTime::createFromFormat('d/m/Y', $request->getParam('end_date'))->format('Y-m-d');
-        }
-
-        $validation = $this->validator->validate($request, [
-            'file' => Val::notEmpty()->verifyFile(),
-        ]);
-
-        if ($validation->failed()) {
-            return $response->withRedirect($this->router->pathFor('register'));
-        }
-
-        $file_split = explode('/', $file->file_path);
-        $file_name = end($file_split);
-
-        $command = 'cp '. $file->file_path. ' '. "/var/lib/asterisk/sounds/files/inactive/" . $username . '/'. $file_name;
-
-        shell_exec($command);
-
-        $campaign = Campaign::create([
-            'username' => $username,
-            'start_date' => $start_date,
-            'end_date' => $end_date,
-            'name' => $request->getParam('name'),
-            'file_path' => $file->file_path,
-            'description' => $request->getParam('description'),
-            'value' => $request->getParam('value'),
-            'body' => $request->getParam('body'),
-            'is_active' => false,
-            'play_path' => "/var/lib/asterisk/sounds/files/" . $username . '/'. $file_name
-        ]);
-
-        if ($request->getParam('body') && $request->getParam('number') && $request->getParam('value')) {
-            $value = array('number'=>$request->getParam('number'), 'value'=>$request->getParam('value'), 'parameter' => $request->getParam('parameter'),
-                'body' => $request->getParam('body'), "repeat_param"=>$request->getParam('repeat_param'),
-                "confirm"=>$request->getParam('confirm'), "request"=>$request->getParam('request'));
-
-            $action = Action::create([
-                'number' => $value['number'],
-                'value' => $value['value'],
-                'body' => $value['body'],
-                'repeat_param' => $value['repeat_param'],
-                'confirm' => $value['confirm'],
-                'request' => $value['request'],
-                'parameter' => $value['parameter'],
-                'campaign_id' => $campaign->id
-            ]);
-
-//            Index::index('action', [
-//                'number' => $action->number,
-//                'value' => $action->value,
-//                'body' => $action->body,
-//                'repeat_param' => $action->repeat_param,
-//                'confirm' => $action->confirm,
-//                'parameter' => $action->parameter,
-//                'request' => $action->request,
-//                'campaign_id' => $campaign->id,
-//                'id' => $action->id,
-//            ]);
-
-            Index::save_redis($campaign->play_path. ':'. $action->number, [
-                'number' => $action->number,
-                'value' => $action->value,
-                'body' => $action->body,
-                'repeat_param' => $action->repeat_param,
-                'confirm' => $action->confirm,
-                'parameter' => $action->parameter,
-                'request' => $action->request,
-                'campaign_id' => $campaign->id,
-                'id' => $action->id,
+        if (!$res) {
+            return $this->view->render($response, 'templates/forms/account.twig', [
+                'user' => $this->auth->user(),
+                'error' => "Account was not created, Couldn't create temp folder"
             ]);
         }
 
-//        Index::index('campaign', [
-//            'username' => $campaign->username,
-//            'start_date' => $campaign->start_date,
-//            'end_date' => $campaign->end_date,
-//            'name' => $campaign->name,
-//            'file_path' => $campaign->file_path,
-//            'play_path' => $campaign->play_path,
-//            'description' => $campaign->description,
-//            'id' => $campaign->id,
-//            'created_at' => $campaign->created_at->format('Y-m-d'),
-//            'updated_at' => $campaign->updated_at->format('Y-m-d'),
-//            'is_active' => $campaign->is_active
-//        ]);
+        $sound_folder = 0;
+        if (!file_exists('var/lib/asterisk/sounds/files/'. $request->getParam('name'))) {
+            $sound_folder = mkdir('var/lib/asterisk/sounds/files/files/'. $request->getParam('name'), 0777, true);
+        }
 
-        Index::save_redis($campaign->play_path, [
-            'username' => $campaign->username,
-            'start_date' => $campaign->start_date,
-            'end_date' => $campaign->end_date,
-            'name' => $campaign->name,
-            'file_path' => $campaign->file_path,
-            'play_path' => $campaign->play_path,
-            'description' => $campaign->description,
-            'id' => $campaign->id,
-            'created_at' => $campaign->created_at->format('Y-m-d'),
-            'updated_at' => $campaign->updated_at->format('Y-m-d'),
-            'is_active' => $campaign->is_active
+        if (!$sound_folder) {
+            return $this->view->render($response, 'templates/forms/account.twig', [
+                'user' => $this->auth->user(),
+                'error' => "Account was not created, Couldn't create sounds folder"
+            ]);
+        }
+
+        $account = User::create([
+            'username' => $request->getParam('name'),
+            'password' => openssl_digest($request->getParam('password'), 'sha512'),
+            'is_active' => true,
+            'is_admin' => false
         ]);
 
-        return $response->withRedirect($this->router->pathFor('campaigns'));
-
-    }
-
-    public function updateCampaign($request, $response, $args){
-
-        $user = $this->auth->user();
-
-        if (!isset($args['campaign_id'])) {
-            return $response->withRedirect($this->router->pathFor('campaigns'));
+        if ($account) {
+            return $response->withRedirect($this->router->pathFor('accounts'));
         }
 
-        $campaign_id = $args['campaign_id'];
-
-        $campaign = Campaign::where('id', $campaign_id)->first();
-
-        $files = Files::where('file_path', $campaign->file_path)->get();
-
-        $start_date = new DateTime($campaign->start_date);
-        $start = $start_date->format('d/m/Y');
-
-        $end = null;
-
-        if ($campaign->end_date) {
-            $end_date = new DateTime($campaign->end_date);
-            $end = $end_date->format('d/m/Y');
-        }
-
-        $action = Action::where('campaign_id', $campaign->id)->first();
-
-        return $this->view->render($response, 'templates/forms/update_campaign.twig', [
-            'campaign' => $campaign,
-            'user' => $user,
-            'files' => $files,
-            'start' => $start,
-            'end' => $end,
-            'action' => $action,
-            'options' => [
-                array("name" => "Subscribe", "value" => "subscribe")
-//                array("name" => "Send Message", "value" => "send_message")
-            ]
+        return $this->view->render($response, 'templates/forms/account.twig', [
+            'user' => $this->auth->user(),
+            'error' => "Account was not created"
         ]);
     }
 
-    public function postUpdate($request, $response, $args){
+    public function Deactivate($request, $response, $args) {
 
-        if (!isset($args['campaign_id'])) {
-            return $response->withRedirect($this->router->pathFor('campaigns'));
-        }
+        if (!isset($args['user_id'])) {
+            return $response->withStatus(404);
+        };
 
-        $campaign_id = $args['campaign_id'];
+        $match = ['id' => $args['user_id']];
 
-        $campaign = Campaign::where('id', $campaign_id)->first();
+        $account = User::where($match)->first();
 
-        $start_date = DateTime::createFromFormat('d/m/Y', $request->getParam('start_date'))->format('Y-m-d');
+        if (!$account) {
+            return $response->withStatus(404);
+        };
 
-        $end_date = null;
-
-        if ($request->getParam('end_date')) {
-            $end_date = DateTime::createFromFormat('d/m/Y', $request->getParam('end_date'))->format('Y-m-d');
-        }
-
-        $campaign->update([
-            'name' => $request->getParam('name'),
-            'description' => $request->getParam('description'),
-            'start_date' => $start_date,
-            'end_date' => $end_date
+        $account->update([
+            'is_active' => false
         ]);
 
-//        Index::update('campaign', $campaign->id, [
-//            'name' => $campaign->name,
-//            'description' => $campaign->description,
-//            'start_date' => $start_date,
-//            'end_date' => $end_date,
-//            'id' => $campaign->id,
-//            'play_path' => $campaign->play_path
-//        ]);
-
-        Index::save_redis($campaign->play_path, [
-            'username' => $campaign->username,
-            'start_date' => $campaign->start_date,
-            'end_date' => $campaign->end_date,
-            'name' => $campaign->name,
-            'file_path' => $campaign->file_path,
-            'play_path' => $campaign->play_path,
-            'description' => $campaign->description,
-            'id' => $campaign->id,
-            'created_at' => $campaign->created_at->format('Y-m-d'),
-            'updated_at' => $campaign->updated_at->format('Y-m-d'),
-            'is_active' => $campaign->is_active
-        ]);
-
-        $action = Action::where('campaign_id', $campaign->id)->first();
-
-        if ($action) {
-
-            $action->update([
-                'number' => $request->getParam('number'),
-                'value' => $request->getParam('value'),
-                'body' => $request->getParam('body'),
-                'request' => $request->getParam('request'),
-                'parameter' => $request->getParam('parameter'),
-                'repeat_param' => $request->getParam('repeat_param'),
-                'confirm' => $request->getParam('confirm')
-            ]);
-
-//            Index::update('action', $action->id, [
-//                'number' => $action->number,
-//                'value' => $action->value,
-//                'body' => $action->body,
-//                'request' => $action->request,
-//                'repeat_param' => $action->repeat_param,
-//                'confirm' => $action->confirm,
-//                'parameter' => $action->parameter,
-//                'campaign_id' => $campaign->id,
-//                'id' => $action->id,
-//            ]);
-            Index::save_redis($campaign->play_path. ':'. $action->number, [
-                'number' => $action->number,
-                'value' => $action->value,
-                'body' => $action->body,
-                'repeat_param' => $action->repeat_param,
-                'confirm' => $action->confirm,
-                'parameter' => $action->parameter,
-                'request' => $action->request,
-                'campaign_id' => $campaign->id,
-                'id' => $action->id,
-            ]);
+        try {
+            rename('/var/lib/asterisk/sounds/files/'. $account->username, '/var/lib/asterisk/sounds/inactive/'. $account->username);
+        }
+        catch (\Exception $e) {
         }
 
-        return $response->withRedirect($this->router->pathFor('campaigns'));
-
+        return $response->withStatus(200);
     }
+
+    public function Activate($request, $response, $args) {
+
+        if (!isset($args['user_id'])) {
+            return $response->withStatus(404);
+        };
+
+        $match = ['id' => $args['user_id']];
+
+        $account = User::where($match)->first();
+
+        if (!$account) {
+            return $response->withStatus(404);
+        };
+
+        $account->update([
+            'is_active' => true
+        ]);
+
+        try {
+            rename('/var/lib/asterisk/sounds/inactive/'. $account->username, '/var/lib/asterisk/sounds/files/'. $account->username);
+        }
+        catch (\Exception $e) {
+        }
+
+        return $response->withStatus(200);
+    }
+
 }
