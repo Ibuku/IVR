@@ -19,6 +19,7 @@ class FileController extends BaseController
         $files = json_encode(Files::all());
 
         return $this->view->render($response, 'templates/files.twig', [
+            'user' => $user,
             'files' => $files,
             'username' => $user->username
         ]);

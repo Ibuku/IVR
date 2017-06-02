@@ -9,16 +9,17 @@ require 'app.php';
 
 $container = $app->getContainer();
 $db = $container->get('settings')['db'];
-//$pdo = new PDO('mysql:dbname='.$db['database'].';host=localhost;user='.$db['username'].';password='.$db['password']);
 $pdo = new PDO('pgsql:dbname='.$db['database'].';host=localhost;user='.$db['username'].';password='.$db['password']);
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 
-$list = array();    
+$list = array();
 $users = "CREATE TABLE IF NOT EXISTS users (
     id serial,
 	username varchar (50) PRIMARY KEY,
 	password varchar (255) NOT NULL,
+	is_admin BOOL DEFAULT FALSE,
+	is_active BOOL DEFAULT TRUE,
 	updated_at date DEFAULT NULL,
 	created_at date DEFAULT NULL
 	);";
@@ -135,18 +136,18 @@ foreach ($list as $data) {
     $pdo->exec($data);
 }
 
-$tm30 = "INSERT INTO users
-  (username , password)
-VALUES
-  ('tm30', '3243f9d5a6af570fc9ed94186a3749bb8c562c848c6db3b658706c442fd397c02fc4f798a75c5c655fd6870e5cc41ede5d27948327a00b64654ee1a688a755ca');";
-
-$obj = $pdo->prepare($tm30);
-$obj->execute();
+//$tm30 = "INSERT INTO users
+//  (username , password)
+//VALUES
+//  ('tm30', '3243f9d5a6af570fc9ed94186a3749bb8c562c848c6db3b658706c442fd397c02fc4f798a75c5c655fd6870e5cc41ede5d27948327a00b64654ee1a688a755ca');";
+//
+//$obj = $pdo->prepare($tm30);
+//$obj->execute();
 
 $et = "INSERT INTO users
-  (username , password)
+  (username , password, is_admin)
 VALUES
-  ('etisalat', '1bdb096ea8faa59bd83b2024249f8ea2a1162d006ae12be99fd181998d1498029d8cd35e1515793021cfa07706b9e7b639d5e89e223f600b254848108eff6d1c');";
+  ('etisalat', '1bdb096ea8faa59bd83b2024249f8ea2a1162d006ae12be99fd181998d1498029d8cd35e1515793021cfa07706b9e7b639d5e89e223f600b254848108eff6d1c', TRUE);";
 
 $obj = $pdo->prepare($et);
 $obj->execute();

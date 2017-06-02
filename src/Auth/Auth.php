@@ -67,4 +67,24 @@ class Auth
         unset($_SESSION['user']);
     }
 
+    public function create_account($username, $password, $is_admin=False) {
+        $user = User::where('username', $username)->first();
+
+        if (!$user) {
+            return $user;
+        }
+
+        try {
+            $user = User::create([
+                'username' => $username,
+                'password' => openssl_digest($password, 'sha512'),
+                'is_admin' => $is_admin
+            ]);
+
+            return $user;
+        } catch (\Exception $e) {
+            throw $e;
+        }
+    }
+
 }

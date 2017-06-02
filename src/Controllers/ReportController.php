@@ -35,11 +35,14 @@ class ReportController extends BaseController
         $campaign = Campaign::where('id', $campaign_id)->first();
 
         return $this->view->render($response, 'templates/campaign_report.twig', [
+            'user' => $user,
             'campaign_id' => $campaign->id
         ]);
     }
 
     public function DownloadCampaign($request, $response, $args){
+
+        $user = $this->auth->user();
 
         if (!isset($args['campaign_id'])) {
             return $response->withRedirect($this->router->pathFor('campaigns'));
@@ -50,6 +53,7 @@ class ReportController extends BaseController
         $campaign = Campaign::where('id', $campaign_id)->first();
 
         return $this->view->render($response, 'templates/download_campaign.twig', [
+            'user' => $user,
             'campaign_id' => $campaign->id
         ]);
     }

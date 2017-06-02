@@ -25,6 +25,7 @@ class CampaignController extends BaseController
         $campaigns = json_encode(Campaign::all());
 
         return $this->view->render($response, 'templates/campaigns.twig', [
+            'user' => $user,
             'campaigns' => $campaigns,
             'username' => $user->username
         ]);

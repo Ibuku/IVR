@@ -119,21 +119,27 @@
                             <!-- SIDEBAR BUTTONS -->
                             <div class="profile-userbuttons">
                                 <a href="{{ path_for('upload') }}">
-                                    <button type="button" class="btn btn-success btn-sm"><span
-                                                style="font-size:smaller;">Upload</span></button>
+                                    <button type="button" class="btn btn-success btn-sm"><span style="font-size:smaller;">Upload</span></button>
                                 </a>
                                 <a href="{{ path_for('create_campaign') }}">
-                                    <button type="button" class="btn btn-primary btn-sm"><span
-                                                style="font-size:smaller;">Campaign</span></button>
+                                    <button type="button" class="btn btn-primary btn-sm"><span style="font-size:smaller;">Campaign</span></button>
                                 </a>
                             </div>
-                            </a>
 
                             <!-- Main -->
                             <li class="navigation-header"><span>Main</span> <i class="icon-menu" title="Main pages"></i>
                             </li>
-                            <li class="active"><a href="{{ path_for('index') }}"><i class="icon-home4"></i> <span>Dashboard</span></a>
-                            </li>
+                            <li class="active"><a href="{{ path_for('index') }}"><i class="icon-home4"></i> <span>Dashboard</span></a></li>
+                            {% if user.is_admin %}
+                                <li>
+                                    <a href="{{ path_for('accounts') }}"><i class="icon-users"></i>
+                                        <span>Accounts</span></a>
+                                    <ul>
+                                        <li><a href="{{ path_for('create_account') }}">Create Account </a></li>
+                                        <li><a href="{{ path_for('accounts') }}">View Accounts</a></li>
+                                    </ul>
+                                </li>
+                            {% endif %}
                             <li>
                                 <a href="{{ path_for('campaigns') }}"><i class="icon-stack2"></i> <span>Campaigns</span></a>
                                 <ul>

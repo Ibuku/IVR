@@ -18,11 +18,14 @@ class SettingsController extends BaseController
 
     public function getPage($request, $response)
     {
+        $user = $this->auth->user();
+
         $files = Files::where('tag', 'prompt')->get();
 
         $setting = Settings::where('default_settings', true)->first();
 
         return $this->view->render($response, 'templates/forms/settings.twig', [
+            'user' => $user,
             'files' => $files,
             'setting' => $setting
         ]);
