@@ -92,7 +92,7 @@ def deploy():
     :return:
     """
     with cd('/opt/IVR'):
-        run('git pull')
+        sudo('git pull')
         restart_service('/etc/init.d/apache2')
         restart_service('/usr/sbin/amportal')
         restart_service('/etc/init.d/elasticsearch')
