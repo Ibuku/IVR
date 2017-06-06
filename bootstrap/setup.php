@@ -119,7 +119,6 @@ $settings = "CREATE TABLE IF NOT EXISTS settings(
   advert_limit INTEGER NOT NULL,
   wrong_path VARCHAR (255) NOT NULL,
   success_path VARCHAR (255) NOT NULL,
-  failure_path VARCHAR (255) NOT NULL,
   goodbye_path VARCHAR (255) NOT NULL,
   continue_path VARCHAR (255) NOT NULL,
   no_selection_path VARCHAR (255) NOT NULL,

@@ -47,11 +47,14 @@ class CampaignController extends BaseController
             array("name" => "Subscribe", "value" => "subscribe")
         ];
 
+        $default = $user->username == $this->settings['DEFAULT_ACCOUNT'] ? true: false;
+
         return $this->view->render($response, 'templates/forms/campaign.twig', [
             'files' => $files,
             'options' => $options,
             'user' => $user,
-            'users' => $users
+            'users' => $users,
+            'default' => $default
         ]);
     }
 
@@ -77,7 +80,7 @@ class CampaignController extends BaseController
         {
             $files = Files::all();
 
-            if ($user->username != 'etisalat') {
+            if ($user->username != $this->settings['DEFAULT_ACCOUNT']) {
                 $files = Files::where('username', $user->username)->get();
             }
 

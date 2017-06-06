@@ -29,6 +29,7 @@ return [
             'charset' => 'utf8',
             'collation' => 'utf8_unicode_ci'
         ],
-        "default_index" => "ivr"
+        "default_index" => "ivr",
+        "DEFAULT_ACCOUNT" => "etisalat"
     ]
 ];

@@ -56,20 +56,34 @@ class UploadController extends BaseController
                     ]);
                 } else {
                     $temp_file = realpath(__DIR__ . '/../..') . "/files/" . $user->username . '/temp_' . $_FILES["advert"]["name"];
-                    move_uploaded_file($_FILES["advert"]["tmp_name"], $temp_file);
-//                    Converter::convert(realpath(__DIR__ . '/../..'). "/files/" . $user->username . '/temp_'. $_FILES["advert"]["name"], explode(".", $_FILES["advert"]["name"])[0], realpath(__DIR__ . '/../..'). "/files/"  . $user->username . '/');
+
+                    $move_result = move_uploaded_file($_FILES["advert"]["tmp_name"], $temp_file);
+
+                    if (!$move_result) {
+                        return $this->view->render($response, 'templates/upload.twig', [
+                            'error' => $_FILES["advert"]["name"] . " not uploaded. ",
+                            'user' => $user
+                        ]);
+                    }
 
                     $name = '' . preg_replace('/\s+/', '', explode(".", $_FILES["advert"]["name"])[0]) . '.wav';
-
-//                    $address = '/usr/bin/ffmpeg -y -i '. $temp_file .' -acodec adpcm_ms '. realpath(__DIR__ . '/../..'). "/files/"  . $user->username . '/'. $name;
-
-                    $address = '/usr/bin/ffmpeg -y -i ' . $temp_file . ' -ar 8000 -ac 1 ' . realpath(__DIR__ . '/../..') . "/files/" . $user->username . '/' . $name;
-
-                    shell_exec($address);
-
-                    unlink($temp_file);
-
                     $file_path = realpath(__DIR__ . '/../..') . "/files/" . $user->username . '/' . $name;
+                    $conversion_cmd = '/usr/bin/ffmpeg -y -i ' . $temp_file . ' -ar 8000 -ac 1 ' . $file_path;
+
+                    shell_exec($conversion_cmd);
+
+                    if (!file_exists($file_path)) {
+                        return $this->view->render($response, 'templates/upload.twig', [
+                            'error' => $_FILES["advert"]["name"] . " not uploaded. Wrong Permission.",
+                            'user' => $user
+                        ]);
+                    }
+
+                    try {
+                        unlink($temp_file);
+                    } catch (\Exception $e) {
+                        var_dump($e);
+                    }
 
                     $getID3 = new getID3;
                     $info = $getID3->analyze($file_path);

@@ -20,5 +20,14 @@ class Settings extends Model
         "incorrect_path",
         "repeat_path",
         "confirmation_path",
+        "wrong_path",
+        "success_path",
+        "failure_path",
+        "goodbye_path",
+        "continue_path",
+        "no_selection_path",
+        "selection_confirmation_path",
+        "subscription_failure_path",
+        "default_settings"
     ];
 }

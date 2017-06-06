@@ -215,10 +215,10 @@
                             <tr>
                                 <td>{{ account.username }}</td>
                                 <td>
-                                    {% if account.is_admin %}
-                                        <span class="label label-success">IS ADMIN</span>
+                                    {% if account.is_active %}
+                                        <span class="label label-success">ACTIVE</span>
                                     {% else %}
-                                        <span class="label label-danger">NOT ADMIN</span>
+                                        <span class="label label-danger">INACTIVE</span>
                                     {% endif %}
                                 </td>
                                 <td class="text-center">

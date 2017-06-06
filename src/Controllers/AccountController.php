@@ -61,13 +61,13 @@ class AccountController extends BaseController
         if (!$res) {
             return $this->view->render($response, 'templates/forms/account.twig', [
                 'user' => $this->auth->user(),
-                'error' => "Account was not created, Couldn't create temp folder"
+                'error' => "Account was not created, Couldn't create files folder"
             ]);
         }
 
         $sound_folder = 0;
-        if (!file_exists('var/lib/asterisk/sounds/files/'. $request->getParam('name'))) {
-            $sound_folder = mkdir('var/lib/asterisk/sounds/files/files/'. $request->getParam('name'), 0777, true);
+        if (!file_exists('/var/lib/asterisk/sounds/files/'. $request->getParam('name'))) {
+            $sound_folder = mkdir('/var/lib/asterisk/sounds/files/'. $request->getParam('name'), 0777, true);
         }
 
         if (!$sound_folder) {
