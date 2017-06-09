@@ -59,31 +59,34 @@ def push():
     local("git push")
 
 
-def start_service(service_path):
+def start_services(service_paths=list()):
+    """
+    restart a system service
+    :param service_paths:
+    :return:
+    """
+    for service_path in service_paths:
+        sudo('%s start' % service_path)
+
+
+def stop_service(service_paths=list()):
+    """
+    restart a system service
+    :param service_paths:
+    :return:
+    """
+    for service_path in service_paths:
+        sudo('%s stop' % service_path)
+
+
+def restart_service(service_paths=list()):
     """
     restart a system service
     :param service_path:
     :return:
     """
-    sudo('%s start' % service_path)
-
-
-def stop_service(service_path):
-    """
-    restart a system service
-    :param service_path:
-    :return:
-    """
-    sudo('%s stop' % service_path)
-
-
-def restart_service(service_path):
-    """
-    restart a system service
-    :param service_path:
-    :return:
-    """
-    sudo('%s restart' % service_path)
+    for service_path in service_paths:
+        sudo('%s restart' % service_path)
 
 
 def deploy():
@@ -93,8 +96,5 @@ def deploy():
     """
     with cd('/opt/IVR'):
         sudo('git pull')
-        restart_service('/etc/init.d/apache2')
-        restart_service('/etc/init.d/elasticsearch')
-        restart_service('/etc/init.d/rabbitmq-server')
-        restart_service('/etc/init.d/redis-server')
+        restart_service(['/etc/init.d/apache2', '/etc/init.d/elasticsearch', '/etc/init.d/rabbitmq-server', '/etc/init.d/redis-server', '/etc/init.d/pm2-root'])
         sudo("start node_app")
