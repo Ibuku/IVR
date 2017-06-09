@@ -129,7 +129,7 @@ app.controller('FileCtrl', function ($scope, WebAudio, $location) {
             $.post('/campaign/' + campaign_id + '/deactivate', {}, function (data, status) {
                 console.log(data);
                 console.log(status);
-                location.href = '/campaigns';
+                // location.href = '/campaigns';
             });
         }
     };
@@ -138,7 +138,9 @@ app.controller('FileCtrl', function ($scope, WebAudio, $location) {
         var choice = window.confirm('Are you sure you want to continue.');
         if (choice) {
             $.post('/campaign/' + campaign_id + '/activate', {}, function (data, status) {
-                location.href = '/campaigns';
+                console.log(data);
+                console.log(status);
+                // location.href = '/campaigns';
             });
         }
     };
