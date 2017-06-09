@@ -130,7 +130,13 @@ class CampaignController extends BaseController
 //
 //        shell_exec($command);
 
-        $file_copy = copy($file->file_path, "/var/lib/asterisk/sounds/files/inactive/{$username}/{$file_name}");
+        $play_path = "/var/lib/asterisk/sounds/files/inactive/{$username}/{$file_name}";
+        var_dump($file->file_path);
+        var_dump($play_path);
+
+        $file_copy = copy($file->file_path, $play_path);
+        var_dump($file_copy);
+        exit();
 
         if (!$file_copy) {
             $files = Files::where('tag', 'advert')->get();
