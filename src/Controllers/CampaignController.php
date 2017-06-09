@@ -393,10 +393,15 @@ class CampaignController extends BaseController
             return $response->withStatus(404);
         };
 
+        $end_date = $campaign->end_date;
+        if (date("Y-m-d") > $end_date) {
+            $end_date = null;
+        }
+
         $campaign->update([
             'is_active' => true,
             'start_date' => date("Y-m-d"),
-            'end_date' => null
+            'end_date' => $end_date
         ]);
 
         $file_split = explode('/', $campaign->play_path);
