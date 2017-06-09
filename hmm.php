@@ -26,10 +26,7 @@ if ($current == "etisalat") {
     $current = $redis->set("current", "etisalat");
 }
 
-var_dump($agi);
-exit();
-
-$agi->set_variable('CURRENT', $name);
+$x = $agi->set_variable('CURRENT', $name);
 
 $files = glob("/var/lib/asterisk/sounds/files/" . $name . '/*.wav');
 $file = array_rand($files);
@@ -37,8 +34,6 @@ $_file = explode("/", $files[$file]);
 $_files = explode(".", end($_file));
 $file_path = "/var/lib/asterisk/sounds/files/" . $name . '/' . current($_files) . '.wav';
 
-var_dump($file_path);
-exit();
 $agi->set_variable('FILE_PATH', $file_path);
 
 return 200;
