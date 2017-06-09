@@ -35,10 +35,11 @@ class CampaignController extends BaseController
 
         $user = $this->auth->user();
 
-        $files = Files::all();
+        $files = Files::where('tag', 'prompt')->get();
 
-        if ($user->username != 'etisalat') {
-            $files = Files::where('username', $user->username)->get();
+        if ($user->username != $this->settings['DEFAULT_ACCOUNT']) {
+            $match = ['tag'=>'prompt', 'username'=>$user->username];
+            $files = Files::where($match)->get();
         }
 
         $users = User::all();
@@ -78,10 +79,11 @@ class CampaignController extends BaseController
 
         if ($campaign)
         {
-            $files = Files::all();
+            $files = Files::where('tag', 'prompt')->get();
 
             if ($user->username != $this->settings['DEFAULT_ACCOUNT']) {
-                $files = Files::where('username', $user->username)->get();
+                $match = ['tag'=>'prompt', 'username'=>$user->username];
+                $files = Files::where($match)->get();
             }
 
             $options = [
