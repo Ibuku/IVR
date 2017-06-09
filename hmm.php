@@ -7,6 +7,7 @@
  * Time: 12:42 PM
  */
 include 'dependencies.php';
+use Predis\Client;
 
 // replace with HMM model
 $redis = new Client();
