@@ -129,8 +129,6 @@ class CampaignController extends BaseController
 //        $command = 'cp '. $file->file_path. ' '. "/var/lib/asterisk/sounds/files/inactive/" . $username . '/'. $file_name;
 //
 //        shell_exec($command);
-
-        chmod($file->file_path, 0777);
         $play_path = "/var/lib/asterisk/sounds/files/inactive/{$username}/{$file_name}";
         var_dump($play_path);
 

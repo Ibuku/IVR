@@ -116,6 +116,7 @@ class UploadController extends BaseController
                         "description" => $request->getParam('description'),
                         "tag" => $request->getParam('tag')
                     ]);
+                    chmod($file_path, 0777);
                     return $this->view->render($response, 'templates/upload.twig', [
                         "message" => $file->name . " was successfully uploaded",
                         'user' => $user
