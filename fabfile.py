@@ -97,3 +97,5 @@ def deploy():
         restart_service('/etc/init.d/elasticsearch')
         restart_service('/etc/init.d/rabbitmq-server')
         restart_service('/etc/init.d/redis-server')
+        sudo("start node_app")
+        sudo("start amportal")
