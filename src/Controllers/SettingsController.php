@@ -65,7 +65,7 @@ class SettingsController extends BaseController
                 'goodbye_path' => $request->getParam('goodbye_path'),
                 'subscription_path' => $request->getParam('subscription_path'),
                 'subscription_confirmation_path' => $request->getParam('subscription_confirmation_path'),
-                'already_subscribed' => $request->getParam('already_subscribed'),
+                'already_subscribed_path' => $request->getParam('already_subscribed_path'),
                 'subscription_failure_path' => $request->getParam('subscription_failure_path'),
                 'continue_path' => $request->getParam('continue_path')
             ]);
