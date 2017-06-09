@@ -34,6 +34,6 @@ $_file = explode("/", $files[$file]);
 $_files = explode(".", end($_file));
 $file_path = "/var/lib/asterisk/sounds/files/" . $name . '/' . current($_files) . '.wav';
 
-$agi->set_variable('FILE_PATH', $file_path);
+$agi->set_variable('FILE_PATH', "files/" . $name . '/' . current($_files) . '.wav');
 
 return 200;
