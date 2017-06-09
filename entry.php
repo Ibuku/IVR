@@ -13,10 +13,7 @@ date_default_timezone_set("Africa/Lagos");
 set_time_limit(30);
 include 'dependencies.php';
 
-$agi = new AGI();
-$ch = curl_init();
-
-$file_path = $agi->get_variable('FILEPATH');
+$file_path = $agi->get_variable('FILE_PATH');
 $campaign_path = preg_replace('/\s+/', '_', $file_path);
 $data = $redis->hgetall($campaign_path);
 

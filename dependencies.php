@@ -14,3 +14,6 @@ use Predis\Client;
 $log = new Logger('recordsLog');
 $handler = new RotatingFileHandler('/home/stikks-workstation/Documents/projects/IVR/logs/activity.log', 0, Logger::INFO);
 $log->pushHandler($handler);
+
+$agi = new AGI();
+$ch = curl_init();
