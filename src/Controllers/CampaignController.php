@@ -416,6 +416,9 @@ class CampaignController extends BaseController
         $file_name = end($file_split);
 
         $mv_file = rename('/var/lib/asterisk/sounds/files/inactive/'. $campaign->username. '/'. $file_name, $campaign->play_path);
+        var_dump('============');
+        var_dump($campaign->play_path);
+        var_dump('/var/lib/asterisk/sounds/files/inactive/'. $campaign->username. '/'. $file_name);
         var_dump($mv_file);
         exit();
 
