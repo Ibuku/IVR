@@ -412,20 +412,24 @@ class CampaignController extends BaseController
             $end_date = null;
         }
 
+        $file_split = explode('/', $campaign->play_path);
+        $file_name = end($file_split);
+
+        $mv_file = rename('/var/lib/asterisk/sounds/files/inactive/'. $campaign->username. '/'. $file_name, $campaign->play_path);
+        var_dump($mv_file);
+        exit();
+
         $campaign->update([
             'is_active' => true,
             'start_date' => date("Y-m-d"),
             'end_date' => $end_date
         ]);
 
-        $file_split = explode('/', $campaign->play_path);
-        $file_name = end($file_split);
-
-        try {
-            rename('/var/lib/asterisk/sounds/files/inactive/'. $campaign->username. '/'. $file_name, $campaign->play_path);
-        }
-        catch (\Exception $e) {
-        }
+//        try {
+//            rename('/var/lib/asterisk/sounds/files/inactive/'. $campaign->username. '/'. $file_name, $campaign->play_path);
+//        }
+//        catch (\Exception $e) {
+//        }
 
         return $response->withStatus(200);
     }
