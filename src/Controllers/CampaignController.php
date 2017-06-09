@@ -146,7 +146,7 @@ class CampaignController extends BaseController
 
             $users = User::all();
 
-            $error =  "A campaign using this audio file already exists";
+            $error =  "Campaign audio file not moved.";
 
             return $this->view->render($response, 'templates/forms/campaign.twig', [
                 'files' => $files,
