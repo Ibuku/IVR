@@ -181,7 +181,9 @@
                     </ul>
 
                     <ul class="breadcrumb-elements">
-                        <li><a href="{{ path_for('settings') }}"><i class="icon-gear position-left"></i> Settings</a></li>
+                        {% if user.is_admin %}
+                            <li><a href="{{ path_for('settings') }}"><i class="icon-gear position-left"></i> Settings</a></li>
+                        {% endif %}
                     </ul>
                 </div>
             </div>
