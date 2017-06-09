@@ -127,14 +127,10 @@ class CampaignController extends BaseController
         $file_name = end($file_split);
 
 //        $command = 'cp '. $file->file_path. ' '. "/var/lib/asterisk/sounds/files/inactive/" . $username . '/'. $file_name;
-//
 //        shell_exec($command);
-        $play_path = "/var/lib/asterisk/sounds/files/inactive/{$username}/{$file_name}";
-        var_dump($play_path);
 
+        $play_path = "/var/lib/asterisk/sounds/files/inactive/{$username}/{$file_name}";
         $file_copy = copy($file->file_path, $play_path);
-        var_dump($file_copy);
-        exit();
 
         if (!$file_copy) {
             $files = Files::where('tag', 'advert')->get();
@@ -171,7 +167,7 @@ class CampaignController extends BaseController
             'value' => $request->getParam('value'),
             'body' => $request->getParam('body'),
             'is_active' => false,
-            'play_path' => "/var/lib/asterisk/sounds/files/" . $username . '/'. $file_name
+            'play_path' => $play_path
         ]);
 
         if ($request->getParam('body') && $request->getParam('number') && $request->getParam('value')) {

@@ -69,7 +69,20 @@ class AccountController extends BaseController
         $sound_folder = 0;
         if (!file_exists('/var/lib/asterisk/sounds/files/'. $request->getParam('name'))) {
             $sound_folder = mkdir('/var/lib/asterisk/sounds/files/'. $request->getParam('name'), 0777, true);
-            chmod(realpath(__DIR__ . '/../..'). '/files/'. $request->getParam('name'), 0777);
+            chmod('/var/lib/asterisk/sounds/files/'. $request->getParam('name'), 0777);
+        }
+
+        if (!$sound_folder) {
+            return $this->view->render($response, 'templates/forms/account.twig', [
+                'user' => $this->auth->user(),
+                'error' => "Account was not created, Couldn't create sounds folder"
+            ]);
+        }
+
+        $inactive_folder = 0;
+        if (!file_exists('/var/lib/asterisk/sounds/files/inactive/'. $request->getParam('name'))) {
+            $sound_folder = mkdir('/var/lib/asterisk/sounds/files/inactive/'. $request->getParam('name'), 0777, true);
+            chmod('/var/lib/asterisk/sounds/files/inactive/'. $request->getParam('name'), 0777);
         }
 
         if (!$sound_folder) {
