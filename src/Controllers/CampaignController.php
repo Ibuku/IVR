@@ -129,8 +129,8 @@ class CampaignController extends BaseController
 //        $command = 'cp '. $file->file_path. ' '. "/var/lib/asterisk/sounds/files/inactive/" . $username . '/'. $file_name;
 //        shell_exec($command);
 
-        $play_path = "/var/lib/asterisk/sounds/files/inactive/{$username}/{$file_name}";
-        $file_copy = copy($file->file_path, $play_path);
+        $play_path = "/var/lib/asterisk/sounds/files/{$username}/{$file_name}";
+        $file_copy = copy($file->file_path, "/var/lib/asterisk/sounds/files/inactive/{$username}/{$file_name}");
 
         if (!$file_copy) {
             $files = Files::where('tag', 'advert')->get();
@@ -375,16 +375,15 @@ class CampaignController extends BaseController
             return $response->withStatus(404);
         };
 
-        $campaign->update([
-            'is_active' => false,
-            'end_date' => date("Y-m-d")
-        ]);
-
         $file_split = explode('/', $campaign->play_path);
         $file_name = end($file_split);
 
         try {
             rename($campaign->play_path, '/var/lib/asterisk/sounds/files/inactive/'. $campaign->username. '/'. $file_name);
+            $campaign->update([
+                'is_active' => false,
+                'end_date' => date("Y-m-d")
+            ]);
         }
         catch (\Exception $e) {
         }
@@ -415,24 +414,16 @@ class CampaignController extends BaseController
         $file_split = explode('/', $campaign->play_path);
         $file_name = end($file_split);
 
-        $mv_file = rename('/var/lib/asterisk/sounds/files/inactive/'. $campaign->username. '/'. $file_name, $campaign->play_path);
-        var_dump('============');
-        var_dump($campaign->play_path);
-        var_dump('/var/lib/asterisk/sounds/files/inactive/'. $campaign->username. '/'. $file_name);
-        var_dump($mv_file);
-        exit();
-
-        $campaign->update([
-            'is_active' => true,
-            'start_date' => date("Y-m-d"),
-            'end_date' => $end_date
-        ]);
-
-//        try {
-//            rename('/var/lib/asterisk/sounds/files/inactive/'. $campaign->username. '/'. $file_name, $campaign->play_path);
-//        }
-//        catch (\Exception $e) {
-//        }
+        try {
+            rename('/var/lib/asterisk/sounds/files/inactive/'. $campaign->username. '/'. $file_name, $campaign->play_path);
+            $campaign->update([
+                'is_active' => true,
+                'start_date' => date("Y-m-d"),
+                'end_date' => $end_date
+            ]);
+        }
+        catch (\Exception $e) {
+        }
 
         return $response->withStatus(200);
     }
