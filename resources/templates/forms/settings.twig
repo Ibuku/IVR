@@ -200,45 +200,6 @@
 
                             <fieldset class="content-group">
                                 <div class="form-group">
-                                    <label class="control-label col-lg-2"><strong>Select Listen Again Prompt</strong></label>
-                                    <div class="col-lg-10">
-                                        <select class="form-control" id="repeat_path" name="repeat_path" required>
-                                            {% for file in files  %}
-                                                <option value="{{ file.file_path }}" {% if setting.repeat_path == file.file_path %}selected{% endif %}>{{ file.name }}</option>
-                                            {% endfor %}
-                                        </select>
-                                    </div>
-                                </div>
-                            </fieldset>
-
-                            <fieldset class="content-group">
-                                <div class="form-group">
-                                    <label class="control-label col-lg-2"><strong>Select Confirmation Prompt</strong></label>
-                                    <div class="col-lg-10">
-                                        <select class="form-control" id="confirmation_path" name="confirmation_path" required>
-                                            {% for file in files  %}
-                                                <option value="{{ file.file_path }}" {% if setting.confirmation_path == file.file_path %}selected{% endif %}>{{ file.name }}</option>
-                                            {% endfor %}
-                                        </select>
-                                    </div>
-                                </div>
-                            </fieldset>
-
-                            <fieldset class="content-group">
-                                <div class="form-group">
-                                    <label class="control-label col-lg-2"><strong>Select Wrong Selection Prompt</strong></label>
-                                    <div class="col-lg-10">
-                                        <select class="form-control" id="wrong_path" name="wrong_path" required>
-                                            {% for file in files  %}
-                                                <option value="{{ file.file_path }}" {% if setting.wrong_path == file.file_path %}selected{% endif %}>{{ file.name }}</option>
-                                            {% endfor %}
-                                        </select>
-                                    </div>
-                                </div>
-                            </fieldset>
-
-                            <fieldset class="content-group">
-                                <div class="form-group">
                                     <label class="control-label col-lg-2"><strong>Select No Selection Prompt</strong></label>
                                     <div class="col-lg-10">
                                         <select class="form-control" id="no_selection_path" name="no_selection_path" required>
@@ -250,14 +211,26 @@
                                 </div>
                             </fieldset>
 
+                            <fieldset class="content-group">
+                                <div class="form-group">
+                                    <label class="control-label col-lg-2"><strong>Select No Selection Repeat Advert Prompt</strong></label>
+                                    <div class="col-lg-10">
+                                        <select class="form-control" id="no_selection_repeat_path" name="no_selection_repeat_path" required>
+                                            {% for file in files  %}
+                                                <option value="{{ file.file_path }}" {% if setting.no_selection_repeat_path == file.file_path %}selected{% endif %}>{{ file.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                            </fieldset>
 
                             <fieldset class="content-group">
                                 <div class="form-group">
-                                    <label class="control-label col-lg-2"><strong>Select Selection Confirmation Prompt</strong></label>
+                                    <label class="control-label col-lg-2"><strong>Select No Selection Confirm Subscription Prompt</strong></label>
                                     <div class="col-lg-10">
-                                        <select class="form-control" id="selection_confirmation_path" name="selection_confirmation_path" required>
+                                        <select class="form-control" id="no_selection_confirm_subscription_path" name="no_selection_confirm_subscription_path" required>
                                             {% for file in files  %}
-                                                <option value="{{ file.file_path }}" {% if setting.selection_confirmation_path == file.file_path %}selected{% endif %}>{{ file.name }}</option>
+                                                <option value="{{ file.file_path }}" {% if setting.no_selection_confirm_subscription_path == file.file_path %}selected{% endif %}>{{ file.name }}</option>
                                             {% endfor %}
                                         </select>
                                     </div>
@@ -271,6 +244,58 @@
                                         <select class="form-control" id="success_path" name="success_path" required>
                                             {% for file in files  %}
                                                 <option value="{{ file.file_path }}" {% if setting.success_path == file.file_path %}selected{% endif %}>{{ file.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                            </fieldset>
+
+                            <fieldset class="content-group">
+                                <div class="form-group">
+                                    <label class="control-label col-lg-2"><strong>Select Goodbye Prompt</strong></label>
+                                    <div class="col-lg-10">
+                                        <select class="form-control" id="goodbye_path" name="goodbye_path" required>
+                                            {% for file in files  %}
+                                                <option value="{{ file.file_path }}" {% if setting.goodbye_path == file.file_path %}selected{% endif %}>{{ file.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                            </fieldset>
+
+                            <fieldset class="content-group">
+                                <div class="form-group">
+                                    <label class="control-label col-lg-2"><strong>Select Subscription Prompt</strong></label>
+                                    <div class="col-lg-10">
+                                        <select class="form-control" id="subscription_path" name="subscription_path" required>
+                                            {% for file in files  %}
+                                                <option value="{{ file.file_path }}" {% if setting.subscription_path == file.file_path %}selected{% endif %}>{{ file.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                            </fieldset>
+
+                            <fieldset class="content-group">
+                                <div class="form-group">
+                                    <label class="control-label col-lg-2"><strong>Select Subscription Confirmation Prompt</strong></label>
+                                    <div class="col-lg-10">
+                                        <select class="form-control" id="subscription_confirmation_path" name="subscription_confirmation_path" required>
+                                            {% for file in files  %}
+                                                <option value="{{ file.file_path }}" {% if setting.subscription_confirmation_path == file.file_path %}selected{% endif %}>{{ file.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                            </fieldset>
+
+                            <fieldset class="content-group">
+                                <div class="form-group">
+                                    <label class="control-label col-lg-2"><strong>Select Already Subscribed Prompt</strong></label>
+                                    <div class="col-lg-10">
+                                        <select class="form-control" id="already_subscribed_path" name="already_subscribed_path" required>
+                                            {% for file in files  %}
+                                                <option value="{{ file.file_path }}" {% if setting.already_subscribed_path == file.file_path %}selected{% endif %}>{{ file.name }}</option>
                                             {% endfor %}
                                         </select>
                                     </div>
@@ -297,19 +322,6 @@
                                         <select class="form-control" id="continue_path" name="continue_path" required>
                                             {% for file in files  %}
                                                 <option value="{{ file.file_path }}" {% if setting.continue_path == file.file_path %}selected{% endif %}>{{ file.name }}</option>
-                                            {% endfor %}
-                                        </select>
-                                    </div>
-                                </div>
-                            </fieldset>
-
-                            <fieldset class="content-group">
-                                <div class="form-group">
-                                    <label class="control-label col-lg-2"><strong>Select Goodbye Prompt</strong></label>
-                                    <div class="col-lg-10">
-                                        <select class="form-control" id="goodbye_path" name="goodbye_path" required>
-                                            {% for file in files  %}
-                                                <option value="{{ file.file_path }}" {% if setting.goodbye_path == file.file_path %}selected{% endif %}>{{ file.name }}</option>
                                             {% endfor %}
                                         </select>
                                     </div>

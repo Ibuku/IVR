@@ -40,32 +40,34 @@ class SettingsController extends BaseController
         if ($settings) {
             $settings->update([
                 'advert_limit' => $request->getParam('advert_limit'),
+                'default_settings' => true,
                 'incorrect_path' => $request->getParam('incorrect_path'),
-                'repeat_path' => $request->getParam('repeat_path'),
-                'confirmation_path' => $request->getParam('confirmation_path'),
-                'continue_path' => $request->getParam('continue_path'),
-                'wrong_path' => $request->getParam('wrong_path'),
                 'no_selection_path' => $request->getParam('no_selection_path'),
-                'selection_confirmation_path' => $request->getParam('selection_confirmation_path'),
-                'subscription_failure_path' => $request->getParam('subscription_failure_path'),
+                'no_selection_repeat_path' => $request->getParam('no_selection_repeat_path'),
+                'no_selection_confirm_subscription_path' => $request->getParam('no_selection_confirm_subscription_path'),
                 'success_path' => $request->getParam('success_path'),
                 'goodbye_path' => $request->getParam('goodbye_path'),
-                'default_settings' => true
+                'subscription_path' => $request->getParam('subscription_path'),
+                'subscription_confirmation_path' => $request->getParam('subscription_confirmation_path'),
+                'already_subscribed_path' => $request->getParam('already_subscribed_path'),
+                'subscription_failure_path' => $request->getParam('subscription_failure_path'),
+                'continue_path' => $request->getParam('continue_path')
             ]);
         } else {
             $settings = Settings::create([
                 'advert_limit' => $request->getParam('advert_limit'),
+                'default_settings' => true,
                 'incorrect_path' => $request->getParam('incorrect_path'),
-                'repeat_path' => $request->getParam('repeat_path'),
-                'confirmation_path' => $request->getParam('confirmation_path'),
-                'continue_path' => $request->getParam('continue_path'),
-                'wrong_path' => $request->getParam('wrong_path'),
                 'no_selection_path' => $request->getParam('no_selection_path'),
-                'selection_confirmation_path' => $request->getParam('selection_confirmation_path'),
-                'subscription_failure_path' => $request->getParam('subscription_failure_path'),
+                'no_selection_repeat_path' => $request->getParam('no_selection_repeat_path'),
+                'no_selection_confirm_subscription_path' => $request->getParam('no_selection_confirm_subscription_path'),
                 'success_path' => $request->getParam('success_path'),
                 'goodbye_path' => $request->getParam('goodbye_path'),
-                'default_settings' => true
+                'subscription_path' => $request->getParam('subscription_path'),
+                'subscription_confirmation_path' => $request->getParam('subscription_confirmation_path'),
+                'already_subscribed' => $request->getParam('already_subscribed'),
+                'subscription_failure_path' => $request->getParam('subscription_failure_path'),
+                'continue_path' => $request->getParam('continue_path')
             ]);
         }
 
@@ -75,39 +77,6 @@ class SettingsController extends BaseController
             return $this->view->render($response, 'templates/forms/settings.twig', [
                 'user' => $user,
                 'error' => 'Incorrect prompt not saved',
-                'files' => Files::where('tag', 'prompt')->get(),
-                'setting' => $settings
-            ]);
-        }
-
-        $repeat_copy = copy($settings->repeat_path, "/var/lib/asterisk/sounds/defaults/repeat.wav");
-
-        if (!$repeat_copy) {
-            return $this->view->render($response, 'templates/forms/settings.twig', [
-                'user' => $user,
-                'error' => 'Repeat prompt not saved',
-                'files' => Files::where('tag', 'prompt')->get(),
-                'setting' => $settings
-            ]);
-        }
-
-        $con_copy = copy($settings->confirmation_path, "/var/lib/asterisk/sounds/defaults/confirmation.wav");
-
-        if (!$con_copy) {
-            return $this->view->render($response, 'templates/forms/settings.twig', [
-                'user' => $user,
-                'error' => 'Confirmation prompt not saved',
-                'files' => Files::where('tag', 'prompt')->get(),
-                'setting' => $settings
-            ]);
-        }
-
-        $wrong_copy = copy($settings->wrong_path, "/var/lib/asterisk/sounds/defaults/wrong.wav");
-
-        if (!$wrong_copy) {
-            return $this->view->render($response, 'templates/forms/settings.twig', [
-                'user' => $user,
-                'error' => 'Wrong Selection prompt not saved',
                 'files' => Files::where('tag', 'prompt')->get(),
                 'setting' => $settings
             ]);
@@ -124,12 +93,23 @@ class SettingsController extends BaseController
             ]);
         }
 
-        $selection_copy = copy($settings->selection_confirmation_path, "/var/lib/asterisk/sounds/defaults/selection_confirmation.wav");
+        $repeat_copy = copy($settings->no_selection_repeat_path, "/var/lib/asterisk/sounds/defaults/no_selection_repeat.wav");
 
-        if (!$selection_copy) {
+        if (!$repeat_copy) {
             return $this->view->render($response, 'templates/forms/settings.twig', [
                 'user' => $user,
-                'error' => 'Selection Confirmation prompt not saved',
+                'error' => 'Repeat prompt not saved',
+                'files' => Files::where('tag', 'prompt')->get(),
+                'setting' => $settings
+            ]);
+        }
+
+        $con_copy = copy($settings->no_selection_confirm_subscription_path, "/var/lib/asterisk/sounds/defaults/no_selection_confirm_subscription.wav");
+
+        if (!$con_copy) {
+            return $this->view->render($response, 'templates/forms/settings.twig', [
+                'user' => $user,
+                'error' => 'Confirmation prompt not saved',
                 'files' => Files::where('tag', 'prompt')->get(),
                 'setting' => $settings
             ]);
@@ -146,28 +126,6 @@ class SettingsController extends BaseController
             ]);
         }
 
-        $failure_copy = copy($settings->subscription_failure_path, "/var/lib/asterisk/sounds/defaults/failure.wav");
-
-        if (!$failure_copy) {
-            return $this->view->render($response, 'templates/forms/settings.twig', [
-                'user' => $user,
-                'error' => 'Subscription Failure prompt not saved',
-                'files' => Files::where('tag', 'prompt')->get(),
-                'setting' => $settings
-            ]);
-        }
-
-        $continue_copy = copy($settings->continue_path, "/var/lib/asterisk/sounds/defaults/continue.wav");
-
-        if (!$continue_copy) {
-            return $this->view->render($response, 'templates/forms/settings.twig', [
-                'user' => $user,
-                'error' => 'Continue prompt not saved',
-                'files' => Files::where('tag', 'prompt')->get(),
-                'setting' => $settings
-            ]);
-        }
-
         $goodbye_copy = copy($settings->goodbye_path, "/var/lib/asterisk/sounds/defaults/goodbye.wav");
 
         if (!$goodbye_copy) {
@@ -179,50 +137,77 @@ class SettingsController extends BaseController
             ]);
         }
 
-//        $incorrect_command = 'cp ' . $settings->incorrect_path . ' ' . "/var/lib/asterisk/sounds/defaults/incorrect.wav";
-//        shell_exec($incorrect_command);
+        $sub_copy = copy($settings->subscription_path, "/var/lib/asterisk/sounds/defaults/subscription.wav");
 
-//        $repeat_command = 'cp ' . $settings->repeat_path . ' ' . "/var/lib/asterisk/sounds/defaults/repeat.wav";
-//        shell_exec($repeat_command);
+        if (!$sub_copy) {
+            return $this->view->render($response, 'templates/forms/settings.twig', [
+                'user' => $user,
+                'error' => 'Wrong Selection prompt not saved',
+                'files' => Files::where('tag', 'prompt')->get(),
+                'setting' => $settings
+            ]);
+        }
 
-//        $con_command = 'cp ' . $settings->confirmation_path . ' ' . "/var/lib/asterisk/sounds/defaults/confirmation.wav";
-//        shell_exec($con_command);
+        $sub_confirm_copy = copy($settings->subscription_confirmation_path, "/var/lib/asterisk/sounds/defaults/subscription_confirmation.wav");
 
-//        $settings_command = 'cp ' . $settings->goodbye_path . ' ' . "/var/lib/asterisk/sounds/defaults/goodbye.wav";
-//        shell_exec($settings_command);
+        if (!$sub_confirm_copy) {
+            return $this->view->render($response, 'templates/forms/settings.twig', [
+                'user' => $user,
+                'error' => 'Selection Confirmation prompt not saved',
+                'files' => Files::where('tag', 'prompt')->get(),
+                'setting' => $settings
+            ]);
+        }
 
-//        $wrong_command = 'cp ' . $settings->wrong_path . ' ' . "/var/lib/asterisk/sounds/defaults/wrong.wav";
-//        shell_exec($wrong_command);
+        $already_subscribed_copy = copy($settings->already_subscribed_path, "/var/lib/asterisk/sounds/defaults/already_subscribed.wav");
 
-//        $success_command = 'cp ' . $settings->success_path . ' ' . "/var/lib/asterisk/sounds/defaults/success.wav";
-//        shell_exec($success_command);
+        if (!$already_subscribed_copy) {
+            return $this->view->render($response, 'templates/forms/settings.twig', [
+                'user' => $user,
+                'error' => 'Continue prompt not saved',
+                'files' => Files::where('tag', 'prompt')->get(),
+                'setting' => $settings
+            ]);
+        }
 
-//        $no_selection_command = 'cp ' . $settings->no_selection_path . ' ' . "/var/lib/asterisk/sounds/defaults/no_selection.wav";
-//        shell_exec($no_selection_command);
+        $failure_copy = copy($settings->subscription_failure_path, "/var/lib/asterisk/sounds/defaults/subscription_failure.wav");
 
-//        $select_command = 'cp ' . $settings->selection_confirmation_path . ' ' . "/var/lib/asterisk/sounds/defaults/selection_confirmation.wav";
-//        shell_exec($select_command);
+        if (!$failure_copy) {
+            return $this->view->render($response, 'templates/forms/settings.twig', [
+                'user' => $user,
+                'error' => 'Subscription Failure prompt not saved',
+                'files' => Files::where('tag', 'prompt')->get(),
+                'setting' => $settings
+            ]);
+        }
 
-//        $sub_failure_command = 'cp ' . $settings->subscription_failure_path . ' ' . "/var/lib/asterisk/sounds/defaults/failure.wav";
-//        shell_exec($sub_failure_command);
+        $continue_copy = copy($settings->continue_path, "/var/lib/asterisk/sounds/defaults/continue.wav");
+        shell_exec($continue_copy);
 
-//        $continue_command = 'cp ' . $settings->continue_path . ' ' . "/var/lib/asterisk/sounds/defaults/continue.wav";
-//        shell_exec($continue_command);
+        if (!$continue_copy) {
+            return $this->view->render($response, 'templates/forms/settings.twig', [
+                'user' => $user,
+                'error' => 'Continue listening prompt not saved',
+                'files' => Files::where('tag', 'prompt')->get(),
+                'setting' => $settings
+            ]);
+        }
 
         Index::index('settings', [
                 'id' => $settings->id,
                 'advert_limit' => $settings->advert_limit,
-                'incorrect_path' => $settings->incorrect_path,
-                'repeat_path' => $settings->repeat_path,
-                'confirmation_path' => $settings->confirmation_path,
-                'goodbye_path' => $settings->goodbye_path,
-                'wrong_path' => $settings->wrong_path,
-                'success_path' => $settings->success_path,
-                'no_selection_path' => $settings->no_selection_path,
-                'selection_confirmation_path' => $settings->selection_confirmation_path,
-                'default_settings' => $settings->default,
-                'subscription_failure_path' => $settings->subscription_failure_path,
-                'continue_path' => $settings->continue_path
+                'default_settings' => true,
+                'incorrect_path' => "/var/lib/asterisk/sounds/defaults/incorrect.wav",
+                'no_selection_path' => "/var/lib/asterisk/sounds/defaults/no_selection.wav",
+                'no_selection_repeat_path' => "/var/lib/asterisk/sounds/defaults/no_selection_repeat.wav",
+                'no_selection_confirm_subscription_path' => "/var/lib/asterisk/sounds/defaults/no_selection_confirm_subscription.wav",
+                'success_path' => "/var/lib/asterisk/sounds/defaults/success.wav",
+                'goodbye_path' => "/var/lib/asterisk/sounds/defaults/goodbye.wav",
+                'subscription_path' => "/var/lib/asterisk/sounds/defaults/subscription.wav",
+                'subscription_confirmation_path' => "/var/lib/asterisk/sounds/defaults/subscription_confirmation.wav",
+                'already_subscribed_path' => "/var/lib/asterisk/sounds/defaults/already_subscribed.wav",
+                'subscription_failure_path' => "/var/lib/asterisk/sounds/defaults/subscription_failure.wav",
+                'continue_path' => "/var/lib/asterisk/sounds/defaults/continue.wav"
             ]
         );
 

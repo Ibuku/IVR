@@ -17,17 +17,16 @@ class Settings extends Model
 
     protected $fillable = [
         "advert_limit",
+        "default_settings",
         "incorrect_path",
-        "repeat_path",
-        "confirmation_path",
-        "wrong_path",
-        "success_path",
-        "failure_path",
-        "goodbye_path",
-        "continue_path",
         "no_selection_path",
-        "selection_confirmation_path",
-        "subscription_failure_path",
-        "default_settings"
+        "no_selection_repeat_path",
+        "no_selection_confirm_subscription_path",
+        "success_path",
+        "goodbye_path",
+        "subscription_path",
+        "subscription_confirmation_path",
+        "already_subscribed_path",
+        "subscription_failure_path"
     ];
 }
