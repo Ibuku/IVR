@@ -5,11 +5,53 @@
 # Required-Stop:   $local_fs $remote_fs $network
 # Default-Start:   2 3 4 5
 # Default-Stop:    0 1 6
-# Short-Description: PM2 Init script
-# Description: PM2 process manager
+# Short-Description: Amportal Init script
+# Description: Amportal process manager
 ### END INIT INFO
 
-NAME=pm2
-PM2=/usr/local/lib/node_modules/pm2/bin/pm2
+NAME=amportal
+DAEMON=/usr/local/sbin/amportal
 USER=root
-DEFAULT=/etc/default/$NAME
+
+
+start() {
+    echo "Starting $NAME"
+    exec $DAEMON start
+}
+
+stop() {
+    echo "Stopping $NAME"
+    exec $DAEMON stop
+}
+
+restart() {
+    echo "Restarting $NAME"
+    stop
+    start
+}
+
+status() {
+    echo "Status for $NAME:"
+    RETVAL=$?
+}
+
+
+case “$1″ in
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    status)
+        status
+        ;;
+    restart
+        restart
+        ;;
+    *)
+        echo "Usage: {start|stop|status|restart}"
+        exit 1
+        ;;
+esac
+exit $RETVAL
