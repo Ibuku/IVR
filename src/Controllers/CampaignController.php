@@ -369,6 +369,10 @@ class CampaignController extends BaseController
         $user = $this->auth->user();
         $match = ['username' => $user->username, 'id' => $args['campaign_id']];
 
+        if ($user->username == $this->settings['DEFAULT_ACCOUNT']) {
+            $match = ['id' => $args['campaign_id']];
+        }
+
         $campaign = Campaign::where($match)->first();
 
         if (!$campaign) {
@@ -399,6 +403,10 @@ class CampaignController extends BaseController
 
         $user = $this->auth->user();
         $match = ['username' => $user->username, 'id' => $args['campaign_id']];
+
+        if ($user->username == $this->settings['DEFAULT_ACCOUNT']) {
+            $match = ['id' => $args['campaign_id']];
+        }
 
         $campaign = Campaign::where($match)->first();
 
