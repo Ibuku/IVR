@@ -26,6 +26,9 @@ if ($current == "etisalat") {
     $current = $redis->set("current", "etisalat");
 }
 
+var_dump($agi);
+exit();
+
 $agi->set_variable('CURRENT', $name);
 
 $files = glob("/var/lib/asterisk/sounds/files/" . $name . '/*.wav');
