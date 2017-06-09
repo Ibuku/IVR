@@ -51,7 +51,8 @@ class SettingsController extends BaseController
                 'subscription_confirmation_path' => $request->getParam('subscription_confirmation_path'),
                 'already_subscribed_path' => $request->getParam('already_subscribed_path'),
                 'subscription_failure_path' => $request->getParam('subscription_failure_path'),
-                'continue_path' => $request->getParam('continue_path')
+                'continue_path' => $request->getParam('continue_path'),
+                'wrong_selection_path' => $request->getParam('wrong_selection_path')
             ]);
         } else {
             $settings = Settings::create([
@@ -67,7 +68,8 @@ class SettingsController extends BaseController
                 'subscription_confirmation_path' => $request->getParam('subscription_confirmation_path'),
                 'already_subscribed_path' => $request->getParam('already_subscribed_path'),
                 'subscription_failure_path' => $request->getParam('subscription_failure_path'),
-                'continue_path' => $request->getParam('continue_path')
+                'continue_path' => $request->getParam('continue_path'),
+                'wrong_selection_path' => $request->getParam('wrong_selection_path')
             ]);
         }
 
@@ -193,6 +195,18 @@ class SettingsController extends BaseController
             ]);
         }
 
+        $wrong_copy = copy($settings->wrong_selection_path, "/var/lib/asterisk/sounds/defaults/wrong.wav");
+        shell_exec($wrong_copy);
+
+        if (!$wrong_copy) {
+            return $this->view->render($response, 'templates/forms/settings.twig', [
+                'user' => $user,
+                'error' => 'Wrong Selection prompt not saved',
+                'files' => Files::where('tag', 'prompt')->get(),
+                'setting' => $settings
+            ]);
+        }
+
         Index::index('settings', [
                 'id' => $settings->id,
                 'advert_limit' => $settings->advert_limit,
@@ -207,7 +221,8 @@ class SettingsController extends BaseController
                 'subscription_confirmation_path' => "/var/lib/asterisk/sounds/defaults/subscription_confirmation.wav",
                 'already_subscribed_path' => "/var/lib/asterisk/sounds/defaults/already_subscribed.wav",
                 'subscription_failure_path' => "/var/lib/asterisk/sounds/defaults/subscription_failure.wav",
-                'continue_path' => "/var/lib/asterisk/sounds/defaults/continue.wav"
+                'continue_path' => "/var/lib/asterisk/sounds/defaults/continue.wav",
+                "wrong_selection_path" => "/var/lib/asterisk/sounds/defaults/wrong.wav",
             ]
         );
 

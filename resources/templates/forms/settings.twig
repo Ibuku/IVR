@@ -291,6 +291,20 @@
 
                             <fieldset class="content-group">
                                 <div class="form-group">
+                                    <label class="control-label col-lg-2"><strong>Select Wrong Selection Prompt</strong></label>
+                                    <div class="col-lg-10">
+                                        <select class="form-control" id="wrong_selection_path" name="wrong_selection_path" required>
+                                            {% for file in files  %}
+                                                <option value="{{ file.file_path }}" {% if setting.wrong_selection_path == file.file_path %}selected{% endif %}>{{ file.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                            </fieldset>
+
+
+                            <fieldset class="content-group">
+                                <div class="form-group">
                                     <label class="control-label col-lg-2"><strong>Select Already Subscribed Prompt</strong></label>
                                     <div class="col-lg-10">
                                         <select class="form-control" id="already_subscribed_path" name="already_subscribed_path" required>

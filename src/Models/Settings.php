@@ -28,6 +28,7 @@ class Settings extends Model
         "subscription_confirmation_path",
         "already_subscribed_path",
         "subscription_failure_path",
-        "continue_path"
+        "continue_path",
+        "wrong_selection_path"
     ];
 }

@@ -126,6 +126,7 @@ $settings = "CREATE TABLE IF NOT EXISTS settings(
   already_subscribed_path TEXT NOT NULL,
   subscription_failure_path TEXT NOT NULL,
   continue_path TEXT NOT NULL,
+  wrong_selection_path TEXT NOT NULL,
   updated_at date DEFAULT NULL,
   created_at date DEFAULT NULL
 );";
