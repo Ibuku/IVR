@@ -120,15 +120,42 @@ class CampaignController extends BaseController
         ]);
 
         if ($validation->failed()) {
-            return $response->withRedirect($this->router->pathFor('register'));
+            return $response->withRedirect($this->router->pathFor('create_campaign'));
         }
 
         $file_split = explode('/', $file->file_path);
         $file_name = end($file_split);
 
-        $command = 'cp '. $file->file_path. ' '. "/var/lib/asterisk/sounds/files/inactive/" . $username . '/'. $file_name;
+//        $command = 'cp '. $file->file_path. ' '. "/var/lib/asterisk/sounds/files/inactive/" . $username . '/'. $file_name;
+//
+//        shell_exec($command);
 
-        shell_exec($command);
+        $file_copy = copy($file->file_path, "/var/lib/asterisk/sounds/files/inactive/{$username}/{$file_name}");
+
+        if (!$file_copy) {
+            $files = Files::where('tag', 'advert')->get();
+
+            if ($user->username != $this->settings['DEFAULT_ACCOUNT']) {
+                $match = ['tag'=>'advert', 'username'=>$user->username];
+                $files = Files::where($match)->get();
+            }
+
+            $options = [
+                array("name" => "Subscribe", "value" => "subscribe")
+            ];
+
+            $users = User::all();
+
+            $error =  "A campaign using this audio file already exists";
+
+            return $this->view->render($response, 'templates/forms/campaign.twig', [
+                'files' => $files,
+                'options' => $options,
+                'user' => $user,
+                'error' => $error,
+                'users' => $users
+            ]);
+        }
 
         $campaign = Campaign::create([
             'username' => $username,
@@ -158,18 +185,6 @@ class CampaignController extends BaseController
                 'parameter' => $value['parameter'],
                 'campaign_id' => $campaign->id
             ]);
-
-//            Index::index('action', [
-//                'number' => $action->number,
-//                'value' => $action->value,
-//                'body' => $action->body,
-//                'repeat_param' => $action->repeat_param,
-//                'confirm' => $action->confirm,
-//                'parameter' => $action->parameter,
-//                'request' => $action->request,
-//                'campaign_id' => $campaign->id,
-//                'id' => $action->id,
-//            ]);
 
             Index::save_redis($campaign->play_path. ':'. $action->number, [
                 'number' => $action->number,
@@ -251,7 +266,6 @@ class CampaignController extends BaseController
             'action' => $action,
             'options' => [
                 array("name" => "Subscribe", "value" => "subscribe")
-//                array("name" => "Send Message", "value" => "send_message")
             ]
         ]);
     }
