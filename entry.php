@@ -14,8 +14,6 @@ set_time_limit(30);
 include 'dependencies.php';
 
 $file_path = $agi->get_variable('FILE_PATH');
-var_dump($file_path);
-exit();
 $campaign_path = preg_replace('/\s+/', '_', $file_path);
 $data = $redis->hgetall($campaign_path);
 
