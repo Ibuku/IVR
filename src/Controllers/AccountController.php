@@ -81,14 +81,14 @@ class AccountController extends BaseController
 
         $inactive_folder = 0;
         if (!file_exists('/var/lib/asterisk/sounds/files/inactive/'. $request->getParam('name'))) {
-            $sound_folder = mkdir('/var/lib/asterisk/sounds/files/inactive/'. $request->getParam('name'), 0777, true);
+            $inactive_folder = mkdir('/var/lib/asterisk/sounds/files/inactive/'. $request->getParam('name'), 0777, true);
             chmod('/var/lib/asterisk/sounds/files/inactive/'. $request->getParam('name'), 0777);
         }
 
-        if (!$sound_folder) {
+        if (!$inactive_folder) {
             return $this->view->render($response, 'templates/forms/account.twig', [
                 'user' => $this->auth->user(),
-                'error' => "Account was not created, Couldn't create sounds folder"
+                'error' => "Account was not created, Couldn't create inactive sounds folder"
             ]);
         }
 
