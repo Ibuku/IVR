@@ -1,4 +1,4 @@
-#!/usr/local/bin/php -q
+#!/usr/bin/php -q
 <?php
 /**
  * @package phpAGI_examples
@@ -9,34 +9,34 @@
 date_default_timezone_set("Africa/Lagos");
 
 set_time_limit(30);
-require('phpagi.php');
-require('/opt/ivr/vendor/predis/predis/autoload.php');
+include 'dependencies.php';
 use Predis\Client;
 
-$agi = new AGI();
-$ch = curl_init();
-$sys_count = 1;
+$redis = new Client();
 
 $data = $redis->hgetall($campaign_path);
 $uniqueid = $agi->get_variable('CDR(uniqueid)')['data'].'_'.$agi->get_variable('CDR(src)')['data'];
 $text = preg_replace('/\s+/', '_', $data['play_path']);
-$query =  $text. ':'. $result;
+$query =  $text. ':*';
 $values = $redis->hgetall($query);
 
 if ($values) {
+    try {
 
-    $subscribe_url = 'http://localhost:4043/elastic/cdr/subscribe';
-    curl_setopt($ch, CURLOPT_URL, $subscribe_url);
-    curl_setopt($ch, CURLOPT_POST, 1);
+        $subscribe_url = 'http://localhost:4043/elastic/cdr/subscribe';
+        curl_setopt($ch, CURLOPT_URL, $subscribe_url);
+        curl_setopt($ch, CURLOPT_POST, 1);
 
-    $body = array(
-        "uniqueid" => $uniqueid,
-        "userfield" => $data['id']
-    );
-    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($body));
-    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
-    curl_exec($ch);
-    $agi->noop();
+        $body = array(
+            "uniqueid" => $uniqueid,
+            "userfield" => $data['id']
+        );
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($body));
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+        curl_exec($ch);
+    } catch (Exception $e) {
+        echo $e;
+    }
 }
 
 return 200;
