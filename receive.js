@@ -7,7 +7,7 @@ amqp.connect('amqp://localhost', function(err, conn) {
         var q = 'ivr';
 
         ch.assertQueue(q, {durable: false});
-        // ch.prefetch(1);
+        ch.prefetch(1);
         console.log(" [*] Waiting for messages in %s. To exit press CTRL+C", q);
         ch.consume(q, function(msg) {
             var _data = msg.content.toString();
