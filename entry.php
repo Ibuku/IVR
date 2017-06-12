@@ -12,9 +12,13 @@ date_default_timezone_set("Africa/Lagos");
 
 set_time_limit(30);
 include 'dependencies.php';
+use Predis\Client;
 
-$file_path = $agi->get_variable('FILE_PATH');
+$result = $agi->get_variable('FILE_PATH');
+$file_path = $result['data'];
 $campaign_path = preg_replace('/\s+/', '_', $file_path);
+
+$redis = new Client();
 $data = $redis->hgetall($campaign_path);
 
 // record missing audio call

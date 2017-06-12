@@ -25,17 +25,6 @@ var client = elasticsearch.Client({
     log: 'trace'
 });
 
-//Search for campaign where this file_path matches
-
-// var findByID = function (campaign_id) {
-//     client.get({
-//         index: 'ivr',
-//         type: 'campagin',
-//         id: campaign_id
-//     }).then(function (resp) {
-//         return resp.hits.hits[0]._id;
-//     });
-// };
 
 client.ping({
     // ping usually has a 3000ms timeout

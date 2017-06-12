@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
 var elastic = require('./routes/elastic');
+var elastic_server = require('./routes/server');
 
 var app = express();
 
@@ -43,7 +44,7 @@ app.use(function (req, res, next) {
 
 
 app.use('/', routes);
-app.use('/elastic', elastic);
+app.use('/elastic', elastic_server);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) { 
