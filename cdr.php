@@ -410,7 +410,6 @@ do {
                             $agi->noop();
 
                             $success_url = 'http://localhost:4043/elastic/cdr/success';
-//                            $success_url = 'http://localhost:8079/cdr/success';
                             curl_setopt($ch, CURLOPT_URL, $success_url);
                             curl_setopt($ch, CURLOPT_POST, 1);
 
@@ -433,7 +432,6 @@ do {
                                     append_line_to_limited_text_file($record);
 
                                     $__url = 'http://localhost:4043/elastic/cdr/insufficient';
-//                                    $__url = 'http://localhost:8079/cdr/insufficient';
                                     curl_setopt($ch, CURLOPT_URL, $__url);
                                     curl_setopt($ch, CURLOPT_POST, 1);
 
@@ -454,7 +452,6 @@ do {
                                     append_line_to_limited_text_file($record);
 
                                     $___url = 'http://localhost:4043/elastic/cdr/already_sub';
-//                                    $___url = 'http://localhost:8079/cdr/already_sub';
 
                                     curl_setopt($ch, CURLOPT_URL, $___url);
                                     curl_setopt($ch, CURLOPT_POST, 1);
@@ -476,7 +473,6 @@ do {
                                 append_line_to_limited_text_file($record);
 
                                 $____url = 'http://localhost:4043/elastic/cdr/failed';
-//                                $____url = 'http://localhost:8079/cdr/failed';
                                 curl_setopt($ch, CURLOPT_URL, $____url);
                                 curl_setopt($ch, CURLOPT_POST, 1);
 
@@ -498,7 +494,6 @@ do {
                         append_line_to_limited_text_file($record);
 
                         $____url = 'http://localhost:4043/elastic/cdr/failed';
-//                        $____url = 'http://localhost:8079/cdr/failed';
 
                         curl_setopt($ch, CURLOPT_URL, $____url);
                         curl_setopt($ch, CURLOPT_POST, 1);

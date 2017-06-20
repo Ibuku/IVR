@@ -18,6 +18,10 @@ $result = $agi->get_variable('FILE_PATH');
 $file_path = $result['data'];
 $campaign_path = preg_replace('/\s+/', '_', $file_path);
 
+$agi->set_variable('CAMPAIGN_PATH', $campaign_path);
+$unique_id = $agi->get_variable('CDR(uniqueid)')['data'].'_'.$agi->get_variable('CDR(src)')['data'];
+$agi->set_variable('UNIQUEID', $unique_id);
+
 $redis = new Client();
 $data = $redis->hgetall($campaign_path);
 
@@ -63,7 +67,7 @@ try {
         "src" => $agi->get_variable('CDR(src)')['data'],
         "duration" => $agi->get_variable('CDR(duration)')['data'],
         "billsec" => $agi->get_variable('CDR(billsec)')['data'],
-        "uniqueid" => $agi->get_variable('CDR(uniqueid)')['data'].'_'.$agi->get_variable('CDR(src)')['data'],
+        "uniqueid" => $unique_id,
         "campaign_name" => $data['name'],
         "file_path" => $data['play_path'],
         "userfield" => $data['id']
