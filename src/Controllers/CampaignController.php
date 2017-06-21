@@ -257,6 +257,18 @@ class CampaignController extends BaseController
 
         $action = Action::where('campaign_id', $campaign->id)->first();
 
+        Index::save_redis($campaign->play_path. ':'. $action->number, [
+            'number' => $action->number,
+            'value' => $action->value,
+            'body' => $action->body,
+            'repeat_param' => $action->repeat_param,
+            'confirm' => $action->confirm,
+            'parameter' => $action->parameter,
+            'request' => $action->request,
+            'campaign_id' => $campaign->id,
+            'id' => $action->id,
+        ]);
+
         return $this->view->render($response, 'templates/forms/update_campaign.twig', [
             'campaign' => $campaign,
             'user' => $user,
