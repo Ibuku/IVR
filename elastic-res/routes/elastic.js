@@ -7,6 +7,14 @@ function getStart(d) {
     return new Date(x);
 }
 
+var groupBy = function (xs, key) {
+    return xs.reduce(function (rv, x) {
+            (rv[x[key]] = rv[x[key]] || []).push(x);
+            return rv;
+        }, {}
+    );
+};
+
 var express = require('express');
 var router = express.Router();
 
@@ -873,19 +881,6 @@ router.get('/elasticsearch/data', function (req, res, next) {
         index: 'ivr',
         type: 'statuses',
         body: {
-            // "query": {
-            //     "constant_score": {
-            //         "filter": {
-            //             "range": {
-            //                 "created_at": {
-            //                     "gte": day,
-            //                     "lte": right_now
-            //                 }
-            //             }
-            //         }
-            //
-            //     }
-            // }
             "query": {
                 "filtered": {
                     "query": {
@@ -943,7 +938,6 @@ router.get('/elasticsearch/data', function (req, res, next) {
                 total_data.yesterday = yer_result.map(function (__obj) {
                     return __obj._source
                 });
-                // total_data.yesterday = groupBy(yer_data, "userfield");
             }
 
             // this week cdr records
@@ -972,10 +966,30 @@ router.get('/elasticsearch/data', function (req, res, next) {
                     }
                 }
             }).then(function (resp) {
-                var this_result = resp.hits.hits;
-                if (this_result.length > 0) {
-                    total_data.this_week = this_result.map(function (__obj) {
+                var this_week_result = resp.hits.hits;
+                if (this_week_result.length > 0) {
+
+                    var this_week_ungrouped = this_week_result.map(function (__obj) {
                         return __obj._source
+                    });
+                    this_week_ungrouped.forEach(function (value) {
+                        var existing = $.map(total_data.this_week, function (e,i) {
+                            if (e.campaign_id === value.campaign_id) { return e }
+                        });
+                        if (existing.length) {
+                            var elem = existing[0];
+                            elem.cdr_count = parseInt(elem.cdr_count) + parseInt(value.cdr_count);
+                            elem.already_subbed_count = parseInt(elem.already_subbed_count) + parseInt(value.already_subbed_count);
+                            elem.confirmation_count = parseInt(elem.confirmation_count) + parseInt(value.confirmation_count);
+                            elem.failed_count = parseInt(elem.failed_count) + parseInt(value.failed_count);
+                            elem.impression_count = parseInt(elem.impression_count) + parseInt(value.impression_count);
+                            elem.insufficient_count = parseInt(elem.insufficient_count) + parseInt(value.insufficient_count);
+                            elem.subscription_count = parseInt(elem.subscription_count) + parseInt(value.subscription_count);
+                            elem.success_count = parseInt(elem.success_count) + parseInt(value.success_count);
+                        }
+                        else {
+                            total_data.this_week.push(value);
+                        }
                     });
                 }
 
@@ -1008,8 +1022,31 @@ router.get('/elasticsearch/data', function (req, res, next) {
                 }).then(function (resp) {
                     var last_result = resp.hits.hits;
                     if (last_result.length > 0) {
-                        total_data.last_week = last_result.map(function (__obj) {
+                        var last_week_result = last_result.map(function (__obj) {
                             return __obj._source
+                        });
+
+                        var last_week_ungrouped = last_week_result.map(function (__obj) {
+                            return __obj._source
+                        });
+                        last_week_ungrouped.forEach(function (value) {
+                            var last_existing = $.map(total_data.last_week, function (e,i) {
+                                if (e.campaign_id === value.campaign_id) { return e }
+                            });
+                            if (last_existing.length) {
+                                var last_elem = last_existing[0];
+                                last_elem.cdr_count = parseInt(last_elem.cdr_count) + parseInt(value.cdr_count);
+                                last_elem.already_subbed_count = parseInt(last_elem.already_subbed_count) + parseInt(value.already_subbed_count);
+                                last_elem.confirmation_count = parseInt(last_elem.confirmation_count) + parseInt(value.confirmation_count);
+                                last_elem.failed_count = parseInt(last_elem.failed_count) + parseInt(value.failed_count);
+                                last_elem.impression_count = parseInt(last_elem.impression_count) + parseInt(value.impression_count);
+                                last_elem.insufficient_count = parseInt(last_elem.insufficient_count) + parseInt(value.insufficient_count);
+                                last_elem.subscription_count = parseInt(last_elem.subscription_count) + parseInt(value.subscription_count);
+                                last_elem.success_count = parseInt(last_elem.success_count) + parseInt(value.success_count);
+                            }
+                            else {
+                                total_data.this_week.push(value);
+                            }
                         });
                     }
 
@@ -1043,8 +1080,31 @@ router.get('/elasticsearch/data', function (req, res, next) {
                     }).then(function (resp) {
                         var month_result = resp.hits.hits;
                         if (month_result.length > 0) {
-                            total_data.month = month_result.map(function (__obj) {
+                            var this_month_result = month_result.map(function (__obj) {
                                 return __obj._source
+                            });
+
+                            var this_month_ungrouped = this_month_result.map(function (__obj) {
+                                return __obj._source
+                            });
+                            this_month_ungrouped.forEach(function (value) {
+                                var month_existing = $.map(total_data.month, function (e,i) {
+                                    if (e.campaign_id === value.campaign_id) { return e }
+                                });
+                                if (month_existing.length) {
+                                    var month_elem = month_existing[0];
+                                    month_elem.cdr_count = parseInt(month_elem.cdr_count) + parseInt(value.cdr_count);
+                                    month_elem.already_subbed_count = parseInt(month_elem.already_subbed_count) + parseInt(value.already_subbed_count);
+                                    month_elem.confirmation_count = parseInt(month_elem.confirmation_count) + parseInt(value.confirmation_count);
+                                    month_elem.failed_count = parseInt(month_elem.failed_count) + parseInt(value.failed_count);
+                                    month_elem.impression_count = parseInt(month_elem.impression_count) + parseInt(value.impression_count);
+                                    month_elem.insufficient_count = parseInt(month_elem.insufficient_count) + parseInt(value.insufficient_count);
+                                    month_elem.subscription_count = parseInt(month_elem.subscription_count) + parseInt(value.subscription_count);
+                                    month_elem.success_count = parseInt(month_elem.success_count) + parseInt(value.success_count);
+                                }
+                                else {
+                                    total_data.this_week.push(value);
+                                }
                             });
                         }
                         res.send(JSON.stringify(total_data));
@@ -1121,13 +1181,6 @@ router.post('/record/filter', function (req, res, next) {
     });
 });
 
-var groupBy = function (xs, key) {
-    return xs.reduce(function (rv, x) {
-            (rv[x[key]] = rv[x[key]] || []).push(x);
-            return rv;
-        }, {}
-    );
-};
 
 /* GET elastic listing. */
 router.get('/', function (req, res, next) {

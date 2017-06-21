@@ -1,0 +1,82 @@
+[
+{
+    "_index": "ivr",
+    "_type": "statuses",
+    "_id": "MonJun12217-2",
+    "_score": 1,
+    "_source": {
+      "campaign_id": "2",
+      "campaign_name": "Honda Maintenance",
+      "created_at": "217-6-12T3:15:59.127Z",
+      "username": "etisalat",
+      "cdr_count": 2,
+      "impression_count": 0,
+      "subscription_count": 0,
+      "confirmation_count": 0,
+      "insufficient_count": 0,
+      "failed_count": 0,
+      "success_count": 0,
+      "already_subbed_count": 0
+    }
+  },
+  {
+    "_index": "ivr",
+    "_type": "statuses",
+    "_id": "MonJun12217-3",
+    "_score": 1,
+    "_source": {
+      "campaign_id": "3",
+      "campaign_name": "Job Openings",
+      "created_at": "217-6-12T3:25:35.614Z",
+      "username": "etisalat",
+      "cdr_count": 2,
+      "impression_count": 0,
+      "subscription_count": 0,
+      "confirmation_count": 0,
+      "insufficient_count": 0,
+      "failed_count": 0,
+      "success_count": 0,
+      "already_subbed_count": 0
+    }
+  },
+  {
+    "_index": "ivr",
+    "_type": "statuses",
+    "_id": "MonJun12217-4",
+    "_score": 1,
+    "_source": {
+      "campaign_id": "4",
+      "campaign_name": "Wedding Tips",
+      "created_at": "217-6-12T3:5:1.753Z",
+      "username": "tm3",
+      "cdr_count": 2,
+      "impression_count": 0,
+      "subscription_count": 0,
+      "confirmation_count": 0,
+      "insufficient_count": 0,
+      "failed_count": 0,
+      "success_count": 0,
+      "already_subbed_count": 0
+    }
+  },
+  {
+    "_index": "ivr",
+    "_type": "statuses",
+    "_id": "TueJun13217-3",
+    "_score": 1,
+    "_source": {
+      "campaign_id": "3",
+      "campaign_name": "Job Openings",
+      "created_at": "217-6-13T3:5:56.865Z",
+      "username": "etisalat",
+      "cdr_count": 1,
+      "impression_count": 0,
+      "subscription_count": 0,
+      "confirmation_count": 0,
+      "insufficient_count": 0,
+      "failed_count": 0,
+      "success_count": 0,
+      "already_subbed_count": 0
+    }
+  }
+]

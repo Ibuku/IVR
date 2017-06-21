@@ -354,13 +354,10 @@ app.controller('HomeController', function ($scope, $http, $timeout, $q) {
                 $scope.campaigns = campaigns_copy.filter(function (value) {
                     return value.username == $scope.username;
                 });
-
                 $scope.filtered_data.today = copy.today.filter(function (value) {
                     return value.username == $scope.username;
                 });
-
                 $scope.filtered_data.totalToday = sum($scope.filtered_data.today, 'cdr_count');
-
                 $scope.filtered_data.impressionToday = sum($scope.filtered_data.today, 'impression_count');
 
                 $scope.filtered_data.yesterday = copy.yesterday.filter(function (value) {
@@ -399,9 +396,6 @@ app.controller('HomeController', function ($scope, $http, $timeout, $q) {
                 $scope.filtered_data.totalMonth = sum(copy.month, 'cdr_count');
                 $scope.active_campaigns = JSON.parse(JSON.stringify($scope.active_bank));
             }
-
-            console.log($scope.data_bank);
-            console.log($scope.campaigns_bank);
         }, 2);
     };
 });
@@ -678,10 +672,6 @@ app.controller("ReportsController", function ($scope, $timeout, $q, $parse) {
         }, function (data, status) {
             console.log(data);
             console.log(status);
-            // if(data) {
-            //     var model = $parse(variable);
-            //     model.assign($scope, );
-            // }
         })
     };
 });
