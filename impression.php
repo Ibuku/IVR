@@ -26,7 +26,7 @@ $unique_id = $unique_data['data'];
 if ($values) {
     try {
 
-        $subscribe_url = 'http://localhost:4043/elastic/cdr/subscribe';
+        $subscribe_url = 'http://localhost:4043/elastic/cdr/impression';
         curl_setopt($ch, CURLOPT_URL, $subscribe_url);
         curl_setopt($ch, CURLOPT_POST, 1);
 

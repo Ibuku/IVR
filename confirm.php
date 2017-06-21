@@ -10,13 +10,16 @@ include 'dependencies.php';
 use Predis\Client;
 
 $redis = new Client();
-$campaign_path = $agi->get_variable('CAMPAIGN_PATH');
-$unique_id = $agi->get_variable('UNIQUEID');
+$result = $agi->get_variable('CAMPAIGN_PATH');
+$campaign_path = $result['data'];
 
 $data = $redis->hgetall($campaign_path);
 $text = preg_replace('/\s+/', '_', $data['play_path']);
 $query =  $text. ':*';
 $values = $redis->hgetall($query);
+
+$unique_data = $agi->get_variable('UNIQUEID');
+$unique_id = $unique_data['data'];
 
 try {
     $url = 'http://localhost:4043/elastic/cdr/confirmation';
