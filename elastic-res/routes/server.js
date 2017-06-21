@@ -121,6 +121,7 @@ router.post('/cdr/impression', function (req, res, next) {
             ch.assertQueue(q, {durable: false});
             ch.sendToQueue(q, new Buffer(JSON.stringify(req.body)));
             console.log(" [x] Sent Message");
+            res.sendStatus(200);
         });
     });
 
@@ -135,6 +136,7 @@ router.post('/cdr/subscribe', function (req, res, next) {
             ch.assertQueue(q, {durable: false});
             ch.sendToQueue(q, new Buffer(JSON.stringify(req.body)));
             console.log(" [x] Sent Message");
+            res.sendStatus(200);
         });
     });
 });
@@ -148,6 +150,7 @@ router.post('/cdr/confirmation', function (req, res, next) {
             ch.assertQueue(q, {durable: false});
             ch.sendToQueue(q, new Buffer(JSON.stringify(req.body)));
             console.log(" [x] Sent Message");
+            res.sendStatus(200);
         });
     });
 });
@@ -161,6 +164,7 @@ router.post('/cdr/insufficient', function (req, res, next) {
             ch.assertQueue(q, {durable: false});
             ch.sendToQueue(q, new Buffer(JSON.stringify(req.body)));
             console.log(" [x] Sent Message");
+            res.sendStatus(200);
         });
     });
 });
@@ -174,6 +178,7 @@ router.post('/cdr/already_sub', function (req, res, next) {
             ch.assertQueue(q, {durable: false});
             ch.sendToQueue(q, new Buffer(JSON.stringify(req.body)));
             console.log(" [x] Sent Message");
+            res.sendStatus(200);
         });
     });
 });
@@ -187,6 +192,7 @@ router.post('/cdr/success', function (req, res, next) {
             ch.assertQueue(q, {durable: false});
             ch.sendToQueue(q, new Buffer(JSON.stringify(req.body)));
             console.log(" [x] Sent Message");
+            res.sendStatus(200);
         });
     });
 });
@@ -200,6 +206,7 @@ router.post('/cdr/failed', function (req, res, next) {
             ch.assertQueue(q, {durable: false});
             ch.sendToQueue(q, new Buffer(JSON.stringify(req.body)));
             console.log(" [x] Sent Message");
+            res.sendStatus(200);
         });
     });
 });

@@ -76,19 +76,6 @@ client.exists({
     }
 });
 
-// client.indices.putMapping({
-//     index: 'ivr',
-//     type: 'campaign',
-//     body: {
-//         "properties": {
-//             "file_path": {
-//                 "type": "string",
-//                 "index": "not_analyzed"
-//             }
-//         }
-//     }
-// });
-
 router.post('/campaign/retrieve', function (req, res, next) {
     var variable = req.body.file_path || null;
     client.search({
@@ -168,8 +155,7 @@ router.post('/elasticsearch/:type/create', function (req, res, next) {
             if (resp.hits.hits.length > 0) {
                 var campaign = resp.hits.hits[0]._source;
                 var created = new Date();
-                created.setHours(created.getHours() - 8);
-                // var created = new Date(new Date().getTime() - (9 * 60 * 60 * 1000));
+                // created.setHours(created.getHours() - 8);
                 created.toDateString;
 
                 client.index({
@@ -196,7 +182,7 @@ router.post('/elasticsearch/:type/create', function (req, res, next) {
                     }
                 }, function (err, resp, status) {
                     var _date = new Date();
-                    _date.setHours(_date.getHours() - 8);
+                    // _date.setHours(_date.getHours() - 8);
                     var status_id = _date.toDateString().replace(/ /g, '') + '-' + campaign.id;
                     client.exists({
                         index: 'ivr',
@@ -336,9 +322,7 @@ router.post('/cdr/impression', function (req, res, next) {
             }
         }
     }, function (errr, respose) {
-        // var status_id = new Date().toDateString().replace(/ /g, '') + '-' + req.body.userfield;
         var _date = new Date();
-        _date.setHours(_date.getHours() - 8);
         var status_id = _date.toDateString().replace(/ /g, '') + '-' + req.body.userfield;
         client.get({
             index: 'ivr',
@@ -373,16 +357,13 @@ router.post('/cdr/subscribe', function (req, res, next) {
             }
         }
     }, function (errr, respose) {
-        // var status_id = new Date().toDateString().replace(/ /g, '') + '-' + req.body.userfield;
         var _date = new Date();
-        _date.setHours(_date.getHours() - 8);
         var status_id = _date.toDateString().replace(/ /g, '') + '-' + req.body.userfield;
         client.get({
             index: 'ivr',
             type: 'statuses',
             id: status_id
         }, function (err, resp) {
-            console.log(resp);
             client.update({
                 index: 'ivr',
                 type: 'statuses',
@@ -400,7 +381,6 @@ router.post('/cdr/subscribe', function (req, res, next) {
 });
 
 router.post('/cdr/confirmation', function (req, res, next) {
-
     client.update({
         index: 'ivr',
         type: 'cdr',
@@ -411,16 +391,13 @@ router.post('/cdr/confirmation', function (req, res, next) {
             }
         }
     }, function (errr, respose) {
-        // var status_id = new Date().toDateString().replace(/ /g, '') + '-' + req.body.userfield;
         var _date = new Date();
-        _date.setHours(_date.getHours() - 8);
         var status_id = _date.toDateString().replace(/ /g, '') + '-' + req.body.userfield;
         client.get({
             index: 'ivr',
             type: 'statuses',
             id: status_id
         }, function (err, resp) {
-            console.log(resp);
             client.update({
                 index: 'ivr',
                 type: 'statuses',
@@ -449,9 +426,7 @@ router.post('/cdr/success', function (req, res, next) {
             }
         }
     }, function (errr, respose) {
-        // var status_id = new Date().toDateString().replace(/ /g, '') + '-' + req.body.userfield;
         var _date = new Date();
-        _date.setHours(_date.getHours() - 8);
         var status_id = _date.toDateString().replace(/ /g, '') + '-' + req.body.userfield;
         client.get({
             index: 'ivr',
@@ -486,9 +461,7 @@ router.post('/cdr/insufficient', function (req, res, next) {
             }
         }
     }, function (errr, respose) {
-        // var status_id = new Date().toDateString().replace(/ /g, '') + '-' + req.body.userfield;
         var _date = new Date();
-        _date.setHours(_date.getHours() - 8);
         var status_id = _date.toDateString().replace(/ /g, '') + '-' + req.body.userfield;
         client.get({
             index: 'ivr',
@@ -523,9 +496,7 @@ router.post('/cdr/already_sub', function (req, res, next) {
             }
         }
     }, function (errr, respose) {
-        // var status_id = new Date().toDateString().replace(/ /g, '') + '-' + req.body.userfield;
         var _date = new Date();
-        _date.setHours(_date.getHours() - 8);
         var status_id = _date.toDateString().replace(/ /g, '') + '-' + req.body.userfield;
         client.get({
             index: 'ivr',
@@ -560,9 +531,7 @@ router.post('/cdr/failed', function (req, res, next) {
             }
         }
     }, function (errr, respose) {
-        // var status_id = new Date().toDateString().replace(/ /g, '') + '-' + req.body.userfield;
         var _date = new Date();
-        _date.setHours(_date.getHours() - 8);
         var status_id = _date.toDateString().replace(/ /g, '') + '-' + req.body.userfield;
         client.get({
             index: 'ivr',
@@ -596,24 +565,6 @@ router.get('/no_of_campaign', function (req, res, next) {
         index: "ivr",
         type: "statuses",
         body: {
-            // "query": {
-            //     "constant_score": {
-            //         "filter": {
-            //             "bool": {
-            //                 "should": [
-            //                     {
-            //                         "range": {
-            //                             "created_at": {
-            //                                 "from": sevenDays,
-            //                                 "to": today
-            //                             }
-            //                         }
-            //                     }
-            //                 ]
-            //             }
-            //         }
-            //     }
-            // }
             "query": {
                 "filtered": {
                     "query": {
@@ -656,24 +607,6 @@ router.get('/campaign/:id/data', function (req, res, next) {
         index: "ivr",
         type: "statuses",
         body: {
-            // "query": {
-            //     "constant_score": {
-            //         "filter": {
-            //             "bool": {
-            //                 "should": [
-            //                     {
-            //                         "range": {
-            //                             "created_at": {
-            //                                 "from": sevenDays,
-            //                                 "to": today
-            //                             }
-            //                         }
-            //                     }
-            //                 ]
-            //             }
-            //         }
-            //     }
-            // }
             "query": {
                 "filtered": {
                     "query": {
@@ -1004,7 +937,6 @@ router.get('/elasticsearch/data', function (req, res, next) {
             total_data.today = result.map(function (_obj) {
                 return _obj._source
             });
-            // total_data.today = groupBy(data, "userfield");
         }
 
         // yesterday cdr records
@@ -1016,19 +948,6 @@ router.get('/elasticsearch/data', function (req, res, next) {
             index: 'ivr',
             type: 'statuses',
             body: {
-                // "query": {
-                //     "constant_score": {
-                //         "filter": {
-                //             "range": {
-                //                 "created_at": {
-                //                     "gte": yesterday_start,
-                //                     "lte": yesterday_end
-                //                 }
-                //             }
-                //         }
-                //
-                //     }
-                // }
                 "query": {
                     "filtered": {
                         "query": {
@@ -1063,19 +982,6 @@ router.get('/elasticsearch/data', function (req, res, next) {
                 index: 'ivr',
                 type: 'statuses',
                 body: {
-                    // "query": {
-                    //     "constant_score": {
-                    //         "filter": {
-                    //             "range": {
-                    //                 "created_at": {
-                    //                     "gte": week_start,
-                    //                     "lte": week_end
-                    //                 }
-                    //             }
-                    //         }
-                    //
-                    //     }
-                    // }
                     "query": {
                         "filtered": {
                             "query": {
@@ -1099,7 +1005,6 @@ router.get('/elasticsearch/data', function (req, res, next) {
                     total_data.this_week = this_result.map(function (__obj) {
                         return __obj._source
                     });
-                    // total_data.this_week = groupBy(this_data, "userfield");
                 }
 
                 // last week CDR records
@@ -1111,19 +1016,6 @@ router.get('/elasticsearch/data', function (req, res, next) {
                     index: 'ivr',
                     type: 'statuses',
                     body: {
-                        // "query": {
-                        //     "constant_score": {
-                        //         "filter": {
-                        //             "range": {
-                        //                 "created_at": {
-                        //                     "gte": last_start,
-                        //                     "lte": last_end
-                        //                 }
-                        //             }
-                        //         }
-                        //
-                        //     }
-                        // }
                         "query": {
                             "filtered": {
                                 "query": {
@@ -1147,7 +1039,6 @@ router.get('/elasticsearch/data', function (req, res, next) {
                         total_data.last_week = last_result.map(function (__obj) {
                             return __obj._source
                         });
-                        // total_data.last_week = groupBy(last_data, "userfield");
                     }
 
                     // this month CDR records
@@ -1160,19 +1051,6 @@ router.get('/elasticsearch/data', function (req, res, next) {
                         index: 'ivr',
                         type: 'statuses',
                         body: {
-                            // "query": {
-                            //     "constant_score": {
-                            //         "filter": {
-                            //             "range": {
-                            //                 "created_at": {
-                            //                     "gte": firstDay,
-                            //                     "lte": lastDay
-                            //                 }
-                            //             }
-                            //         }
-                            //
-                            //     }
-                            // }
                             "query": {
                                 "filtered": {
                                     "query": {
@@ -1196,7 +1074,6 @@ router.get('/elasticsearch/data', function (req, res, next) {
                             total_data.month = month_result.map(function (__obj) {
                                 return __obj._source
                             });
-                            // total_data.month = groupBy(month_data, "userfield");
                         }
                         res.send(JSON.stringify(total_data));
                     });
@@ -1272,66 +1149,6 @@ router.post('/record/filter', function (req, res, next) {
     });
 });
 
-// router.get('/elasticsearch/:campaign_id/filter', function (req, res, next) {
-//     //impression_count =sum all imression_count in campign_status that matchs campaign_id
-//     ////success_count =sum all imression_count in campign_status that matchs campaign_id
-//     //cdr_count = (all cdrs whos uniqueid matches campaign_id).count
-//     //Expected parameters start_date and end_date
-//     //A json encoded response
-//     //B two arrays
-//     // groupby date
-//     //  1. key: today, value = arrayOf
-//     /*{
-//      {
-//      "start_date": {"impressions_count": integer, "success_count": integer, "cdr_count": integer}
-//      },
-//      {
-//      "end_date": {"impressions_count": integer, "success_count": integer, "cdr_count": integer}
-//      }
-//      }
-//
-//      */
-//     //  2. key: yesterday, value = arrayOf
-//     /*
-//
-//      */
-//
-//     var startDate = new Date(req.body.start_date);
-//     var endDate = new Date(req.body.end_date);
-//     startDate.toDateString
-//     endDate.toDateString
-//
-//     var ivrDataFilterStartSate = new IvrDataFilter(req.params.campaign_id, today);
-//     var ivrDataFilterEndDate = new IvrDataFilter(req.params.campaign_id, yesterday);
-//
-//     var impression_count_start_date = ivrDataFilterStartSate.getImpressionCount();
-//     var success_count_start_date = ivrDataFilterStartSate.getSuccessCount();
-//
-//     var impression_count_end_date = ivrDataFilterEndDate.getImpressionCount();
-//     var success_count_end_date = ivrDataFilterEndDate.getSuccessCount();
-//
-//     var cdr_count_start_date = ivrDataFilterStartSate.getCdrCount;
-//     var cdr_count_end_date = ivrDataFilterEndDate.getCdrCount;
-// });
-//
-// router.post('/elasticsearch/:type/:id/delete', function (req, res, next) {
-//
-//     res.setHeader('Content-Type', 'application/json');
-//
-//     client.delete({
-//         index: 'ivr',
-//         type: req.params.type,
-//         id: req.params.id
-//     }, function (error, response) {
-//         if (error) {
-//             return next(res.send(JSON.stringify({message: error})));
-//         }
-//
-//         return res.send(JSON.stringify({message: response}));
-//     });
-// });
-
-
 var groupBy = function (xs, key) {
     return xs.reduce(function (rv, x) {
             (rv[x[key]] = rv[x[key]] || []).push(x);
@@ -1344,99 +1161,6 @@ var groupBy = function (xs, key) {
 router.get('/', function (req, res, next) {
     res.send('respond with a resource');
 });
-
-
-// function IvrDataFilter(search_date) {
-//     this.search_date = search_date;
-//
-//     function searchWithId(id_field, date_field, type) {
-//         client.search({
-//             index: 'ivr',
-//             type: type,
-//             body: {
-//                 "query": {
-//                     "constant_score": {
-//                         "filter": {
-//                             "bool": {
-//                                 "must": [
-//                                     {
-//                                         "term": {
-//                                             date_field: this.search_date
-//                                         }
-//                                     }
-//                                 ],
-//                                 "should": [
-//                                     {
-//                                         "term": {
-//                                             date_field: this.search_date
-//                                         }
-//                                     }
-//                                 ]
-//                             }
-//                         }
-//                     }
-//                 }
-//             }
-//         }).then(function (resp) {
-//             return resp.hits.hits;
-//         });
-//     }
-//
-//     function searchIvrTypePerDate(which_date, which_type) {
-//
-//         client.search({
-//             index: 'ivr',
-//             type: which_type,
-//             body: {
-//                 "query": {
-//                     "constant_score": {
-//                         "filter": {
-//                             "term": {
-//                                 created_at: which_type
-//                             }
-//                         }
-//                     }
-//                 }
-//             }
-//         }).then(function (resp) {
-//             return resp.hits.hits;
-//         })
-//     }
-//
-//     this.searchCampaignStatusByDate = searchIvrTypePerDate(search_date, "statuses");
-//
-//     this.searchCDRByDate = searchIvrTypePerDate(search_date, "cdr");
-//
-//     this.getImpressionCount = function () {
-//
-//         var campaignResult = searchWithId("campaign_id", "created_at", "statuses");
-//
-//         var imp = campaignResult.map(function (val) {
-//             return val.impression_count;
-//         })
-//         var sum = imp.reduce(function (prev, current) {
-//             return prev + current;
-//         });
-//
-//         return sum;
-//     }
-//
-//     this.getSuccessCount = function () {
-//
-//         var campaignResult = searchWithId("campaign_id", "created_at", "statuses");
-//
-//         var imp = campaignResult.map(function (val) {
-//             return val.success_count;
-//         })
-//         var sum = imp.reduce(function (prev, current) {
-//             return prev + current;
-//         });
-//
-//         return sum;
-//     }
-//
-//     this.getCdrCount = searchWithId("uniqueid", "start", "cdr").length;
-// }
 
 
 module.exports = router;
