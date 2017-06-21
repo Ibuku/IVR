@@ -6,20 +6,21 @@
     <div class="page-header page-header-default">
         <div class="page-header-content">
             <div class="page-title">
-                <h4><i class="icon-arrow-left52 position-left"></i> <span class="text-semibold">Home</span> -Dashboard</h4>
+                <h4><i class="icon-arrow-left52 position-left"></i> <span class="text-semibold">Home</span> -
+                    Dashboard</h4>
             </div>
 
             <div class="heading-elements">
                 <div class="heading-btn-group">
-                    <a class="btn btn-link btn-float text-size-small has-text" ng-class="username == 'all' ? 'selected' : ''" ng-click="changeActive('all')">
-                        <i class="icon-bars-alt text-primary"></i><span>All</span>
+                    <a class="btn btn-link btn-float text-size-small has-text" ng-class="username == 'all' ? 'selected' : ''"
+                       ng-click="changeActive('all')"><i class="icon-bars-alt text-primary"></i><span>All</span>
                     </a>
                     <a class="btn btn-link btn-float text-size-small has-text"
-                       ng-class="username == 'etisalat' ? 'selected' : ''" ng-click="changeActive('etisalat')">
-                        <img src="/images/etisalat.png"/>
+                       ng-class="username == 'etisalat' ? 'selected' : ''" ng-click="changeActive('etisalat')"><img
+                                src="/images/etisalat.png"/><span></span>
                     </a>
-                    <a class="btn btn-link btn-float text-size-small has-text" ng-class="username == 'tm30' ? 'selected' : ''" ng-click="changeActive('tm30')">
-                        <img src="/images/tm.png"/>
+                    <a class="btn btn-link btn-float text-size-small has-text" ng-class="username == 'tm30' ? 'selected' : ''"
+                       ng-click="changeActive('tm30')"><img src="/images/tm.png"/>
                     </a>
                 </div>
             </div>
@@ -287,13 +288,13 @@
                                 <tr ng-repeat="val in filtered_data.today">
                                 <td>
                                     <div class="media-left media-middle">
-                                        <div class="">
-                                            <span class="text-default" ng-bind="val.username" style="font-size:13px"></span>
+                                        <div class=""><span class="text-default" ng-bind="val.username"
+                                                         style="font-size:13px"></span>
                                         </div>
                                     </div>
                                     <div class="media-left">
-                                        <div class="">
-                                            <a href="campaigns/[[val.campaign_id]]/report" class="text-default text-semibold" ng-bind="val.campaign_name"></a>
+                                        <div class=""><a href="campaigns/[[val.campaign_id]]/report" class="text-default text-semibold"
+                                                         ng-bind="val.campaign_name"></a>
                                         </div>
                                     </div>
                                 </td>
@@ -301,7 +302,7 @@
                                 <td><span class="text-warning-600" ng-bind="val.impression_count"></span></td>
                                 <td><span class="text-muted" ng-cloak>[[ val.cdr_count - val.impression_count | number ]]</span></td>
                                 <td><h6 class="text-semibold" ng-bind="val.success_count"></h6></td>
-                                <td><h6 class="text-semibold" ng-cloak>[[ (val.success_count / val.impression_count) * 100  | number || 0]]%</h6></td>
+                                <td><h6 class="text-semibold" ng-cloak>[[ (val.success_count / val.impression_count) * 100  | number]]%</h6></td>
                                 <td><span class="label bg-blue"></span></td>
                                 <td class="text-center">
                                     <ul class="icons-list">
@@ -352,7 +353,7 @@
                                     </td>
                                     <td><span class="text-muted">[[ val.cdr_count - val.impression_count | number ]]</span></td>
                                     <td><h6 class="text-semibold" ng-bind="val.success_count"></h6></td>
-                                    <td><h6 class="text-semibold" ng-cloak>[[ (val.success_count / val.impression_count) * 100 | number || 0]]%</h6></td>
+                                    <td><h6 class="text-semibold" ng-cloak>[[ (val.success_count / val.impression_count) * 100 | number]]%</h6></td>
                                     <td><span class="label bg-blue"></span></td>
                                     <td class="text-center">
                                     <ul class="icons-list">
@@ -361,9 +362,12 @@
                                                         class="icon-menu7"></i></a>
                                             <ul class="dropdown-menu dropdown-menu-right">
                                                 <li>
-                                                    <a href="campaigns/[[val.campaign_id]]/report"><i class="icon-file-stats"></i> View Report</a></li>
+                                                    <a href="campaigns/[[val.campaign_id]]/report"><i
+                                                                class="icon-file-stats"></i> View Report</a>
+                                                </li>
                                                 <li>
-                                                    <a href="campaigns/[[val.campaign_id]]/update"><i class="icon-file-text2"></i> Edit campaign</a>
+                                                    <a href="campaigns/[[val.campaign_id]]/update"><i
+                                                                class="icon-file-text2"></i> Edit campaign</a>
                                                 </li>
                                             </ul>
                                         </li>
@@ -381,12 +385,13 @@
                                 <tr ng-repeat="val in filtered_data.this_week">
                                     <td>
                                         <div class="media-left media-middle">
-                                            <div><span class="text-default" ng-bind="val.username" style="font-size:13px"></span>
+                                            <div class=""><span class="text-default" ng-bind="val.username"
+                                                             style="font-size:13px"></span>
                                             </div>
                                         </div>
                                         <div class="media-left">
-                                            <div>
-                                                <a href="campaigns/[[val.campaign_id]]/report" class="text-default text-semibold" ng-bind="val.campaign_name"></a>
+                                            <div class=""><a href="campaigns/[[val.campaign_id]]/report" class="text-default text-semibold"
+                                                             ng-bind="val.campaign_name"></a>
                                             </div>
                                         </div>
                                     </td>
@@ -400,16 +405,20 @@
                                     <td class="text-center">
                                         <ul class="icons-list">
                                             <li class="dropdown">
-                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-menu7"></i></a>
+                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i
+                                                            class="icon-menu7"></i></a>
                                                 <ul class="dropdown-menu dropdown-menu-right">
                                                     <li>
-                                                        <a href="campaigns/[[val.campaign_id]]/report"><i class="icon-file-stats"></i> View Report</a>
+                                                        <a href="campaigns/[[val.campaign_id]]/report"><i
+                                                                    class="icon-file-stats"></i> View Report</a>
                                                     </li>
                                                     <li>
-                                                        <a href="reports/[[val.campaign_id]]/download"><i class="icon-download"></i> Download Report</a>
+                                                        <a href="reports/[[val.campaign_id]]/download"><i
+                                                                    class="icon-download"></i> Download Report</a>
                                                     </li>
                                                     <li>
-                                                        <a href="campaigns/[[val.campaign_id]]/update"><i class="icon-file-text2"></i> Edit campaign</a>
+                                                        <a href="campaigns/[[val.campaign_id]]/update"><i
+                                                                    class="icon-file-text2"></i> Edit campaign</a>
                                                     </li>
                                                 </ul>
                                             </li>
@@ -480,14 +489,19 @@
                                 <tr ng-repeat="val in filtered_data.month">
                                     <td>
                                         <div class="media-left media-middle">
-                                            <div><span class="text-default" ng-bind="val.username" style="font-size:13px"></span></div>
+                                            <div class=""><span class="text-default" ng-bind="val.username"
+                                                             style="font-size:13px"></span>
+                                            </div>
                                         </div>
                                         <div class="media-left">
-                                            <div><a href="campaigns/[[val.campaign_id]]/report" class="text-default text-semibold" ng-bind="val.campaign_name"></a></div>
+                                            <div class=""><a href="campaigns/[[val.campaign_id]]/report" class="text-default text-semibold"
+                                                             ng-bind="val.campaign_name"></a>
+                                            </div>
                                         </div>
                                     </td>
                                     <td><span class="text-muted" ng-bind="val.cdr_count"></span></td>
-                                    <td><span class="text-warning-600" ng-bind="val.impression_count"></span></td>
+                                    <td><span class="text-warning-600" ng-bind="val.impression_count"></span>
+                                    </td>
                                     <td><span class="text-muted">[[ val.cdr_count - val.impression_count | number ]]</span></td>
                                     <td><h6 class="text-semibold" ng-bind="val.success_count"></h6></td>
                                     <td><h6 class="text-semibold" ng-cloak>[[ (val.success_count / val.impression_count) * 100 | number]]%</h6></td>
@@ -495,16 +509,20 @@
                                     <td class="text-center">
                                         <ul class="icons-list">
                                             <li class="dropdown">
-                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-menu7"></i></a>
+                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i
+                                                            class="icon-menu7"></i></a>
                                                 <ul class="dropdown-menu dropdown-menu-right">
                                                     <li>
-                                                        <a href="campaigns/[[val.campaign_id]]/report"><i class="icon-file-stats"></i> View Report</a>
+                                                        <a href="campaigns/[[val.campaign_id]]/report"><i
+                                                                    class="icon-file-stats"></i> View Report</a>
                                                     </li>
                                                     <li>
-                                                        <a href="reports/[[val.campaign_id]]/download"><i class="icon-download"></i> Download Report</a>
+                                                        <a href="reports/[[val.campaign_id]]/download"><i
+                                                                    class="icon-download"></i> Download Report</a>
                                                     </li>
                                                     <li>
-                                                        <a href="campaigns/[[val.campaign_id]]/update"><i class="icon-file-text2"></i> Edit campaign</a>
+                                                        <a href="campaigns/[[val.campaign_id]]/update"><i
+                                                                    class="icon-file-text2"></i> Edit campaign</a>
                                                     </li>
                                                 </ul>
                                             </li>
