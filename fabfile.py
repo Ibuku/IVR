@@ -5,7 +5,7 @@ from fabric.contrib.console import confirm
 
 env.roledefs = {
     'test': ['localhost'],
-    'prod': ['tm30@192.168.0.125']
+    'prod': ['tm30@192.168.0.100']
 }
 
 env.roledefs['all'] = [h for r in env.roledefs.values() for h in r]
