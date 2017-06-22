@@ -992,7 +992,7 @@ router.get('/data/week', function (req, res, next) {
                     return key.campaign_id === current.campaign.id
                 });
                 console.log(elem);
-                if (elem) {
+                if (elem != undefined) {
                     console.log('==========');
                     console.log(elem);
                     // console.log(elem.already_subbed_count);
