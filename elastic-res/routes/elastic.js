@@ -998,7 +998,7 @@ router.get('/data/week', function (req, res, next) {
                     elem.subscription_count = parseInt(elem.subscription_count) + parseInt(current.subscription_count);
                     elem.success_count = parseInt(elem.success_count) + parseInt(current.success_count);
                 } else {
-                    total_data.data.push(value);
+                    total_data.data.push(current);
                 }
             });
         }
