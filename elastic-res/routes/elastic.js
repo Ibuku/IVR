@@ -981,28 +981,28 @@ router.get('/data/week', function (req, res, next) {
         var result = resp.hits.hits;
         if (result.length > 0) {
 
-            total_data.data = result.map(function (__obj) {
+            var this_week_ungrouped = result.map(function (__obj) {
                 return __obj._source
             });
-            // this_week_ungrouped.forEach(function (value) {
-            //     var existing = $.map(total_data.this_week, function (e,i) {
-            //         if (e.campaign_id === value.campaign_id) { return e }
-            //     });
-            //     if (existing.length) {
-            //         var elem = existing[0];
-            //         elem.cdr_count = parseInt(elem.cdr_count) + parseInt(value.cdr_count);
-            //         elem.already_subbed_count = parseInt(elem.already_subbed_count) + parseInt(value.already_subbed_count);
-            //         elem.confirmation_count = parseInt(elem.confirmation_count) + parseInt(value.confirmation_count);
-            //         elem.failed_count = parseInt(elem.failed_count) + parseInt(value.failed_count);
-            //         elem.impression_count = parseInt(elem.impression_count) + parseInt(value.impression_count);
-            //         elem.insufficient_count = parseInt(elem.insufficient_count) + parseInt(value.insufficient_count);
-            //         elem.subscription_count = parseInt(elem.subscription_count) + parseInt(value.subscription_count);
-            //         elem.success_count = parseInt(elem.success_count) + parseInt(value.success_count);
-            //     }
-            //     else {
-            //         total_data.this_week.push(value);
-            //     }
-            // });
+            this_week_ungrouped.forEach(function (value) {
+                var existing = $.map(total_data.data, function (e,i) {
+                    if (e.campaign_id === value.campaign_id) { return e }
+                });
+                if (existing.length) {
+                    var elem = existing[0];
+                    elem.cdr_count = parseInt(elem.cdr_count) + parseInt(value.cdr_count);
+                    elem.already_subbed_count = parseInt(elem.already_subbed_count) + parseInt(value.already_subbed_count);
+                    elem.confirmation_count = parseInt(elem.confirmation_count) + parseInt(value.confirmation_count);
+                    elem.failed_count = parseInt(elem.failed_count) + parseInt(value.failed_count);
+                    elem.impression_count = parseInt(elem.impression_count) + parseInt(value.impression_count);
+                    elem.insufficient_count = parseInt(elem.insufficient_count) + parseInt(value.insufficient_count);
+                    elem.subscription_count = parseInt(elem.subscription_count) + parseInt(value.subscription_count);
+                    elem.success_count = parseInt(elem.success_count) + parseInt(value.success_count);
+                }
+                else {
+                    total_data.this_week.push(value);
+                }
+            });
         }
         res.send(JSON.stringify(total_data));
     });
