@@ -984,13 +984,16 @@ router.get('/data/week', function (req, res, next) {
             var this_week_ungrouped = result.map(function (__obj) {
                 return __obj._source
             });
-            // for(var i=0; i<this_week_ungrouped.length; i++) {
-            //     // var value = this_week_ungrouped[i];
-            //     var elem = total_data.data.find(function (key) {
-            //         return key.campaign_id === this_week_ungrouped[i].campaign.id
-            //     });
-            //     console.log(elem);
-            // }
+            for(var i=0; i<this_week_ungrouped.length; i++) {
+                var value = this_week_ungrouped[i];
+                var elem = total_data.data.find(function (key) {
+                    return key.campaign_id === value.campaign.id
+                });
+                console.log(elem);
+                if (!elem) {
+                    total_data.data.push(value);
+                }
+            }
             // this_week_ungrouped.forEach(function (current, index, arr) {
             //     var elem = total_data.data.find(function (key) {
             //         return key.campaign_id === current.campaign.id
