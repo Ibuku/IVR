@@ -985,11 +985,13 @@ router.get('/data/week', function (req, res, next) {
                 return __obj._source
             });
             this_week_ungrouped.forEach(function (value) {
-                var existing = $.map(total_data.data, function (e,i) {
-                    if (e.campaign_id === value.campaign_id) { return e }
+                // var existing = $.map(total_data.data, function (e,i) {
+                //     if (e.campaign_id === value.campaign_id) { return e }
+                // });
+                var elem = this_week_ungrouped.find(function (key) {
+                    return key.campaign_id === value.campaign.id
                 });
-                if (existing.length) {
-                    var elem = existing[0];
+                if (elem) {
                     elem.cdr_count = parseInt(elem.cdr_count) + parseInt(value.cdr_count);
                     elem.already_subbed_count = parseInt(elem.already_subbed_count) + parseInt(value.already_subbed_count);
                     elem.confirmation_count = parseInt(elem.confirmation_count) + parseInt(value.confirmation_count);
