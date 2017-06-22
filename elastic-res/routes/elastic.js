@@ -1010,6 +1010,7 @@ router.get('/data/week', function (req, res, next) {
 
 router.get('/data/last', function (req, res, next) {
 
+    var week_start = getStart(new Date());
     var last_start = new Date(week_start.getTime() - (7 * 24 * 60 * 60 * 1000));
     last_start.setUTCHours(0,0,0,0);
     var last_end = new Date(week_start.getTime() - (24 * 60 * 60 * 1000));
