@@ -302,7 +302,7 @@ app.controller('HomeController', function ($scope, $http, $timeout, $q) {
             }).error(function errorCallback(err) {
                 location.href = '/logout';
             });
-        }, 10);
+        }, 20);
     };
 
     var load_yesterday = function () {
@@ -419,11 +419,11 @@ app.controller('HomeController', function ($scope, $http, $timeout, $q) {
             }).error(function errorCallback(err) {
                 location.href = '/logout';
             });
-        }, 10);
+        }, 20);
     };
 
     var startParallel = function () {
-        $q.all([load_today(), load_yesterday(), load_last_week(), load_this_week(), load_month()]).then(
+        $q.all([load_data()]).then(
             function (successResult) { // execute this if ALL promises are resolved (successful)
             }, function (failureReason) { // execute this if any promise is rejected (fails) - we don't have any reject calls in this demo
                 location.href = '/logout';
