@@ -984,44 +984,35 @@ router.get('/data/week', function (req, res, next) {
             var this_week_ungrouped = result.map(function (__obj) {
                 return __obj._source
             });
-            for(var i=0; i<this_week_ungrouped.length; i++) {
-                var value = this_week_ungrouped[i];
-                var elem = total_data.data.find(function (key) {
-                    return key.campaign_id === value.campaign.id
+            this_week_ungrouped.forEach(function (current, index, arr) {
+                var elem = Array.prototype.find(total_data.data, function (key) {
+                    return key.campaign_id === current.campaign.id
                 });
-                console.log(elem);
-                if (!elem) {
-                    total_data.data.push(value);
+                if (elem) {
+                    console.log(elem);
+                //     console.log('==========');
+                //     console.log(elem);
+                //     // console.log(elem.already_subbed_count);
+                //     // console.log(elem.confirmation_count);
+                //     // console.log(elem.failed_count);
+                //     // console.log(elem.impression_count);
+                //     // console.log(elem.insufficient_count);
+                //     // console.log(elem.subscription_count);
+                //     // console.log(elem.success_count);
+                //     console.log('==========');
+                //     // elem.cdr_count = parseInt(elem.cdr_count) + parseInt(current.cdr_count);
+                //     // elem.already_subbed_count = parseInt(elem.already_subbed_count) + parseInt(current.already_subbed_count);
+                //     // elem.confirmation_count = parseInt(elem.confirmation_count) + parseInt(current.confirmation_count);
+                //     // elem.failed_count = parseInt(elem.failed_count) + parseInt(current.failed_count);
+                //     // elem.impression_count = parseInt(elem.impression_count) + parseInt(current.impression_count);
+                //     // elem.insufficient_count = parseInt(elem.insufficient_count) + parseInt(current.insufficient_count);
+                //     // elem.subscription_count = parseInt(elem.subscription_count) + parseInt(current.subscription_count);
+                //     // elem.success_count = parseInt(elem.success_count) + parseInt(current.success_count);
                 }
-            }
-            // this_week_ungrouped.forEach(function (current, index, arr) {
-            //     var elem = total_data.data.find(function (key) {
-            //         return key.campaign_id === current.campaign.id
-            //     });
-            //     if (elem) {
-            //     //     console.log('==========');
-            //     //     console.log(elem);
-            //     //     // console.log(elem.already_subbed_count);
-            //     //     // console.log(elem.confirmation_count);
-            //     //     // console.log(elem.failed_count);
-            //     //     // console.log(elem.impression_count);
-            //     //     // console.log(elem.insufficient_count);
-            //     //     // console.log(elem.subscription_count);
-            //     //     // console.log(elem.success_count);
-            //     //     console.log('==========');
-            //     //     // elem.cdr_count = parseInt(elem.cdr_count) + parseInt(current.cdr_count);
-            //     //     // elem.already_subbed_count = parseInt(elem.already_subbed_count) + parseInt(current.already_subbed_count);
-            //     //     // elem.confirmation_count = parseInt(elem.confirmation_count) + parseInt(current.confirmation_count);
-            //     //     // elem.failed_count = parseInt(elem.failed_count) + parseInt(current.failed_count);
-            //     //     // elem.impression_count = parseInt(elem.impression_count) + parseInt(current.impression_count);
-            //     //     // elem.insufficient_count = parseInt(elem.insufficient_count) + parseInt(current.insufficient_count);
-            //     //     // elem.subscription_count = parseInt(elem.subscription_count) + parseInt(current.subscription_count);
-            //     //     // elem.success_count = parseInt(elem.success_count) + parseInt(current.success_count);
-            //     }
-            //     else {
-            //         data.push(current);
-            //     }
-            // });
+                else {
+                    total_data.data.push(current);
+                }
+            });
         }
         res.send(JSON.stringify(data));
     });
