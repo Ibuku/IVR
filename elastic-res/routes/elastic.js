@@ -1033,21 +1033,20 @@ router.get('/elasticsearch/data', function (req, res, next) {
                             var last_existing = total_data.last_week.map(function (e,i) {
                                 if (e.campaign_id === value.campaign_id) { return e }
                             });
-                            console.log(value);
-                            // if (last_existing.length) {
-                            //     var last_elem = last_existing[0];
-                            //     last_elem.cdr_count = parseInt(last_elem.cdr_count) + parseInt(value.cdr_count);
-                            //     last_elem.already_subbed_count = parseInt(last_elem.already_subbed_count) + parseInt(value.already_subbed_count);
-                            //     last_elem.confirmation_count = parseInt(last_elem.confirmation_count) + parseInt(value.confirmation_count);
-                            //     last_elem.failed_count = parseInt(last_elem.failed_count) + parseInt(value.failed_count);
-                            //     last_elem.impression_count = parseInt(last_elem.impression_count) + parseInt(value.impression_count);
-                            //     last_elem.insufficient_count = parseInt(last_elem.insufficient_count) + parseInt(value.insufficient_count);
-                            //     last_elem.subscription_count = parseInt(last_elem.subscription_count) + parseInt(value.subscription_count);
-                            //     last_elem.success_count = parseInt(last_elem.success_count) + parseInt(value.success_count);
-                            // }
-                            // else {
-                            //     total_data.last_week.push(value);
-                            // }
+                            if (last_existing.length) {
+                                var last_elem = last_existing[0];
+                                last_elem.cdr_count = parseInt(last_elem.cdr_count) + parseInt(value.cdr_count);
+                                last_elem.already_subbed_count = parseInt(last_elem.already_subbed_count) + parseInt(value.already_subbed_count);
+                                last_elem.confirmation_count = parseInt(last_elem.confirmation_count) + parseInt(value.confirmation_count);
+                                last_elem.failed_count = parseInt(last_elem.failed_count) + parseInt(value.failed_count);
+                                last_elem.impression_count = parseInt(last_elem.impression_count) + parseInt(value.impression_count);
+                                last_elem.insufficient_count = parseInt(last_elem.insufficient_count) + parseInt(value.insufficient_count);
+                                last_elem.subscription_count = parseInt(last_elem.subscription_count) + parseInt(value.subscription_count);
+                                last_elem.success_count = parseInt(last_elem.success_count) + parseInt(value.success_count);
+                            }
+                            else {
+                                total_data.last_week.push(value);
+                            }
                         });
                     }
 
