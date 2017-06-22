@@ -991,9 +991,10 @@ router.get('/data/week', function (req, res, next) {
                 var elem = total_data.data.find(function (key) {
                     return key.campaign_id === current.campaign.id
                 });
+                console.log(elem);
                 if (elem) {
                     console.log('==========');
-                    console.log(elem.cdr_count);
+                    console.log(elem);
                     // console.log(elem.already_subbed_count);
                     // console.log(elem.confirmation_count);
                     // console.log(elem.failed_count);
@@ -1011,7 +1012,9 @@ router.get('/data/week', function (req, res, next) {
                     // elem.subscription_count = parseInt(elem.subscription_count) + parseInt(current.subscription_count);
                     // elem.success_count = parseInt(elem.success_count) + parseInt(current.success_count);
                 }
-                total_data.data.push(current);
+                else {
+                    total_data.data.push(current);
+                }
             });
         }
         res.send(JSON.stringify(total_data));
