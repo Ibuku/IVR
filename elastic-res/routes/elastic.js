@@ -985,29 +985,28 @@ router.get('/data/week', function (req, res, next) {
                 return __obj._source
             });
             this_week_ungrouped.forEach(function (current, index, arr) {
-                total_data.data.push(current);
                 // var existing = $.map(total_data.data, function (e,i) {
                 //     if (e.campaign_id === value.campaign_id) { return e }
                 // });
-                // var elem = total_data.data.find(function (key) {
-                //     return key.campaign_id === current.campaign.id
-                // });
-                // console.log('==========');
-                // console.log(elem);
-                // console.log('==========');
-                // if (elem) {
-                //     elem.cdr_count = parseInt(elem.cdr_count) + parseInt(value.cdr_count);
-                //     elem.already_subbed_count = parseInt(elem.already_subbed_count) + parseInt(value.already_subbed_count);
-                //     elem.confirmation_count = parseInt(elem.confirmation_count) + parseInt(value.confirmation_count);
-                //     elem.failed_count = parseInt(elem.failed_count) + parseInt(value.failed_count);
-                //     elem.impression_count = parseInt(elem.impression_count) + parseInt(value.impression_count);
-                //     elem.insufficient_count = parseInt(elem.insufficient_count) + parseInt(value.insufficient_count);
-                //     elem.subscription_count = parseInt(elem.subscription_count) + parseInt(value.subscription_count);
-                //     elem.success_count = parseInt(elem.success_count) + parseInt(value.success_count);
-                // }
-                // else {
-                //     total_data.data.push(current);
-                // }
+                var elem = total_data.data.find(function (key) {
+                    return key.campaign_id === current.campaign.id
+                });
+                console.log('==========');
+                console.log(elem);
+                console.log('==========');
+                if (elem) {
+                    elem.cdr_count = parseInt(elem.cdr_count) + parseInt(current.cdr_count);
+                    elem.already_subbed_count = parseInt(elem.already_subbed_count) + parseInt(current.already_subbed_count);
+                    elem.confirmation_count = parseInt(elem.confirmation_count) + parseInt(current.confirmation_count);
+                    elem.failed_count = parseInt(elem.failed_count) + parseInt(current.failed_count);
+                    elem.impression_count = parseInt(elem.impression_count) + parseInt(current.impression_count);
+                    elem.insufficient_count = parseInt(elem.insufficient_count) + parseInt(current.insufficient_count);
+                    elem.subscription_count = parseInt(elem.subscription_count) + parseInt(current.subscription_count);
+                    elem.success_count = parseInt(elem.success_count) + parseInt(current.success_count);
+                }
+                else {
+                    total_data.data.push(current);
+                }
             });
         }
         res.send(JSON.stringify(total_data));
