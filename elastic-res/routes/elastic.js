@@ -989,9 +989,7 @@ router.get('/data/week', function (req, res, next) {
                 var elem = total_data.data.find(function (key) {
                     return key.campaign_id === current.campaign.id
                 });
-                console.log(elem);
-                data.push(current);
-                // if (elem != undefined) {
+                if (elem != undefined) {
                 //     console.log('==========');
                 //     console.log(elem);
                 //     // console.log(elem.already_subbed_count);
@@ -1010,10 +1008,10 @@ router.get('/data/week', function (req, res, next) {
                 //     // elem.insufficient_count = parseInt(elem.insufficient_count) + parseInt(current.insufficient_count);
                 //     // elem.subscription_count = parseInt(elem.subscription_count) + parseInt(current.subscription_count);
                 //     // elem.success_count = parseInt(elem.success_count) + parseInt(current.success_count);
-                // }
-                // else {
-                //     total_data.data.push(current);
-                // }
+                }
+                else {
+                    data.push(current);
+                }
             });
         }
         res.send(JSON.stringify(data));
