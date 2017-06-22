@@ -278,32 +278,31 @@ app.controller('HomeController', function ($scope, $http, $timeout, $q) {
                 method: 'GET',
                 url: '/dashboard/today'
             }).success(function successCallback(response) {
-
-                console.log(Object);
-
-                Object.keys(response.today).map(function (key) {
-                    $scope.data_bank.today.push(response.today[key]);
-                    $scope.data_bank.totalToday += response.today[key].cdr_count;
-                    $scope.data_bank.impressionToday += response.today[key].impression_count;
-                });
-
-                if ($scope.username != 'all') {
-                    $scope.filtered_data.today = $scope.data_bank.today.filter(function (value) {
-                        return value.username == $scope.username;
+                if (response) {
+                    Object.keys(response.today).map(function (key) {
+                        $scope.data_bank.today.push(response.today[key]);
+                        $scope.data_bank.totalToday += response.today[key].cdr_count;
+                        $scope.data_bank.impressionToday += response.today[key].impression_count;
                     });
 
-                    $scope.filtered_data.totalToday += $scope.filtered_data.today[key].cdr_count;
-                    $scope.filtered_data.impressionToday += $scope.filtered_data.today[key].impression_count;
+                    if ($scope.username != 'all') {
+                        $scope.filtered_data.today = $scope.data_bank.today.filter(function (value) {
+                            return value.username == $scope.username;
+                        });
 
-                }
-                else {
-                    $scope.filtered_data = $scope.data_bank;
+                        $scope.filtered_data.totalToday += $scope.filtered_data.today[key].cdr_count;
+                        $scope.filtered_data.impressionToday += $scope.filtered_data.today[key].impression_count;
+
+                    }
+                    else {
+                        $scope.filtered_data = $scope.data_bank;
+                    }
                 }
 
             }).error(function errorCallback(err) {
                 location.href = '/logout';
             });
-        }, 5);
+        }, 10);
     };
 
     var load_yesterday = function () {
@@ -312,28 +311,28 @@ app.controller('HomeController', function ($scope, $http, $timeout, $q) {
                 method: 'GET',
                 url: '/dashboard/yesterday'
             }).success(function successCallback(response) {
-
-                Object.keys(response.yesterday).map(function (key) {
-                    $scope.data_bank.yesterday.push(response.yesterday[key]);
-                    $scope.data_bank.totalYday += response.yesterday[key].cdr_count;
-                });
-
-                if ($scope.username != 'all') {
-
-                    $scope.filtered_data.yesterday = $scope.data_bank.yesterday.filter(function (value) {
-                        return value.username == $scope.username;
+                if (response) {
+                    Object.keys(response.yesterday).map(function (key) {
+                        $scope.data_bank.yesterday.push(response.yesterday[key]);
+                        $scope.data_bank.totalYday += response.yesterday[key].cdr_count;
                     });
 
-                    $scope.filtered_data.totalYday += $scope.filtered_data.yesterday[key].cdr_count;
-                }
-                else {
-                    $scope.filtered_data = $scope.data_bank;
-                }
+                    if ($scope.username != 'all') {
 
+                        $scope.filtered_data.yesterday = $scope.data_bank.yesterday.filter(function (value) {
+                            return value.username == $scope.username;
+                        });
+
+                        $scope.filtered_data.totalYday += $scope.filtered_data.yesterday[key].cdr_count;
+                    }
+                    else {
+                        $scope.filtered_data = $scope.data_bank;
+                    }
+                }
             }).error(function errorCallback(err) {
                 location.href = '/logout';
             });
-        }, 10);
+        }, 20);
     };
 
     var load_last_week = function () {
@@ -342,27 +341,27 @@ app.controller('HomeController', function ($scope, $http, $timeout, $q) {
                 method: 'GET',
                 url: '/dashboard/last'
             }).success(function successCallback(response) {
-
-                Object.keys(response.last_week).map(function (key) {
-                    $scope.data_bank.last_week.push(response.last_week[key]);
-                    $scope.data_bank.totalLWk += response.last_week[key].cdr_count;
-                });
-
-                if ($scope.username != 'all') {
-
-                    $scope.filtered_data.last_week = $scope.data_bank.last_week.filter(function (value) {
-                        return value.username == $scope.username;
+                if (response) {
+                    Object.keys(response.last_week).map(function (key) {
+                        $scope.data_bank.last_week.push(response.last_week[key]);
+                        $scope.data_bank.totalLWk += response.last_week[key].cdr_count;
                     });
-                    $scope.filtered_data.totalLWk += $scope.filtered_data.last_week[key].cdr_count;
-                }
-                else {
-                    $scope.filtered_data = $scope.data_bank;
-                }
 
+                    if ($scope.username != 'all') {
+
+                        $scope.filtered_data.last_week = $scope.data_bank.last_week.filter(function (value) {
+                            return value.username == $scope.username;
+                        });
+                        $scope.filtered_data.totalLWk += $scope.filtered_data.last_week[key].cdr_count;
+                    }
+                    else {
+                        $scope.filtered_data = $scope.data_bank;
+                    }
+                }
             }).error(function errorCallback(err) {
                 location.href = '/logout';
             });
-        }, 5);
+        }, 20);
     };
 
     var load_this_week = function () {
@@ -371,27 +370,27 @@ app.controller('HomeController', function ($scope, $http, $timeout, $q) {
                 method: 'GET',
                 url: '/dashboard/week'
             }).success(function successCallback(response) {
-
-                Object.keys(response.this_week).map(function (key) {
-                    $scope.data_bank.this_week.push(response.this_week[key]);
-                    $scope.data_bank.totalTWk += response.this_week[key].cdr_count;
-                });
-
-                if ($scope.username != 'all') {
-
-                    $scope.filtered_data.this_week = $scope.data_bank.this_week.filter(function (value) {
-                        return value.username == $scope.username;
+                if (response) {
+                    Object.keys(response.this_week).map(function (key) {
+                        $scope.data_bank.this_week.push(response.this_week[key]);
+                        $scope.data_bank.totalTWk += response.this_week[key].cdr_count;
                     });
-                    $scope.filtered_data.totalTWk += $scope.filtered_data.this_week[key].cdr_count;
-                }
-                else {
-                    $scope.filtered_data = $scope.data_bank;
-                }
 
+                    if ($scope.username != 'all') {
+
+                        $scope.filtered_data.this_week = $scope.data_bank.this_week.filter(function (value) {
+                            return value.username == $scope.username;
+                        });
+                        $scope.filtered_data.totalTWk += $scope.filtered_data.this_week[key].cdr_count;
+                    }
+                    else {
+                        $scope.filtered_data = $scope.data_bank;
+                    }
+                }
             }).error(function errorCallback(err) {
                 location.href = '/logout';
             });
-        }, 10);
+        }, 20);
     };
 
     var load_month = function () {
@@ -400,23 +399,23 @@ app.controller('HomeController', function ($scope, $http, $timeout, $q) {
                 method: 'GET',
                 url: '/dashboard'
             }).success(function successCallback(response) {
-
-                Object.keys(response.month).map(function (key) {
-                    $scope.data_bank.month.push(response.month[key]);
-                    $scope.data_bank.totalMonth += response.month[key].cdr_count;
-                });
-
-                if ($scope.username != 'all') {
-
-                    $scope.filtered_data.month = $scope.data_bank.month.filter(function (value) {
-                        return value.username == $scope.username;
+                if (response) {
+                    Object.keys(response.month).map(function (key) {
+                        $scope.data_bank.month.push(response.month[key]);
+                        $scope.data_bank.totalMonth += response.month[key].cdr_count;
                     });
-                    $scope.filtered_data.totalMonth += $scope.filtered_data.month[key].cdr_count;
-                }
-                else {
-                    $scope.filtered_data = $scope.data_bank;
-                }
 
+                    if ($scope.username != 'all') {
+
+                        $scope.filtered_data.month = $scope.data_bank.month.filter(function (value) {
+                            return value.username == $scope.username;
+                        });
+                        $scope.filtered_data.totalMonth += $scope.filtered_data.month[key].cdr_count;
+                    }
+                    else {
+                        $scope.filtered_data = $scope.data_bank;
+                    }
+                }
             }).error(function errorCallback(err) {
                 location.href = '/logout';
             });
