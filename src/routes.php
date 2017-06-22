@@ -65,6 +65,56 @@ $app->group('', function (){
         return $res;
     });
 
+    // javascript data for today
+    $this->get('/dashboard/today', function($request, $response) {
+        $ch = curl_init();
+        $url = 'http://localhost:4043/elastic/data/today';
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
+        $res = curl_exec($ch);
+        return $res;
+    });
+
+    // javascript data for yesterday
+    $this->get('/dashboard/yesterday', function($request, $response) {
+        $ch = curl_init();
+        $url = 'http://localhost:4043/elastic/data/yesterday';
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
+        $res = curl_exec($ch);
+        return $res;
+    });
+
+    // javascript data for last week
+    $this->get('/dashboard/last', function($request, $response) {
+        $ch = curl_init();
+        $url = 'http://localhost:4043/elastic/data/last';
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
+        $res = curl_exec($ch);
+        return $res;
+    });
+
+    // javascript data for last week
+    $this->get('/dashboard/week', function($request, $response) {
+        $ch = curl_init();
+        $url = 'http://localhost:4043/elastic/data/week';
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
+        $res = curl_exec($ch);
+        return $res;
+    });
+
+    // javascript data for last week
+    $this->get('/dashboard/month', function($request, $response) {
+        $ch = curl_init();
+        $url = 'http://localhost:4043/elastic/data/month';
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
+        $res = curl_exec($ch);
+        return $res;
+    });
+
     $this->get('/campaign/period', function($request, $response) {
         $ch = curl_init();
         $url = 'http://localhost:4043/elastic/no_of_campaign';
