@@ -11,18 +11,24 @@
             </div>
 
             <div class="heading-elements">
-                <div class="heading-btn-group">
-                    <a class="btn btn-link btn-float text-size-small has-text" ng-class="username == 'all' ? 'selected' : ''"
-                       ng-click="changeActive('all')"><i class="icon-bars-alt text-primary"></i><span>All</span>
-                    </a>
-                    <a class="btn btn-link btn-float text-size-small has-text"
-                       ng-class="username == 'etisalat' ? 'selected' : ''" ng-click="changeActive('etisalat')">
-                        <img src="/images/etisalat.png"/>
-                    </a>
-                    <a class="btn btn-link btn-float text-size-small has-text" ng-class="username == 'tm30' ? 'selected' : ''"
-                       ng-click="changeActive('tm30')"><img src="/images/tm.png"/>
-                    </a>
-                </div>
+                <select name="client" class="form-control" ng-model="username" ng-change="changeActive()">
+                    <option value="all">ALL</option>
+                    {% for user in users %}
+                        <option value="{{ user.username }}">{{ user.username }}</option>
+                    {% endfor %}
+                </select>
+                {#<div class="heading-btn-group">#}
+                    {#<a class="btn btn-link btn-float text-size-small has-text" ng-class="username == 'all' ? 'selected' : ''"#}
+                       {#ng-click="changeActive('all')"><i class="icon-bars-alt text-primary"></i><span>All</span>#}
+                    {#</a>#}
+                    {#<a class="btn btn-link btn-float text-size-small has-text"#}
+                       {#ng-class="username == 'etisalat' ? 'selected' : ''" ng-click="changeActive('etisalat')">#}
+                        {#<img src="/images/etisalat.png"/>#}
+                    {#</a>#}
+                    {#<a class="btn btn-link btn-float text-size-small has-text" ng-class="username == 'tm30' ? 'selected' : ''"#}
+                       {#ng-click="changeActive('tm30')"><img src="/images/tm.png"/>#}
+                    {#</a>#}
+                {#</div>#}
             </div>
         </div>
 
