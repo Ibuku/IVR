@@ -1030,6 +1030,9 @@ router.get('/elasticsearch/data', function (req, res, next) {
                             // var last_existing = $.map(total_data.last_week, function (e,i) {
                             //     if (e.campaign_id === value.campaign_id) { return e }
                             // });
+                            var last_existing = total_data.last_week.map(function (e,i) {
+                                if (e.campaign_id === value.campaign_id) { return e }
+                            });
                             console.log(value);
                             // if (last_existing.length) {
                             //     var last_elem = last_existing[0];
