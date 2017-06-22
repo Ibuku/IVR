@@ -1014,6 +1014,7 @@ router.get('/data/week', function (req, res, next) {
                 }
             });
         }
+        console.log(this_week_ungrouped.length);
         console.log(data.length);
         res.send(JSON.stringify(data));
     });
