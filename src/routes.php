@@ -58,7 +58,7 @@ $app->group('', function (){
     // javascript data for pages
     $this->get('/dashboard', function($request, $response) {
         $ch = curl_init();
-        $url = 'http://localhost:4043/ivr/elasticsearch/data';
+        $url = 'http://localhost:4043/elastic/elasticsearch/data';
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
         $res = curl_exec($ch);
@@ -67,7 +67,7 @@ $app->group('', function (){
 
     $this->get('/campaign/period', function($request, $response) {
         $ch = curl_init();
-        $url = 'http://localhost:4043/ivr/no_of_campaign';
+        $url = 'http://localhost:4043/elastic/no_of_campaign';
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
         $res = curl_exec($ch);
@@ -83,7 +83,7 @@ $app->group('', function (){
         }
 
         $ch = curl_init();
-        $url = 'http://localhost:4043/ivr/campaign/'.$campaign_id.'/data';
+        $url = 'http://localhost:4043/elastic/campaign/'.$campaign_id.'/data';
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
         $res = curl_exec($ch);
