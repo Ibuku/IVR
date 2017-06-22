@@ -1010,7 +1010,8 @@ router.get('/data/week', function (req, res, next) {
                 //     // elem.success_count = parseInt(elem.success_count) + parseInt(current.success_count);
                 }
                 else {
-                    data.push(current);
+                    total_data.push(current);
+                    data = $.extend([], total_data)
                 }
             });
         }
