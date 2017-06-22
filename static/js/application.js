@@ -278,7 +278,8 @@ app.controller('HomeController', function ($scope, $http, $timeout, $q) {
                 method: 'GET',
                 url: '/dashboard/today'
             }).success(function successCallback(response) {
-                console.log(response);
+
+                console.log(Object);
 
                 Object.keys(response.today).map(function (key) {
                     $scope.data_bank.today.push(response.today[key]);
