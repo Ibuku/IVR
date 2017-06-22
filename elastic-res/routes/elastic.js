@@ -955,6 +955,7 @@ router.get('/data/week', function (req, res, next) {
     var week_end = new Date(week_start.getTime() + (6 * 24 * 60 * 60 * 1000));
     week_end.setUTCHours(23,59,59,999);
     var total_data = {"data": []};
+    var data = [];
 
     client.search({
         index: 'ivr',
@@ -985,14 +986,11 @@ router.get('/data/week', function (req, res, next) {
                 return __obj._source
             });
             this_week_ungrouped.forEach(function (current, index, arr) {
-                // var existing = $.map(total_data.data, function (e,i) {
-                //     if (e.campaign_id === value.campaign_id) { return e }
-                // });
                 var elem = total_data.data.find(function (key) {
                     return key.campaign_id === current.campaign.id
                 });
                 console.log(elem);
-                total_data.data.push(current);
+                data.push(current);
                 // if (elem != undefined) {
                 //     console.log('==========');
                 //     console.log(elem);
