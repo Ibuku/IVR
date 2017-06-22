@@ -985,10 +985,11 @@ router.get('/data/week', function (req, res, next) {
                 return __obj._source
             });
             this_week_ungrouped.forEach(function(current) {
-                var elem = total_data.data.find(function(v, i) {
+                var existing = total_data.data.filter(function(v, i) {
                     return v.campaign_id == current.campaign_id;
                 });
-                if (elem.length) {
+                if (existing.length) {
+                    var elem = existing[0];
                     elem.cdr_count = parseInt(elem.cdr_count) + parseInt(current.cdr_count);
                     elem.already_subbed_count = parseInt(elem.already_subbed_count) + parseInt(current.already_subbed_count);
                     elem.confirmation_count = parseInt(elem.confirmation_count) + parseInt(current.confirmation_count);
