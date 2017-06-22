@@ -1016,7 +1016,7 @@ router.get('/data/week', function (req, res, next) {
                 // }
             });
         }
-        res.send(JSON.stringify(total_data));
+        res.send(JSON.stringify(data));
     });
 });
 
