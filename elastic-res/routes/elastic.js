@@ -1,9 +1,9 @@
 function getStart(d) {
     d = new Date(d);
     var day = d.getDay(),
-        diff = d.getDate() - day + (day == 0 ? -6:0);
+        diff = d.getDate() - day + (day == 0 ? -6 : 0);
     var x = new Date(d.setDate(diff));
-    x.setUTCHours(0,0,0,0);
+    x.setUTCHours(0, 0, 0, 0);
     return new Date(x);
 }
 
@@ -538,9 +538,9 @@ router.post('/cdr/failed', function (req, res, next) {
 router.get('/no_of_campaign', function (req, res, next) {
 
     var sevenDays = new Date(new Date().getTime() - (6 * 24 * 60 * 60 * 1000));
-    sevenDays.setUTCHours(0,0,0,0);
+    sevenDays.setUTCHours(0, 0, 0, 0);
     var today = new Date();
-    today.setUTCHours(23,59,59,59);
+    today.setUTCHours(23, 59, 59, 59);
     client.search({
         index: "ivr",
         type: "statuses",
@@ -548,8 +548,7 @@ router.get('/no_of_campaign', function (req, res, next) {
             "query": {
                 "filtered": {
                     "query": {
-                        "match_all": {
-                        }
+                        "match_all": {}
                     },
                     "filter": {
                         "range": {
@@ -580,9 +579,9 @@ router.get('/campaign/:id/data', function (req, res, next) {
 
     var campaign_id = req.params.id;
     var sevenDays = new Date(new Date().getTime() - (6 * 24 * 60 * 60 * 1000));
-    sevenDays.setUTCHours(0,0,0,0);
+    sevenDays.setUTCHours(0, 0, 0, 0);
     var today = new Date(new Date().getTime() + (24 * 60 * 60 * 1000));
-    today.setUTCHours(23,59,59,999);
+    today.setUTCHours(23, 59, 59, 999);
     client.search({
         index: "ivr",
         type: "statuses",
@@ -590,8 +589,7 @@ router.get('/campaign/:id/data', function (req, res, next) {
             "query": {
                 "filtered": {
                     "query": {
-                        "match_all": {
-                        }
+                        "match_all": {}
                     },
                     "filter": {
                         "range": {
@@ -624,9 +622,9 @@ router.get('/campaign/:id/data', function (req, res, next) {
 //Campign impressions
 router.get('/impressions/:campaign_id', function (req, res, next) {
     var sevenDays = new Date(new Date().getTime() - (6 * 24 * 60 * 60 * 1000));
-    sevenDays.setHours(0,0,0,0);
+    sevenDays.setHours(0, 0, 0, 0);
     var today = new Date();
-    today.setHours(0,0,0,0);
+    today.setHours(0, 0, 0, 0);
     sevenDays.toDateString
     today.toDateString
 
@@ -868,6 +866,267 @@ router.post('/elasticsearch/cdr/missing', function (req, res, next) {
     });
 });
 
+router.get('/data/today', function (req, res, next) {
+
+    var day = new Date();
+    day.setUTCHours(0, 0, 0, 0);
+    var right_now = new Date();
+    right_now.setUTCHours(23, 59, 59, 999);
+    var total_data = {"data": []};
+
+    // today CDR records
+    client.search({
+        index: 'ivr',
+        type: 'statuses',
+        body: {
+            "query": {
+                "filtered": {
+                    "query": {
+                        "match_all": {}
+                    },
+                    "filter": {
+                        "range": {
+                            "created_at": {
+                                "gte": day,
+                                "lte": right_now
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }).then(function (resp) {
+        var result = resp.hits.hits;
+        if (result.length > 0) {
+            total_data.data = result.map(function (_obj) {
+                return _obj._source
+            });
+        }
+        res.send(JSON.stringify(total_data));
+    });
+});
+
+router.get('/data/yesterday', function (req, res, next) {
+
+    // yesterday cdr records
+    var yesterday_start = new Date(new Date().getTime() - (24 * 60 * 60 * 1000));
+    yesterday_start.setUTCHours(0, 0, 0, 0);
+    var yesterday_end = new Date(new Date().getTime() - (24 * 60 * 60 * 1000));
+    yesterday_end.setUTCHours(23,59,59,999);
+
+    var total_data = {"data": []};
+
+    // yesterday CDR records
+    client.search({
+        index: 'ivr',
+        type: 'statuses',
+        body: {
+            "query": {
+                "filtered": {
+                    "query": {
+                        "match_all": {
+                        }
+                    },
+                    "filter": {
+                        "range": {
+                            "created_at": {
+                                "gte": yesterday_start,
+                                "lte": yesterday_end
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }).then(function (resp) {
+        var yer_result = resp.hits.hits;
+        if (yer_result.length > 0) {
+            total_data.yesterday = yer_result.map(function (__obj) {
+                return __obj._source
+            });
+        }
+        res.send(JSON.stringify(total_data));
+    });
+});
+
+router.get('/data/week', function (req, res, next) {
+
+    var week_start = getStart(new Date());
+    var week_end = new Date(week_start.getTime() + (6 * 24 * 60 * 60 * 1000));
+    week_end.setUTCHours(23,59,59,999);
+    var total_data = {"data": []};
+
+    client.search({
+        index: 'ivr',
+        type: 'statuses',
+        body: {
+            "query": {
+                "filtered": {
+                    "query": {
+                        "match_all": {
+                        }
+                    },
+                    "filter": {
+                        "range": {
+                            "created_at": {
+                                "gte": week_start,
+                                "lte": week_end
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }).then(function (resp) {
+        var result = resp.hits.hits;
+        if (result.length > 0) {
+
+            total_data.data = result.map(function (__obj) {
+                return __obj._source
+            });
+            // this_week_ungrouped.forEach(function (value) {
+            //     var existing = $.map(total_data.this_week, function (e,i) {
+            //         if (e.campaign_id === value.campaign_id) { return e }
+            //     });
+            //     if (existing.length) {
+            //         var elem = existing[0];
+            //         elem.cdr_count = parseInt(elem.cdr_count) + parseInt(value.cdr_count);
+            //         elem.already_subbed_count = parseInt(elem.already_subbed_count) + parseInt(value.already_subbed_count);
+            //         elem.confirmation_count = parseInt(elem.confirmation_count) + parseInt(value.confirmation_count);
+            //         elem.failed_count = parseInt(elem.failed_count) + parseInt(value.failed_count);
+            //         elem.impression_count = parseInt(elem.impression_count) + parseInt(value.impression_count);
+            //         elem.insufficient_count = parseInt(elem.insufficient_count) + parseInt(value.insufficient_count);
+            //         elem.subscription_count = parseInt(elem.subscription_count) + parseInt(value.subscription_count);
+            //         elem.success_count = parseInt(elem.success_count) + parseInt(value.success_count);
+            //     }
+            //     else {
+            //         total_data.this_week.push(value);
+            //     }
+            // });
+        }
+        res.send(JSON.stringify(total_data));
+    });
+});
+
+router.get('/data/last', function (req, res, next) {
+
+    var last_start = new Date(week_start.getTime() - (7 * 24 * 60 * 60 * 1000));
+    last_start.setUTCHours(0,0,0,0);
+    var last_end = new Date(week_start.getTime() - (24 * 60 * 60 * 1000));
+    last_end.setUTCHours(23,59,59,999);
+    var total_data = {"data": []};
+
+    client.search({
+        index: 'ivr',
+        type: 'statuses',
+        body: {
+            "query": {
+                "filtered": {
+                    "query": {
+                        "match_all": {}
+                    },
+                    "filter": {
+                        "range": {
+                            "created_at": {
+                                "gte": last_start,
+                                "lte": last_end
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }).then(function (resp) {
+        var result = resp.hits.hits;
+        if (result.length > 0) {
+
+            total_data.data = result.map(function (__obj) {
+                return __obj._source
+            });
+            // this_week_ungrouped.forEach(function (value) {
+            //     var existing = $.map(total_data.this_week, function (e,i) {
+            //         if (e.campaign_id === value.campaign_id) { return e }
+            //     });
+            //     if (existing.length) {
+            //         var elem = existing[0];
+            //         elem.cdr_count = parseInt(elem.cdr_count) + parseInt(value.cdr_count);
+            //         elem.already_subbed_count = parseInt(elem.already_subbed_count) + parseInt(value.already_subbed_count);
+            //         elem.confirmation_count = parseInt(elem.confirmation_count) + parseInt(value.confirmation_count);
+            //         elem.failed_count = parseInt(elem.failed_count) + parseInt(value.failed_count);
+            //         elem.impression_count = parseInt(elem.impression_count) + parseInt(value.impression_count);
+            //         elem.insufficient_count = parseInt(elem.insufficient_count) + parseInt(value.insufficient_count);
+            //         elem.subscription_count = parseInt(elem.subscription_count) + parseInt(value.subscription_count);
+            //         elem.success_count = parseInt(elem.success_count) + parseInt(value.success_count);
+            //     }
+            //     else {
+            //         total_data.this_week.push(value);
+            //     }
+            // });
+        }
+        res.send(JSON.stringify(total_data));
+    });
+});
+
+router.get('/data/month', function (req, res, next) {
+
+    var date = new Date(), y = date.getFullYear(), m = date.getMonth();
+    var start = new Date(y, m, 1);
+    var end = new Date(y, m + 1, 0);
+    start.setHours(1,0,0,0);
+    end.setHours(24,59,59,999);
+    var total_data = {"data": []};
+
+    client.search({
+        index: 'ivr',
+        type: 'statuses',
+        body: {
+            "query": {
+                "filtered": {
+                    "query": {
+                        "match_all": {}
+                    },
+                    "filter": {
+                        "range": {
+                            "created_at": {
+                                "gte": start,
+                                "lte": end
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }).then(function (resp) {
+        var result = resp.hits.hits;
+        if (result.length > 0) {
+
+            total_data.data = result.map(function (__obj) {
+                return __obj._source
+            });
+            // this_week_ungrouped.forEach(function (value) {
+            //     var existing = $.map(total_data.this_week, function (e,i) {
+            //         if (e.campaign_id === value.campaign_id) { return e }
+            //     });
+            //     if (existing.length) {
+            //         var elem = existing[0];
+            //         elem.cdr_count = parseInt(elem.cdr_count) + parseInt(value.cdr_count);
+            //         elem.already_subbed_count = parseInt(elem.already_subbed_count) + parseInt(value.already_subbed_count);
+            //         elem.confirmation_count = parseInt(elem.confirmation_count) + parseInt(value.confirmation_count);
+            //         elem.failed_count = parseInt(elem.failed_count) + parseInt(value.failed_count);
+            //         elem.impression_count = parseInt(elem.impression_count) + parseInt(value.impression_count);
+            //         elem.insufficient_count = parseInt(elem.insufficient_count) + parseInt(value.insufficient_count);
+            //         elem.subscription_count = parseInt(elem.subscription_count) + parseInt(value.subscription_count);
+            //         elem.success_count = parseInt(elem.success_count) + parseInt(value.success_count);
+            //     }
+            //     else {
+            //         total_data.this_week.push(value);
+            //     }
+            // });
+        }
+        res.send(JSON.stringify(total_data));
+    });
+});
+
 router.get('/elasticsearch/data', function (req, res, next) {
 
     var day = new Date();
@@ -1027,10 +1286,7 @@ router.get('/elasticsearch/data', function (req, res, next) {
                             return __obj._source
                         });
                         last_week_ungrouped.forEach(function (value) {
-                            // var last_existing = $.map(total_data.last_week, function (e,i) {
-                            //     if (e.campaign_id === value.campaign_id) { return e }
-                            // });
-                            var last_existing = total_data.last_week.map(function (e,i) {
+                            var last_existing = $.map(total_data.last_week, function (e,i) {
                                 if (e.campaign_id === value.campaign_id) { return e }
                             });
                             if (last_existing.length) {
@@ -1139,9 +1395,9 @@ router.post('/elasticsearch/campaign/path', function (req, res, next) {
 router.post('/record/filter', function (req, res, next) {
 
     var start = new Date(new Date(req.body.start));
-    start.setUTCHours(0,0,0,0);
+    start.setUTCHours(0, 0, 0, 0);
     var end = new Date(req.body.end);
-    end.setUTCHours(23,59,59,999);
+    end.setUTCHours(23, 59, 59, 999);
     client.search({
         index: "ivr",
         type: "statuses",
@@ -1149,8 +1405,7 @@ router.post('/record/filter', function (req, res, next) {
             "query": {
                 "filtered": {
                     "query": {
-                        "match_all": {
-                        }
+                        "match_all": {}
                     },
                     "filter": {
                         "range": {
