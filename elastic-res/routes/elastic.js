@@ -984,9 +984,12 @@ router.get('/data/week', function (req, res, next) {
             var this_week_ungrouped = result.map(function (__obj) {
                 return __obj._source
             });
-            for(i=0; i<this_week_ungrouped.length; i++) {
-                var value = this_week_ungrouped[i];
-               console.log(value);
+            for(var i=0; i<this_week_ungrouped.length; i++) {
+                // var value = this_week_ungrouped[i];
+                var elem = total_data.data.find(function (key) {
+                    return key.campaign_id === this_week_ungrouped[i].campaign.id
+                });
+                console.log(elem);
             }
             // this_week_ungrouped.forEach(function (current, index, arr) {
             //     var elem = total_data.data.find(function (key) {
@@ -1017,8 +1020,6 @@ router.get('/data/week', function (req, res, next) {
             //     }
             // });
         }
-        console.log(this_week_ungrouped.length);
-        console.log(data.length);
         res.send(JSON.stringify(data));
     });
 });
