@@ -1,3 +1,9 @@
+var sum = function(items, prop){
+    return items.reduce( function(a, b){
+        return a + b[prop];
+    }, 0);
+};
+
 var app = angular.module('mainApp', ['ngWebAudio']);
 
 app.config(function ($interpolateProvider) {
@@ -193,12 +199,6 @@ app.controller('AccountCtrl', function ($scope) {
 });
 
 app.controller('HomeController', function ($scope, $http, $timeout, $q) {
-
-    var sum = function(items, prop){
-        return items.reduce( function(a, b){
-            return a + b[prop];
-        }, 0);
-    };
 
     var load_data = function () {
         $timeout(function () {
