@@ -994,13 +994,13 @@ router.get('/data/week', function (req, res, next) {
                 if (elem) {
                     console.log('==========');
                     console.log(elem.cdr_count);
-                    console.log(elem.already_subbed_count);
-                    console.log(elem.confirmation_count);
-                    console.log(elem.failed_count);
-                    console.log(elem.impression_count);
-                    console.log(elem.insufficient_count);
-                    console.log(elem.subscription_count);
-                    console.log(elem.success_count);
+                    // console.log(elem.already_subbed_count);
+                    // console.log(elem.confirmation_count);
+                    // console.log(elem.failed_count);
+                    // console.log(elem.impression_count);
+                    // console.log(elem.insufficient_count);
+                    // console.log(elem.subscription_count);
+                    // console.log(elem.success_count);
                     console.log('==========');
                     // elem.cdr_count = parseInt(elem.cdr_count) + parseInt(current.cdr_count);
                     // elem.already_subbed_count = parseInt(elem.already_subbed_count) + parseInt(current.already_subbed_count);
@@ -1011,9 +1011,7 @@ router.get('/data/week', function (req, res, next) {
                     // elem.subscription_count = parseInt(elem.subscription_count) + parseInt(current.subscription_count);
                     // elem.success_count = parseInt(elem.success_count) + parseInt(current.success_count);
                 }
-                else {
-                    total_data.data.push(current);
-                }
+                total_data.data.push(current);
             });
         }
         res.send(JSON.stringify(total_data));
