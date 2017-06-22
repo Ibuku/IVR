@@ -1027,10 +1027,10 @@ router.get('/elasticsearch/data', function (req, res, next) {
                             return __obj._source
                         });
                         last_week_ungrouped.forEach(function (value) {
-                            var last_existing = $.map(total_data.last_week, function (e,i) {
-                                if (e.campaign_id === value.campaign_id) { return e }
-                            });
-                            console.log(last_existing);
+                            // var last_existing = $.map(total_data.last_week, function (e,i) {
+                            //     if (e.campaign_id === value.campaign_id) { return e }
+                            // });
+                            console.log(value);
                             // if (last_existing.length) {
                             //     var last_elem = last_existing[0];
                             //     last_elem.cdr_count = parseInt(last_elem.cdr_count) + parseInt(value.cdr_count);
