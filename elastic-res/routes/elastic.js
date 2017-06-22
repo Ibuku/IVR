@@ -986,7 +986,7 @@ router.get('/data/week', function (req, res, next) {
                 return __obj._source
             });
             this_week_ungrouped.forEach(function (current, index, arr) {
-                var elem = total_data.data.find(function (key) {
+                var elem = data.find(function (key) {
                     return key.campaign_id === current.campaign.id
                 });
                 if (elem) {
