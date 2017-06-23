@@ -676,7 +676,7 @@ app.controller("ReportsController", function ($scope, $timeout, $q, $parse) {
             var temp_object = {"name": data.result[key][0].campaign_name, "data": [0, 0, 0, 0, 0, 0, 0]};
             var __temp = data.result[key];
             var temp;
-            if (__temp[j].username != 'all') {
+            if ($scope.base.username != 'all') {
                 temp = __temp.filter(function (z) {
                     return z.username == $scope.base.username
                 })
