@@ -676,11 +676,10 @@ app.controller("ReportsController", function ($scope, $timeout, $q, $parse) {
             var temp_object = {"name": data.result[key][0].campaign_name, "data": [0, 0, 0, 0, 0, 0, 0]};
             var temp = data.result[key];
             temp.map(function (i, j) {
-                if (temp[j].username == 'all' || temp[j].username == $scope.base.username) {
-                    var pos = new Date(temp[j].created_at).getDay();
-                    var b = date_range.indexOf(pos);
-                    temp_object['data'][b] = temp[j].cdr_count;
-                }
+                var pos = new Date(temp[j].created_at).getDay();
+                var b = date_range.indexOf(pos);
+                temp_object['data'][b] = temp[j].cdr_count;
+                // if (temp[j].username == 'all' || temp[j].username == $scope.base.username) {}
             });
 
             $scope.camp_data.data.push(temp_object);
