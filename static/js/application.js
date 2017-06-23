@@ -704,31 +704,31 @@ app.controller("ReportsController", function ($scope, $timeout, $q, $parse) {
 
         // impression records
         Object.keys(data.result).map(function (key, index) {
-            var temp_object = {"name": data.result[key][0].campaign_name, "data": [0, 0, 0, 0, 0, 0, 0]};
-            var __temp = data.result[key];
-            var temp = __temp;
-            if ($scope.camp_data.username != 'all') {
-                temp = [];
-                temp = __temp.filter(function (z) {
-                    return z.username == $scope.camp_data.username
-                })
-            }
-            temp.map(function (i, j) {
-                var pos = new Date(temp[j].created_at).getDay();
-                var b = date_range.indexOf(pos);
-                temp_object['data'][b] = temp[j].cdr_count;
-            });
-            // var impression_object = {"name": data.result[key][0].campaign_name, "data": [0, 0, 0, 0, 0, 0, 0]};
-            // var _object = data.result[key];
-            // _object.map(function (i, j) {
-            //     if ($scope.camp_data.username == 'all' || _object[j].username == $scope.camp_data.username) {
-            //         var pos = new Date(_object[j].created_at).getDay();
-            //         var b = date_range.indexOf(pos);
-            //         impression_object['data'][b] = _object[j].impression_count;
-            //     }
+            // var temp_object = {"name": data.result[key][0].campaign_name, "data": [0, 0, 0, 0, 0, 0, 0]};
+            // var __temp = data.result[key];
+            // var temp = __temp;
+            // if ($scope.camp_data.username != 'all') {
+            //     temp = [];
+            //     temp = __temp.filter(function (z) {
+            //         return z.username == $scope.camp_data.username
+            //     })
+            // }
+            // temp.map(function (i, j) {
+            //     var pos = new Date(temp[j].created_at).getDay();
+            //     var b = date_range.indexOf(pos);
+            //     temp_object['data'][b] = temp[j].cdr_count;
             // });
+            var impression_object = {"name": data.result[key][0].campaign_name, "data": [0, 0, 0, 0, 0, 0, 0]};
+            var _object = data.result[key];
+            _object.map(function (i, j) {
+                if ($scope.camp_data.username == 'all' || _object[j].username == $scope.camp_data.username) {
+                    var pos = new Date(_object[j].created_at).getDay();
+                    var b = date_range.indexOf(pos);
+                    impression_object['data'][b] = _object[j].impression_count;
+                }
+            });
 
-            $scope.camp_data.impression_data.push(temp_object);
+            $scope.camp_data.impression_data.push(impression_object);
         });
 
         var impression_data = {
@@ -772,31 +772,31 @@ app.controller("ReportsController", function ($scope, $timeout, $q, $parse) {
 
         // confirmation
         Object.keys(data.result).map(function (key, index) {
-            // var confirmation_object = {"name": data.result[key][0].campaign_name, "data": [0, 0, 0, 0, 0, 0, 0]};
-            // var _object = data.result[key];
-            // _object.map(function (i, j) {
-            //     if ($scope.camp_data.username == 'all' || _object[j].username == $scope.camp_data.username) {
-            //         var pos = new Date(_object[j].created_at).getDay();
-            //         var b = date_range.indexOf(pos);
-            //         confirmation_object['data'][b] = _object[j].confirmation_count;
-            //     }
-            // });
-            var temp_object = {"name": data.result[key][0].campaign_name, "data": [0, 0, 0, 0, 0, 0, 0]};
-            var __temp = data.result[key];
-            var temp = __temp;
-            if ($scope.camp_data.username != 'all') {
-                temp = [];
-                temp = __temp.filter(function (z) {
-                    return z.username == $scope.camp_data.username
-                })
-            }
-            temp.map(function (i, j) {
-                var pos = new Date(temp[j].created_at).getDay();
-                var b = date_range.indexOf(pos);
-                temp_object['data'][b] = temp[j].cdr_count;
+            var confirmation_object = {"name": data.result[key][0].campaign_name, "data": [0, 0, 0, 0, 0, 0, 0]};
+            var _object = data.result[key];
+            _object.map(function (i, j) {
+                if ($scope.camp_data.username == 'all' || _object[j].username == $scope.camp_data.username) {
+                    var pos = new Date(_object[j].created_at).getDay();
+                    var b = date_range.indexOf(pos);
+                    confirmation_object['data'][b] = _object[j].confirmation_count;
+                }
             });
+            // var temp_object = {"name": data.result[key][0].campaign_name, "data": [0, 0, 0, 0, 0, 0, 0]};
+            // var __temp = data.result[key];
+            // var temp = __temp;
+            // if ($scope.camp_data.username != 'all') {
+            //     temp = [];
+            //     temp = __temp.filter(function (z) {
+            //         return z.username == $scope.camp_data.username
+            //     })
+            // }
+            // temp.map(function (i, j) {
+            //     var pos = new Date(temp[j].created_at).getDay();
+            //     var b = date_range.indexOf(pos);
+            //     temp_object['data'][b] = temp[j].cdr_count;
+            // });
 
-            $scope.camp_data.confirmation_data.push(temp_object);
+            $scope.camp_data.confirmation_data.push(confirmation_object);
         });
 
         var confirmation_data = {
@@ -813,31 +813,31 @@ app.controller("ReportsController", function ($scope, $timeout, $q, $parse) {
 
         // already subscribed
         Object.keys(data.result).map(function (key, index) {
-            // var subbed_object = {"name": data.result[key][0].campaign_name, "data": [0, 0, 0, 0, 0, 0, 0]};
-            // var _object = data.result[key];
-            // _object.map(function (i, j) {
-            //     if ($scope.camp_data.username == 'all' || _object[j].username == $scope.camp_data.username) {
-            //         var pos = new Date(_object[j].created_at).getDay();
-            //         var b = date_range.indexOf(pos);
-            //         subbed_object['data'][b] = _object[j].already_subbed_count;
-            //     }
-            // });
-            var temp_object = {"name": data.result[key][0].campaign_name, "data": [0, 0, 0, 0, 0, 0, 0]};
-            var __temp = data.result[key];
-            var temp = __temp;
-            if ($scope.camp_data.username != 'all') {
-                temp = [];
-                temp = __temp.filter(function (z) {
-                    return z.username == $scope.camp_data.username
-                })
-            }
-            temp.map(function (i, j) {
-                var pos = new Date(temp[j].created_at).getDay();
-                var b = date_range.indexOf(pos);
-                temp_object['data'][b] = temp[j].cdr_count;
+            var subbed_object = {"name": data.result[key][0].campaign_name, "data": [0, 0, 0, 0, 0, 0, 0]};
+            var _object = data.result[key];
+            _object.map(function (i, j) {
+                if ($scope.camp_data.username == 'all' || _object[j].username == $scope.camp_data.username) {
+                    var pos = new Date(_object[j].created_at).getDay();
+                    var b = date_range.indexOf(pos);
+                    subbed_object['data'][b] = _object[j].already_subbed_count;
+                }
             });
+            // var temp_object = {"name": data.result[key][0].campaign_name, "data": [0, 0, 0, 0, 0, 0, 0]};
+            // var __temp = data.result[key];
+            // var temp = __temp;
+            // if ($scope.camp_data.username != 'all') {
+            //     temp = [];
+            //     temp = __temp.filter(function (z) {
+            //         return z.username == $scope.camp_data.username
+            //     })
+            // }
+            // temp.map(function (i, j) {
+            //     var pos = new Date(temp[j].created_at).getDay();
+            //     var b = date_range.indexOf(pos);
+            //     temp_object['data'][b] = temp[j].cdr_count;
+            // });
 
-            $scope.camp_data.subbed_data.push(temp_object);
+            $scope.camp_data.subbed_data.push(subbed_object);
         });
 
         var subbed_data = {
@@ -854,31 +854,31 @@ app.controller("ReportsController", function ($scope, $timeout, $q, $parse) {
 
         // insufficient balance
         Object.keys(data.result).map(function (key, index) {
-            // var insufficient_object = {"name": data.result[key][0].campaign_name, "data": [0, 0, 0, 0, 0, 0, 0]};
-            // var _object = data.result[key];
-            // _object.map(function (i, j) {
-            //     if ($scope.camp_data.username == 'all' || _object[j].username == $scope.camp_data.username) {
-            //         var pos = new Date(_object[j].created_at).getDay();
-            //         var b = date_range.indexOf(pos);
-            //         insufficient_object['data'][b] = _object[j].insufficient_count;
-            //     }
-            // });
-            var temp_object = {"name": data.result[key][0].campaign_name, "data": [0, 0, 0, 0, 0, 0, 0]};
-            var __temp = data.result[key];
-            var temp = __temp;
-            if ($scope.camp_data.username != 'all') {
-                temp = [];
-                temp = __temp.filter(function (z) {
-                    return z.username == $scope.camp_data.username
-                })
-            }
-            temp.map(function (i, j) {
-                var pos = new Date(temp[j].created_at).getDay();
-                var b = date_range.indexOf(pos);
-                temp_object['data'][b] = temp[j].cdr_count;
+            var insufficient_object = {"name": data.result[key][0].campaign_name, "data": [0, 0, 0, 0, 0, 0, 0]};
+            var _object = data.result[key];
+            _object.map(function (i, j) {
+                if ($scope.camp_data.username == 'all' || _object[j].username == $scope.camp_data.username) {
+                    var pos = new Date(_object[j].created_at).getDay();
+                    var b = date_range.indexOf(pos);
+                    insufficient_object['data'][b] = _object[j].insufficient_count;
+                }
             });
+            // var temp_object = {"name": data.result[key][0].campaign_name, "data": [0, 0, 0, 0, 0, 0, 0]};
+            // var __temp = data.result[key];
+            // var temp = __temp;
+            // if ($scope.camp_data.username != 'all') {
+            //     temp = [];
+            //     temp = __temp.filter(function (z) {
+            //         return z.username == $scope.camp_data.username
+            //     })
+            // }
+            // temp.map(function (i, j) {
+            //     var pos = new Date(temp[j].created_at).getDay();
+            //     var b = date_range.indexOf(pos);
+            //     temp_object['data'][b] = temp[j].cdr_count;
+            // });
 
-            $scope.camp_data.insufficient_data.push(temp_object);
+            $scope.camp_data.insufficient_data.push(insufficient_object);
         });
 
         var insufficient_data = {
@@ -904,21 +904,6 @@ app.controller("ReportsController", function ($scope, $timeout, $q, $parse) {
                     success_object['data'][b] = _object[j].success_count;
                 }
             });
-            // var temp_object = {"name": data.result[key][0].campaign_name, "data": [0, 0, 0, 0, 0, 0, 0]};
-            // var __temp = data.result[key];
-            // var temp = __temp;
-            // if ($scope.camp_data.username != 'all') {
-            //     temp = [];
-            //     temp = __temp.filter(function (z) {
-            //         return z.username == $scope.camp_data.username
-            //     })
-            // }
-            // temp.map(function (i, j) {
-            //     var pos = new Date(temp[j].created_at).getDay();
-            //     var b = date_range.indexOf(pos);
-            //     temp_object['data'][b] = temp[j].cdr_count;
-            // });
-
             $scope.camp_data.success_data.push(success_object);
         });
 
@@ -936,29 +921,29 @@ app.controller("ReportsController", function ($scope, $timeout, $q, $parse) {
 
         // failure
         Object.keys(data.result).map(function (key, index) {
-            // var failed_object = {"name": data.result[key][0].campaign_name, "data": [0, 0, 0, 0, 0, 0, 0]};
-            // var _object = data.result[key];
-            // _object.map(function (i, j) {
-            //     if ($scope.camp_data.username == 'all' || _object[j].username == $scope.camp_data.username) {
-            //         var pos = new Date(_object[j].created_at).getDay();
-            //         var b = date_range.indexOf(pos);
-            //         failed_object['data'][b] = _object[j].failed_count;
-            //     }
-            // });
             var failed_object = {"name": data.result[key][0].campaign_name, "data": [0, 0, 0, 0, 0, 0, 0]};
-            var failed = data.result[key];
-            var temp_failed = failed;
-            if ($scope.camp_data.username != 'all') {
-                temp_failed = [];
-                temp_failed = failed.filter(function (z) {
-                    return z.username == $scope.camp_data.username
-                })
-            }
-            temp_failed.map(function (i, j) {
-                var pos = new Date(temp[j].created_at).getDay();
-                var b = date_range.indexOf(pos);
-                failed_object['data'][b] = temp_failed[j].cdr_count;
+            var _object = data.result[key];
+            _object.map(function (i, j) {
+                if ($scope.camp_data.username == 'all' || _object[j].username == $scope.camp_data.username) {
+                    var pos = new Date(_object[j].created_at).getDay();
+                    var b = date_range.indexOf(pos);
+                    failed_object['data'][b] = _object[j].failed_count;
+                }
             });
+            // var failed_object = {"name": data.result[key][0].campaign_name, "data": [0, 0, 0, 0, 0, 0, 0]};
+            // var failed = data.result[key];
+            // var temp_failed = failed;
+            // if ($scope.camp_data.username != 'all') {
+            //     temp_failed = [];
+            //     temp_failed = failed.filter(function (z) {
+            //         return z.username == $scope.camp_data.username
+            //     })
+            // }
+            // temp_failed.map(function (i, j) {
+            //     var pos = new Date(temp[j].created_at).getDay();
+            //     var b = date_range.indexOf(pos);
+            //     failed_object['data'][b] = temp_failed[j].cdr_count;
+            // });
 
             $scope.camp_data.failed_data.push(failed_object);
         });
