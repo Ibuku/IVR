@@ -520,6 +520,8 @@ app.controller('HomeController', function ($scope, $rootScope, $http, $timeout, 
             if(j.username == $scope.username) { $scope.filtered_data.month.push(j) }
         });
         $scope.filtered_data.totalMonth = sum($scope.filtered_data.month, 'cdr_count');
+
+        console.log($scope.filtered_data);
     };
 
     $scope.init = function (data, active, username) {
