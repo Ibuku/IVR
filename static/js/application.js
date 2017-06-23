@@ -687,9 +687,9 @@ app.controller("ReportsController", function ($scope, $timeout, $q, $parse) {
                 var b = date_range.indexOf(pos);
                 temp_object['data'][b] = temp[j].cdr_count;
             });
-            console.log($scope.camp_data.data.length);
             $scope.camp_data.data.push(temp_object);
         });
+        console.log($scope.camp_data.data.length);
 
         var cam_data = {
             "categories": week_map,
@@ -872,7 +872,8 @@ app.controller("ReportsController", function ($scope, $timeout, $q, $parse) {
     var load_data = function () {
         $timeout(function () {
             $.get("/campaign/period", function (_data, status) {
-                processData(JSON.parse(_data));
+                $scope.base = JSON.parse(_data);
+                processData($scope.base);
             });
         }, 5)
     };
