@@ -895,31 +895,31 @@ app.controller("ReportsController", function ($scope, $timeout, $q, $parse) {
 
         // success
         Object.keys(data.result).map(function (key, index) {
-            // var success_object = {"name": data.result[key][0].campaign_name, "data": [0, 0, 0, 0, 0, 0, 0]};
-            // var _object = data.result[key];
-            // _object.map(function (i, j) {
-            //     if ($scope.camp_data.username == 'all' || _object[j].username == $scope.camp_data.username) {
-            //         var pos = new Date(_object[j].created_at).getDay();
-            //         var b = date_range.indexOf(pos);
-            //         success_object['data'][b] = _object[j].success_count;
-            //     }
-            // });
-            var temp_object = {"name": data.result[key][0].campaign_name, "data": [0, 0, 0, 0, 0, 0, 0]};
-            var __temp = data.result[key];
-            var temp = __temp;
-            if ($scope.camp_data.username != 'all') {
-                temp = [];
-                temp = __temp.filter(function (z) {
-                    return z.username == $scope.camp_data.username
-                })
-            }
-            temp.map(function (i, j) {
-                var pos = new Date(temp[j].created_at).getDay();
-                var b = date_range.indexOf(pos);
-                temp_object['data'][b] = temp[j].cdr_count;
+            var success_object = {"name": data.result[key][0].campaign_name, "data": [0, 0, 0, 0, 0, 0, 0]};
+            var _object = data.result[key];
+            _object.map(function (i, j) {
+                if ($scope.camp_data.username == 'all' || _object[j].username == $scope.camp_data.username) {
+                    var pos = new Date(_object[j].created_at).getDay();
+                    var b = date_range.indexOf(pos);
+                    success_object['data'][b] = _object[j].success_count;
+                }
             });
+            // var temp_object = {"name": data.result[key][0].campaign_name, "data": [0, 0, 0, 0, 0, 0, 0]};
+            // var __temp = data.result[key];
+            // var temp = __temp;
+            // if ($scope.camp_data.username != 'all') {
+            //     temp = [];
+            //     temp = __temp.filter(function (z) {
+            //         return z.username == $scope.camp_data.username
+            //     })
+            // }
+            // temp.map(function (i, j) {
+            //     var pos = new Date(temp[j].created_at).getDay();
+            //     var b = date_range.indexOf(pos);
+            //     temp_object['data'][b] = temp[j].cdr_count;
+            // });
 
-            $scope.camp_data.success_data.push(temp_object);
+            $scope.camp_data.success_data.push(success_object);
         });
 
         var success_data = {
@@ -945,22 +945,22 @@ app.controller("ReportsController", function ($scope, $timeout, $q, $parse) {
             //         failed_object['data'][b] = _object[j].failed_count;
             //     }
             // });
-            var temp_object = {"name": data.result[key][0].campaign_name, "data": [0, 0, 0, 0, 0, 0, 0]};
-            var __temp = data.result[key];
-            var temp = __temp;
+            var failed_object = {"name": data.result[key][0].campaign_name, "data": [0, 0, 0, 0, 0, 0, 0]};
+            var failed = data.result[key];
+            var temp_failed = failed;
             if ($scope.camp_data.username != 'all') {
-                temp = [];
-                temp = __temp.filter(function (z) {
+                temp_failed = [];
+                temp_failed = failed.filter(function (z) {
                     return z.username == $scope.camp_data.username
                 })
             }
-            temp.map(function (i, j) {
+            temp_failed.map(function (i, j) {
                 var pos = new Date(temp[j].created_at).getDay();
                 var b = date_range.indexOf(pos);
-                temp_object['data'][b] = temp[j].cdr_count;
+                failed_object['data'][b] = temp_failed[j].cdr_count;
             });
 
-            $scope.camp_data.failed_data.push(temp_object);
+            $scope.camp_data.failed_data.push(failed_object);
         });
 
         var failed_data = {
