@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+<meta http-equiv="content-type" content="text/html;charset=UTF-8"/>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -99,7 +99,8 @@
         <div class="navbar-right">
             <ul class="nav navbar-nav">
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Logged In as <strong>{{ user.username| title }}</strong>&nbsp;&nbsp;&nbsp;
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Logged In as
+                        <strong>{{ user.username| title }}</strong>&nbsp;&nbsp;&nbsp;
                         <i class="icon-person"></i>
                         <span class="visible-xs-inline-block position-right">Messages</span>
                         <span class="note-icon-caret"></span>
@@ -137,14 +138,20 @@
                     <div class="category-content no-padding">
                         <ul class="navigation navigation-main navigation-accordion">
 
-                                <!-- SIDEBAR USERPIC -->
+                            <!-- SIDEBAR USERPIC -->
                             <div class="profile-userpic">
                                 <img src="/images/eti_logo.jpg" class="img-responsive" alt="">
                             </div>
                             <!-- SIDEBAR BUTTONS -->
-                             <div class="profile-userbuttons">
-                                <a href="{{ path_for('upload') }}"><button type="button" class="btn btn-success btn-sm"><span style="font-size:smaller;">Upload</span></button></a>
-                                <a href="{{ path_for('create_campaign') }}"><button type="button" class="btn btn-primary btn-sm"><span style="font-size:smaller;">Campaign</span></button></a>
+                            <div class="profile-userbuttons">
+                                <a href="{{ path_for('upload') }}">
+                                    <button type="button" class="btn btn-success btn-sm"><span
+                                                style="font-size:smaller;">Upload</span></button>
+                                </a>
+                                <a href="{{ path_for('create_campaign') }}">
+                                    <button type="button" class="btn btn-primary btn-sm"><span
+                                                style="font-size:smaller;">Campaign</span></button>
+                                </a>
                             </div>
                             <!-- Main -->
                             <li class="navigation-header"><span>Main</span> <i class="icon-menu" title="Main pages"></i>
@@ -177,14 +184,6 @@
 
                                 </ul>
                             </li>
-                            {#<li>#}
-                            {#<a href="#"><i class="icon-droplet2"></i> <span>Mailing Lists</span></a>#}
-                            {#<ul>#}
-                            {#<li><a href="datatable_api.html">View Lists</a></li>#}
-                            {#<li><a href="colors_danger.html">Create Lists</a></li>#}
-
-                            {#</ul>#}
-                            {#</li>#}
                             <li>
                                 <a href="{{ path_for('reports') }}"><i class="icon-stack"></i> <span>Reports</span></a>
 
@@ -206,11 +205,13 @@
             <div class="page-header page-header-default">
                 <div class="page-header-content">
                     <div class="page-title">
-                        <h4><i class="icon-arrow-left52 position-left"></i> <span class="text-semibold">Reports</span></h4>
+                        <h4><i class="icon-arrow-left52 position-left"></i> <span class="text-semibold">Reports</span>
+                        </h4>
                     </div>
 
                     <div class="heading-elements">
-                        <select name="client" class="form-control" ng-model="camp_data.username" ng-change="changeActive()">
+                        <select name="client" class="form-control" ng-model="camp_data.username"
+                                ng-change="changeActive()">
                             <option value="all">ALL</option>
                             {% for user in users %}
                                 <option value="{{ user.username }}">{{ user.username }}</option>
@@ -227,9 +228,11 @@
 
                     <ul class="breadcrumb-elements">
                         {% if user.is_admin %}
-                            <li><a href="{{ path_for('settings') }}"><i class="icon-gear position-left"></i> Settings</a></li>
+                            <li><a href="{{ path_for('settings') }}"><i class="icon-gear position-left"></i>
+                                    Settings</a></li>
                         {% endif %}
-                        <li><a href="{{ path_for('download') }}"><i class="icon-download position-left"></i>Download</a></li>
+                        <li><a href="{{ path_for('download') }}"><i class="icon-download position-left"></i>Download</a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -264,7 +267,8 @@
                                         <form class="form-inline" style="zoom: 0.8; float: right">
                                             <div class="form-group">
                                                 <label for="start_date">Start Date</label>
-                                                <input type="text" class="form-control" name="start_date" id="start_date">
+                                                <input type="text" class="form-control" name="start_date"
+                                                       id="start_date">
                                             </div>
                                             <div class="form-group">
                                                 <label for="end_date">End Date</label>
@@ -298,21 +302,24 @@
                     </div>
 
                     <div class="panel-body">
-                        <div ng-hide="camp_data.impression_data.length > 0" class="text-center">
+                        <div ng-hide="base.has_impressions" class="text-center">
                             <h5 class="text-center text-black">Advert Impressions</h5>
                             <i class="fa fa-spinner fa-pulse fa-3x fa-fw fa-spin"></i><br><br>
                             <span class="title">Loading...</span>
                         </div>
-                        <div  ng-hide="camp_data.impression_data.length > 0" class="chart-container">
+                        <div ng-show="base.has_impressions" class="chart-container">
                             <div class="row">
-                                <form class="form-inline" style="zoom: 0.8; float: right" ng-submit="filterReport('camp_data.impression_data',impression_start, impression_end)">
+                                <form class="form-inline" style="zoom: 0.8; float: right"
+                                      ng-submit="filterReport('camp_data.impression_data',impression_start, impression_end)">
                                     <div class="form-group">
                                         <label for="impression_start">Start Date</label>
-                                        <input type="text" class="form-control" name="start_date" id="impression_start" ng-model="impression_start" required>
+                                        <input type="text" class="form-control" name="start_date" id="impression_start"
+                                               ng-model="impression_start" required>
                                     </div>
                                     <div class="form-group">
                                         <label for="impression_end">End Date</label>
-                                        <input type="text" class="form-control" name="end_date" id="impression_end" ng-model="impression_end" required>
+                                        <input type="text" class="form-control" name="end_date" id="impression_end"
+                                               ng-model="impression_end" required>
                                     </div>
                                     <button type="submit" class="btn btn-primary">Filter</button>
                                 </form>
@@ -335,15 +342,29 @@
                     </div>
 
                     <div class="panel-body">
-                        <div ng-hide="camp_data.subscribed_data.length > 0" class="text-center">
+                        <div ng-hide="base.has_subscribed" class="text-center">
                             <h5 class="text-center text-black">Subscription Attempts</h5>
                             <i class="fa fa-spinner fa-pulse fa-3x fa-fw fa-spin"></i><br><br>
                             <span class="title">Loading...</span>
                         </div>
 
-                        <div ng-show="camp_data.subscribed_data.length > 0" class="row">
+                        <div ng-show="base.has_subscribed" class="row">
                             <div class="col-lg-12">
                                 <div class="chart-container">
+                                    <div class="row">
+                                        <form class="form-inline" style="zoom: 0.8; float: right">
+                                            <div class="form-group">
+                                                <label for="start_date">Start Date</label>
+                                                <input type="text" class="form-control" name="start_date"
+                                                       id="start_date">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="end_date">End Date</label>
+                                                <input type="text" class="form-control" name="end_date" id="end_date">
+                                            </div>
+                                            <button type="submit" class="btn btn-primary">Filter</button>
+                                        </form>
+                                    </div>
                                     <div class="chart has-fixed-height" id="connect_pie">
                                         <div id="subscribed" style="width: 100%; height: 100%; margin: 0 auto"></div>
                                     </div>
@@ -364,14 +385,28 @@
                     </div>
 
                     <div class="panel-body">
-                        <div ng-hide="camp_data.confirmation_data.length > 0" class="text-center">
+                        <div ng-hide="base.has_confirmed" class="text-center">
                             <h5 class="text-center text-black">Subscription Confirmation</h5>
                             <i class="fa fa-spinner fa-pulse fa-3x fa-fw fa-spin"></i><br><br>
                             <span class="title">Loading...</span>
                         </div>
-                        <div ng-show="camp_data.confirmation_data.length > 0" class="row">
+                        <div ng-show="base.has_confirmed" class="row">
                             <div class="col-lg-12">
                                 <div class="chart-container">
+                                    <div class="row">
+                                        <form class="form-inline" style="zoom: 0.8; float: right">
+                                            <div class="form-group">
+                                                <label for="start_date">Start Date</label>
+                                                <input type="text" class="form-control" name="start_date"
+                                                       id="start_date">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="end_date">End Date</label>
+                                                <input type="text" class="form-control" name="end_date" id="end_date">
+                                            </div>
+                                            <button type="submit" class="btn btn-primary">Filter</button>
+                                        </form>
+                                    </div>
                                     <div class="chart has-fixed-height" id="connect_pie">
                                         <div id="confirmed" style="width: 100%; height: 100%; margin: 0 auto"></div>
                                     </div>
@@ -392,14 +427,28 @@
                     </div>
 
                     <div class="panel-body">
-                        <div ng-hide="camp_data.insufficient_data.length > 0" class="text-center">
+                        <div ng-hide="base.has_insufficient" class="text-center">
                             <h5 class="text-center text-black">Insufficient Balance Records</h5>
                             <i class="fa fa-spinner fa-pulse fa-3x fa-fw fa-spin"></i><br><br>
                             <span class="title">Loading...</span>
                         </div>
-                        <div ng-show="camp_data.insufficient_data.length > 0" class="row">
+                        <div ng-show="base.has_insufficient" class="row">
                             <div class="col-lg-12">
                                 <div class="chart-container">
+                                    <div class="row">
+                                        <form class="form-inline" style="zoom: 0.8; float: right">
+                                            <div class="form-group">
+                                                <label for="start_date">Start Date</label>
+                                                <input type="text" class="form-control" name="start_date"
+                                                       id="start_date">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="end_date">End Date</label>
+                                                <input type="text" class="form-control" name="end_date" id="end_date">
+                                            </div>
+                                            <button type="submit" class="btn btn-primary">Filter</button>
+                                        </form>
+                                    </div>
                                     <div class="chart has-fixed-height" id="connect_pie">
                                         <div id="insufficient" style="width: 100%; height: 100%; margin: 0 auto"></div>
                                     </div>
@@ -420,14 +469,28 @@
                     </div>
 
                     <div class="panel-body">
-                        <div ng-hide="camp_data.subbed_data.length > 0" class="text-center">
+                        <div ng-hide="base.has_already_subbed" class="text-center">
                             <h5 class="text-center text-black">Already Subscribed Records</h5>
                             <i class="fa fa-spinner fa-pulse fa-3x fa-fw fa-spin"></i><br><br>
                             <span class="title">Loading...</span>
                         </div>
-                        <div ng-show="camp_data.subbed_data.length > 0" class="row">
+                        <div ng-show="base.has_already_subbed" class="row">
                             <div class="col-lg-12">
                                 <div class="chart-container">
+                                    <div class="row">
+                                        <form class="form-inline" style="zoom: 0.8; float: right">
+                                            <div class="form-group">
+                                                <label for="start_date">Start Date</label>
+                                                <input type="text" class="form-control" name="start_date"
+                                                       id="start_date">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="end_date">End Date</label>
+                                                <input type="text" class="form-control" name="end_date" id="end_date">
+                                            </div>
+                                            <button type="submit" class="btn btn-primary">Filter</button>
+                                        </form>
+                                    </div>
                                     <div class="chart has-fixed-height" id="connect_pie">
                                         <div id="subbed" style="width: 100%; height: 100%; margin: 0 auto"></div>
                                     </div>
@@ -448,14 +511,28 @@
                     </div>
 
                     <div class="panel-body">
-                        <div ng-hide="camp_data.success_data.length > 0" class="text-center">
+                        <div ng-hide="base.has_success" class="text-center">
                             <h5 class="text-center text-black">Successful Subscription Records</h5>
                             <i class="fa fa-spinner fa-pulse fa-3x fa-fw fa-spin"></i><br><br>
                             <span class="title">Loading...</span>
                         </div>
-                        <div ng-show="camp_data.success_data.length > 0" class="row">
+                        <div ng-show="base.has_success" class="row">
                             <div class="col-lg-12">
                                 <div class="chart-container">
+                                    <div class="row">
+                                        <form class="form-inline" style="zoom: 0.8; float: right">
+                                            <div class="form-group">
+                                                <label for="start_date">Start Date</label>
+                                                <input type="text" class="form-control" name="start_date"
+                                                       id="start_date">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="end_date">End Date</label>
+                                                <input type="text" class="form-control" name="end_date" id="end_date">
+                                            </div>
+                                            <button type="submit" class="btn btn-primary">Filter</button>
+                                        </form>
+                                    </div>
                                     <div class="chart has-fixed-height" id="connect_pie">
                                         <div id="success" style="width: 100%; height: 100%; margin: 0 auto"></div>
                                     </div>
@@ -476,14 +553,28 @@
                     </div>
 
                     <div class="panel-body">
-                        <div ng-hide="camp_data.failed_data.length > 0" class="text-center">
+                        <div ng-hide="base.has_failed" class="text-center">
                             <h5 class="text-center text-black">Failed Subscription Records</h5>
                             <i class="fa fa-spinner fa-pulse fa-3x fa-fw fa-spin"></i><br><br>
                             <span class="title">Loading...</span>
                         </div>
-                        <div ng-show="camp_data.failed_data.length > 0" class="row">
+                        <div ng-show="base.has_failed" class="row">
                             <div class="col-lg-12">
                                 <div class="chart-container">
+                                    <div class="row">
+                                        <form class="form-inline" style="zoom: 0.8; float: right">
+                                            <div class="form-group">
+                                                <label for="start_date">Start Date</label>
+                                                <input type="text" class="form-control" name="start_date"
+                                                       id="start_date">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="end_date">End Date</label>
+                                                <input type="text" class="form-control" name="end_date" id="end_date">
+                                            </div>
+                                            <button type="submit" class="btn btn-primary">Filter</button>
+                                        </form>
+                                    </div>
                                     <div class="chart has-fixed-height" id="connect_pie">
                                         <div id="failed" style="width: 100%; height: 100%; margin: 0 auto"></div>
                                     </div>
@@ -494,54 +585,10 @@
                 </div>
 
                 <!-- /line and bar combination -->
-                    </div>
-                </div>
             </div>
         </div>
     </div>
 </div>
-                {# <!-- Footer -->
-                <div class="footer_container text-center">
-                    <hr />
-                  <div class="row">
-                    <div class="col-lg-12">
-                      <div class="col-md-3">
-                        <ul class="nav nav-pills nav-stacked">
-                          <li><a href="#">About us</a></li>
-                          <li><a href="#">Blog</a></li>
-                        </ul>
-                      </div>
-                      <div class="col-md-3">
-                        <ul class="nav nav-pills nav-stacked">
-                          <li><a href="#">Product for Mac</a></li>
-                          <li><a href="#">Product for Windows</a></li>
-                        </ul>
-                      </div>
-                      <div class="col-md-3">
-                        <ul class="nav nav-pills nav-stacked">
-                          <li><a href="#">Web analytics</a></li>
-                          <li><a href="#">Presentations</a></li>          
-                        </ul>
-                      </div>
-                      <div class="col-md-3">
-                        <ul class="nav nav-pills nav-stacked">
-                          <li><a href="#">Product Help</a></li>
-                          <li><a href="#">Developer API</a></li>
-                        </ul>
-                      </div>  
-                    </div>
-                  </div>
-                  <hr>
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <ul class="nav nav-pills nav-justified">
-                                <li><a href="/">© 2013 Company Name.</a></li>
-                                <li><a href="#">Terms of Service</a></li>
-                                <li><a href="#">Privacy</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div> #}
 </body>
 
 </html>
