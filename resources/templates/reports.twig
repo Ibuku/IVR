@@ -237,7 +237,7 @@
                 </div>
             </div>
             <!-- /page header -->
-            
+
             <!-- Content area -->
             <div class="content">
 
@@ -337,14 +337,14 @@
                         </div>
                     </div>
 
-                    <div ng-hide="base.has_subscribed" class="panel-body">
+                    <div class="panel-body" ng-hide="base.has_subbed">
                         <div class="text-center">
                             <h5 class="text-center text-black">Subscription Attempts</h5>
                             <i class="fa fa-spinner fa-pulse fa-3x fa-fw fa-spin"></i><br><br>
                             <span class="title">Loading...</span>
                         </div>
                     </div>
-                    <div ng-show="base.has_subscribed" class="panel-body">
+                    <div class="panel-body">
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="chart-container">
@@ -388,7 +388,7 @@
                             <span class="title">Loading...</span>
                         </div>
                     </div>
-                    <div ng-show="base.has_confirmed" class="panel-body">
+                    <div class="panel-body">
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="chart-container">
@@ -432,7 +432,7 @@
                             <span class="title">Loading...</span>
                         </div>
                     </div>
-                    <div ng-show="base.has_insufficient" class="panel-body">
+                    <div class="panel-body">
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="chart-container">
@@ -469,7 +469,7 @@
                         </div>
                     </div>
 
-                    <div ng-hide="base.has_already_subbed" class="panel-body">
+                    <div ng-hide="base.has_already_subscribed" class="panel-body">
                         <div class="text-center">
                             <h5 class="text-center text-black">Already Subscribed Records</h5>
                             <i class="fa fa-spinner fa-pulse fa-3x fa-fw fa-spin"></i><br><br>
@@ -477,7 +477,7 @@
                         </div>
                     </div>
 
-                    <div ng-show="base.has_already_subbed" class="panel-body">
+                    <div class="panel-body">
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="chart-container">
@@ -521,7 +521,7 @@
                             <span class="title">Loading...</span>
                         </div>
                     </div>
-                    <div ng-show="base.has_success" class="panel-body">
+                    <div class="panel-body">
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="chart-container">
@@ -566,7 +566,7 @@
                         </div>
                     </div>
 
-                    <div class="panel-body" ng-show="base.has_failed">
+                    <div class="panel-body">
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="chart-container">
@@ -592,7 +592,6 @@
                         </div>
                     </div>
                 </div>
-
                 <!-- /line and bar combination -->
             </div>
         </div>
