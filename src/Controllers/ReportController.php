@@ -9,6 +9,7 @@
 namespace App\Controllers;
 use App\Models\Campaign;
 use DateTime;
+use App\Models\User;
 
 class ReportController extends BaseController
 {
@@ -16,9 +17,11 @@ class ReportController extends BaseController
     public function getPage($request, $response){
 
         $user = $this->auth->user();
+        $users = User::all();
 
         return $this->view->render($response, 'templates/reports.twig',[
-            'user' => $user
+            'user' => $user,
+            'users' => $users
         ]);
     }
 
@@ -36,7 +39,8 @@ class ReportController extends BaseController
 
         return $this->view->render($response, 'templates/campaign_report.twig', [
             'user' => $user,
-            'campaign_id' => $campaign->id
+            'campaign_id' => $campaign->id,
+            'users' => User::all()
         ]);
     }
 
