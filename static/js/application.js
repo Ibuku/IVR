@@ -674,14 +674,19 @@ app.controller("ReportsController", function ($scope, $timeout, $q, $parse) {
         // call records
         Object.keys(data.result).map(function (key, index) {
             var temp_object = {"name": data.result[key][0].campaign_name, "data": [0, 0, 0, 0, 0, 0, 0]};
-            var temp = data.result[key];
+            var __temp = data.result[key];
+            var temp;
+            if (__temp[j].username != 'all') {
+                temp = __temp.filter(function (z) {
+                    return z.username == $scope.base.username
+                })
+            }
+            temp = __temp;
             temp.map(function (i, j) {
                 var pos = new Date(temp[j].created_at).getDay();
                 var b = date_range.indexOf(pos);
                 temp_object['data'][b] = temp[j].cdr_count;
-                // if (temp[j].username == 'all' || temp[j].username == $scope.base.username) {}
             });
-
             $scope.camp_data.data.push(temp_object);
         });
 
