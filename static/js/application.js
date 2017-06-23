@@ -972,7 +972,7 @@ app.controller("ReportsController", function ($scope, $timeout, $q, $parse) {
     };
 
     $scope.changeActive = function () {
-        processData($scope.base);
+        processData($scope.base.data);
     };
 
     $scope.filterReport = function (variable, start, end) {
