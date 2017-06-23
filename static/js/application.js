@@ -977,6 +977,14 @@ app.controller("ReportsController", function ($scope, $timeout, $q, $parse) {
     };
 
     $scope.changeActive = function () {
+        $('#failed').highcharts();
+        $('#success').highcharts();
+        $('#insufficient').highcharts();
+        $('#subbed').highcharts();
+        $('#impression').highcharts();
+        $('#camp').highcharts();
+        $('#confirmed').highcharts();
+        $('#subscribed').highcharts();
         processData($scope.base);
     };
 
