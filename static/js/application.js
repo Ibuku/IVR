@@ -873,9 +873,9 @@ app.controller("ReportsController", function ($scope, $timeout, $q, $parse) {
         }, 5)
     };
 
-    $scope.init = function (username) {
+    $scope.init = function () {
         $scope.camp_data = {"data": [], "impression_data": [], "subscribed_data": [], "confirmation_data": [], "subbed_data": [],  "insufficient_data": [], "success_data": [], "failed_data": []};
-        $scope.base = {username: username, data: [], cam_data: [], failed_data: [], success_data: [], insufficient_data: [], impression_data: [], subscribed_data: [], subbed_data: [], confirmation_data: []};
+        $scope.base = {username: 'all', data: [], cam_data: [], failed_data: [], success_data: [], insufficient_data: [], impression_data: [], subscribed_data: [], subbed_data: [], confirmation_data: []};
         startParallel();
     };
 
