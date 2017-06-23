@@ -707,9 +707,7 @@ app.controller("ReportsController", function ($scope, $timeout, $q, $parse) {
             "series": $scope.camp_data.data
         };
         $('#camp').highcharts(buildData(cam_data));
-        $scope.$apply(function () {
-            if ($scope.camp_data.data.length > 0) { $scope.base.has_records = true}
-        });
+        if ($scope.camp_data.data.length > 0) { $scope.base.has_records = true}
 
         // impression records
         Object.keys(data.result).map(function (key, index) {
@@ -734,9 +732,7 @@ app.controller("ReportsController", function ($scope, $timeout, $q, $parse) {
             "series": $scope.camp_data.impression_data
         };
         $('#impression').highcharts(buildData(impression_data));
-        $scope.$apply(function () {
-            if ($scope.camp_data.impression_data.length > 0) { $scope.base.has_impressions = true}
-        });
+        if ($scope.camp_data.impression_data.length > 0) { $scope.base.has_impressions = true}
 
         // subscribed
         Object.keys(data.result).map(function (key, index) {
@@ -761,9 +757,7 @@ app.controller("ReportsController", function ($scope, $timeout, $q, $parse) {
             "series": $scope.camp_data.subscribed_data
         };
         $('#subscribed').highcharts(buildData(subscribed_data));
-        $scope.$apply(function () {
-            if ($scope.camp_data.subscribed_data.length > 0) { $scope.base.has_subscribed = true}
-        });
+        if ($scope.camp_data.subscribed_data.length > 0) { $scope.base.has_subscribed = true}
 
         // confirmation
         Object.keys(data.result).map(function (key, index) {
@@ -802,9 +796,7 @@ app.controller("ReportsController", function ($scope, $timeout, $q, $parse) {
             "series": $scope.camp_data.confirmation_data
         };
         $('#confirmed').highcharts(buildData(confirmation_data));
-        $scope.$apply(function () {
-            if ($scope.camp_data.confirmation_data.length > 0) { $scope.base.has_confirmed = true}
-        });
+        if ($scope.camp_data.confirmation_data.length > 0) { $scope.base.has_confirmed = true}
 
         // already subscribed
         Object.keys(data.result).map(function (key, index) {
@@ -843,9 +835,7 @@ app.controller("ReportsController", function ($scope, $timeout, $q, $parse) {
             "series": $scope.camp_data.subbed_data
         };
         $('#subbed').highcharts(buildData(subbed_data));
-        $scope.$apply(function () {
-            if ($scope.camp_data.subbed_data.length > 0) { $scope.base.has_already_subscribed = true}
-        });
+        if ($scope.camp_data.subbed_data.length > 0) { $scope.base.has_already_subscribed = true}
 
         // insufficient balance
         Object.keys(data.result).map(function (key, index) {
@@ -884,9 +874,7 @@ app.controller("ReportsController", function ($scope, $timeout, $q, $parse) {
             "series": $scope.camp_data.insufficient_data
         };
         $('#insufficient').highcharts(buildData(insufficient_data));
-        $scope.$apply(function () {
-            if ($scope.camp_data.insufficient_data.length > 0) { $scope.base.has_insufficient = true}
-        });
+        if ($scope.camp_data.insufficient_data.length > 0) { $scope.base.has_insufficient = true}
 
         // success
         Object.keys(data.result).map(function (key, index) {
@@ -910,9 +898,7 @@ app.controller("ReportsController", function ($scope, $timeout, $q, $parse) {
             "series": $scope.camp_data.success_data
         };
         $('#success').highcharts(buildData(success_data));
-        $scope.$apply(function () {
-            if ($scope.camp_data.success_data.length > 0) { $scope.base.has_success = true}
-        });
+        if ($scope.camp_data.success_data.length > 0) { $scope.base.has_success = true}
 
         // failure
         Object.keys(data.result).map(function (key, index) {
@@ -951,9 +937,7 @@ app.controller("ReportsController", function ($scope, $timeout, $q, $parse) {
             "series": $scope.camp_data.failed_data
         };
         $('#failed').highcharts(buildData(failed_data));
-        $scope.$apply(function () {
-            if ($scope.camp_data.failed_data.length > 0) { $scope.base.has_failed = true}
-        });
+        if ($scope.camp_data.failed_data.length > 0) { $scope.base.has_failed = true}
     };
 
     var load_data = function () {
