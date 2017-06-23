@@ -872,15 +872,13 @@ app.controller("ReportsController", function ($scope, $timeout, $q, $parse) {
     var load_data = function () {
         $timeout(function () {
             $.get("/campaign/period", function (_data, status) {
-                $scope.base.data = JSON.parse(_data);
-                processData($scope.base.data);
+                processData(JSON.parse(_data));
             });
         }, 5)
     };
 
     $scope.init = function () {
         $scope.camp_data = {"data": [], "impression_data": [], "subscribed_data": [], "confirmation_data": [], "subbed_data": [],  "insufficient_data": [], "success_data": [], "failed_data": []};
-        $scope.base = {username: 'all', data: [], cam_data: [], failed_data: [], success_data: [], insufficient_data: [], impression_data: [], subscribed_data: [], subbed_data: [], confirmation_data: []};
         startParallel();
     };
 
