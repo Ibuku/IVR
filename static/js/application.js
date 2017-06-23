@@ -689,7 +689,10 @@ app.controller("ReportsController", function ($scope, $timeout, $q, $parse) {
             });
             $scope.camp_data.data.push(temp_object);
         });
-        console.log($scope.camp_data.data.length);
+
+        $scope.$apply(function () {
+            if ($scope.camp_data.data.length > 0) { $scope.base.has_records = true};
+        });
 
         var cam_data = {
             "categories": week_map,
@@ -880,7 +883,7 @@ app.controller("ReportsController", function ($scope, $timeout, $q, $parse) {
 
     $scope.init = function () {
         $scope.camp_data = {"username": 'all', "data": [], "impression_data": [], "subscribed_data": [], "confirmation_data": [], "subbed_data": [],  "insufficient_data": [], "success_data": [], "failed_data": []};
-        $scope.base = {};
+        $scope.base = {has_records: false};
         startParallel();
     };
 
