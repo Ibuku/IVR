@@ -210,7 +210,7 @@
                     </div>
 
                     <div class="heading-elements">
-                        <select name="client" class="form-control" ng-model="base.username" ng-change="changeActive()">
+                        <select name="client" class="form-control" ng-model="camp_data.username" ng-change="changeActive()">
                             <option value="all">ALL</option>
                             {% for user in users %}
                                 <option value="{{ user.username }}">{{ user.username }}</option>
