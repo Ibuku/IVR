@@ -687,6 +687,7 @@ app.controller("ReportsController", function ($scope, $timeout, $q, $parse) {
                 var b = date_range.indexOf(pos);
                 temp_object['data'][b] = temp[j].cdr_count;
             });
+            console.log(temp_object);
             $scope.camp_data.data.push(temp_object);
         });
 
@@ -704,7 +705,7 @@ app.controller("ReportsController", function ($scope, $timeout, $q, $parse) {
             var impression_object = {"name": data.result[key][0].campaign_name, "data": [0, 0, 0, 0, 0, 0, 0]};
             var _object = data.result[key];
             _object.map(function (i, j) {
-                if (_object[j].username == 'all' || _object[j].username == $scope.base.username) {
+                if ($scope.base.username == 'all' || _object[j].username == $scope.base.username) {
                     var pos = new Date(_object[j].created_at).getDay();
                     var b = date_range.indexOf(pos);
                     impression_object['data'][b] = _object[j].impression_count;
@@ -728,7 +729,7 @@ app.controller("ReportsController", function ($scope, $timeout, $q, $parse) {
             var subscription_object = {"name": data.result[key][0].campaign_name, "data": [0, 0, 0, 0, 0, 0, 0]};
             var _object = data.result[key];
             _object.map(function (i, j) {
-                if (_object[j].username == 'all' || _object[j].username == $scope.base.username) {
+                if ($scope.base.username == 'all' || _object[j].username == $scope.base.username) {
                     var pos = new Date(_object[j].created_at).getDay();
                     var b = date_range.indexOf(pos);
                     subscription_object['data'][b] = _object[j].subscription_count;
@@ -752,7 +753,7 @@ app.controller("ReportsController", function ($scope, $timeout, $q, $parse) {
             var confirmation_object = {"name": data.result[key][0].campaign_name, "data": [0, 0, 0, 0, 0, 0, 0]};
             var _object = data.result[key];
             _object.map(function (i, j) {
-                if (_object[j].username == 'all' || _object[j].username == $scope.base.username) {
+                if ($scope.base.username == 'all' || _object[j].username == $scope.base.username) {
                     var pos = new Date(_object[j].created_at).getDay();
                     var b = date_range.indexOf(pos);
                     confirmation_object['data'][b] = _object[j].confirmation_count;
@@ -776,7 +777,7 @@ app.controller("ReportsController", function ($scope, $timeout, $q, $parse) {
             var subbed_object = {"name": data.result[key][0].campaign_name, "data": [0, 0, 0, 0, 0, 0, 0]};
             var _object = data.result[key];
             _object.map(function (i, j) {
-                if (_object[j].username == 'all' || _object[j].username == $scope.base.username) {
+                if ($scope.base.username == 'all' || _object[j].username == $scope.base.username) {
                     var pos = new Date(_object[j].created_at).getDay();
                     var b = date_range.indexOf(pos);
                     subbed_object['data'][b] = _object[j].already_subbed_count;
@@ -800,7 +801,7 @@ app.controller("ReportsController", function ($scope, $timeout, $q, $parse) {
             var insufficient_object = {"name": data.result[key][0].campaign_name, "data": [0, 0, 0, 0, 0, 0, 0]};
             var _object = data.result[key];
             _object.map(function (i, j) {
-                if (_object[j].username == 'all' || _object[j].username == $scope.base.username) {
+                if ($scope.base.username == 'all' || _object[j].username == $scope.base.username) {
                     var pos = new Date(_object[j].created_at).getDay();
                     var b = date_range.indexOf(pos);
                     insufficient_object['data'][b] = _object[j].insufficient_count;
@@ -824,7 +825,7 @@ app.controller("ReportsController", function ($scope, $timeout, $q, $parse) {
             var success_object = {"name": data.result[key][0].campaign_name, "data": [0, 0, 0, 0, 0, 0, 0]};
             var _object = data.result[key];
             _object.map(function (i, j) {
-                if (_object[j].username == 'all' || _object[j].username == $scope.base.username) {
+                if ($scope.base.username == 'all' || _object[j].username == $scope.base.username) {
                     var pos = new Date(_object[j].created_at).getDay();
                     var b = date_range.indexOf(pos);
                     success_object['data'][b] = _object[j].success_count;
@@ -848,7 +849,7 @@ app.controller("ReportsController", function ($scope, $timeout, $q, $parse) {
             var failed_object = {"name": data.result[key][0].campaign_name, "data": [0, 0, 0, 0, 0, 0, 0]};
             var _object = data.result[key];
             _object.map(function (i, j) {
-                if (_object[j].username == 'all' || _object[j].username == $scope.base.username) {
+                if ($scope.base.username == 'all' || _object[j].username == $scope.base.username) {
                     var pos = new Date(_object[j].created_at).getDay();
                     var b = date_range.indexOf(pos);
                     failed_object['data'][b] = _object[j].failed_count;
