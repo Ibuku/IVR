@@ -675,13 +675,13 @@ app.controller("ReportsController", function ($scope, $timeout, $q, $parse) {
         Object.keys(data.result).map(function (key, index) {
             var temp_object = {"name": data.result[key][0].campaign_name, "data": [0, 0, 0, 0, 0, 0, 0]};
             var __temp = data.result[key];
-            var temp;
+            var temp = __temp;
             if ($scope.base.username != 'all') {
+                temp = [];
                 temp = __temp.filter(function (z) {
                     return z.username == $scope.base.username
                 })
             }
-            temp = __temp;
             temp.map(function (i, j) {
                 var pos = new Date(temp[j].created_at).getDay();
                 var b = date_range.indexOf(pos);
