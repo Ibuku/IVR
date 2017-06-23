@@ -972,7 +972,7 @@ app.controller("ReportsController", function ($scope, $timeout, $q, $parse) {
 
     $scope.init = function () {
         $scope.camp_data = {"username": 'all', "data": [], "impression_data": [], "subscribed_data": [], "confirmation_data": [], "subbed_data": [],  "insufficient_data": [], "success_data": [], "failed_data": []};
-        $scope.base = {has_records: false, has_impressions: false, has_already_subbed: false, has_success: false, has_failed: false, has_subbed: false, has_subscribed: false, has_confirmed: false, has_insufficient: false};
+        $scope.base = {has_records: false, has_impressions: false, has_already_subscribed: false, has_success: false, has_failed: false, has_subscribed: false, has_confirmed: false, has_insufficient: false};
         startParallel();
     };
 
