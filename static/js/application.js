@@ -488,7 +488,7 @@ app.controller('HomeController', function ($scope, $rootScope, $http, $timeout, 
         // today
         $scope.filtered_data.today = [];
         $scope.data_bank.today.forEach(function (val) {
-            if (val.username === $scope.username) { $scope.filtered_data.today.push(val);}
+            if (val.username === $scope.username) { console.log('1'); $scope.filtered_data.today.push(val);}
         });
         $scope.filtered_data.totalToday = sum($scope.filtered_data.today, 'cdr_count');
         $scope.filtered_data.impressionToday = sum($scope.filtered_data.today, 'impression_count');
@@ -496,28 +496,28 @@ app.controller('HomeController', function ($scope, $rootScope, $http, $timeout, 
         // yesterday
         $scope.filtered_data.yesterday = [];
         $scope.data_bank.yesterday.forEach(function (v) {
-            if(v.username === $scope.username) { $scope.filtered_data.yesterday.push(v); }
+            if(v.username === $scope.username) { console.log('2'); $scope.filtered_data.yesterday.push(v); }
         });
         $scope.filtered_data.totalYday = sum($scope.filtered_data.yesterday, 'cdr_count');
 
         // this week
         $scope.filtered_data.this_week = [];
         $scope.data_bank.this_week.filter(function (i) {
-            if(i.username === $scope.username) { $scope.filtered_data.this_week.push(i)}
+            if(i.username === $scope.username) { console.log('3'); $scope.filtered_data.this_week.push(i)}
         });
         $scope.filtered_data.totalTWk = sum($scope.filtered_data.this_week, 'cdr_count');
 
         // last week
         $scope.filtered_data.last_week = [];
         $scope.data_bank.last_week.forEach(function (k) {
-            if(k.username == $scope.username) { $scope.filtered_data.last_week.push(k) }
+            if(k.username == $scope.username) { console.log('4'); $scope.filtered_data.last_week.push(k) }
         });
         $scope.filtered_data.totalLWk = sum($scope.filtered_data.last_week, 'cdr_count');
 
         // month
         $scope.filtered_data.month = [];
         $scope.data_bank.month.forEach(function (j) {
-            if(j.username == $scope.username) { $scope.filtered_data.month.push(j) }
+            if(j.username == $scope.username) { console.log('5'); $scope.filtered_data.month.push(j) }
         });
         $scope.filtered_data.totalMonth = sum($scope.filtered_data.month, 'cdr_count');
 
