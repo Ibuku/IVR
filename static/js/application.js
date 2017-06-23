@@ -648,6 +648,7 @@ app.controller("ReportsController", function ($scope, $timeout, $q, $parse) {
     };
 
     var processData = function (data) {
+
         var sevenDays = new Date(new Date().getTime() - (6 * 24 * 60 * 60 * 1000));
         sevenDays.setHours(0,0,0,0);
         var weekday = ['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat'];
@@ -675,6 +676,8 @@ app.controller("ReportsController", function ($scope, $timeout, $q, $parse) {
             var temp_object = {"name": data.result[key][0].campaign_name, "data": [0, 0, 0, 0, 0, 0, 0]};
             var temp = data.result[key];
             temp.map(function (i, j) {
+                console.log(temp[j]);
+                console.log(temp(i));
                 if (temp[j].username == 'all' || temp[j].username == $scope.base.username) {
                     var pos = new Date(temp[j].created_at).getDay();
                     var b = date_range.indexOf(pos);
@@ -874,7 +877,7 @@ app.controller("ReportsController", function ($scope, $timeout, $q, $parse) {
 
     $scope.init = function (username) {
         $scope.camp_data = {"data": [], "impression_data": [], "subscribed_data": [], "confirmation_data": [], "subbed_data": [],  "insufficient_data": [], "success_data": [], "failed_data": []};
-        $scope.base = {username: username, data: []};
+        $scope.base = {username: username, data: [], cam_data: [], failed_data: [], success_data: [], insufficient_data: [], impression_data: [], subscribed_data: [], subbed_data: [], confirmation_data: []};
         startParallel();
     };
 
