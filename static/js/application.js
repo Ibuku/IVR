@@ -675,7 +675,7 @@ app.controller("ReportsController", function ($scope, $timeout, $q, $parse) {
         Object.keys(data.result).map(function (key, index) {
             var temp_object = {"name": data.result[key][0].campaign_name, "data": [0, 0, 0, 0, 0, 0, 0]};
             var temp = data.result[key];
-            temp.map(function (j) {
+            temp.map(function (i, j) {
                 if (temp[j].username == 'all' || temp[j].username == $scope.base.username) {
                     var pos = new Date(temp[j].created_at).getDay();
                     var b = date_range.indexOf(pos);
