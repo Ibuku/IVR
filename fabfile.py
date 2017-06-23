@@ -27,12 +27,12 @@ def pull():
     local("git pull")
 
 
-def update_environs():
+def update_environs(message='updating...'):
     """
     update local working environment
     :return:
     """
-    commit()
+    commit(message)
     local("git pull")
 
 
@@ -50,12 +50,12 @@ def update_prod(message='updating...'):
             run("git pull")
 
 
-def push():
+def push(message='updating...'):
     """
     push changes
     :return:
     """
-    commit()
+    commit(message)
     local("git push")
 
 
