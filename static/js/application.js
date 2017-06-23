@@ -468,7 +468,7 @@ app.controller('HomeController', function ($scope, $rootScope, $http, $timeout, 
 
     var resetCampaigns = function () {
         $scope.campaigns = [];
-        $scope.campaigns_bank.forEach(function (elem) {
+        $scope.campaigns_bank.data.forEach(function (elem) {
             if (elem.username === $scope.username) {
                 $scope.campaigns.push(elem)
             }
@@ -614,7 +614,7 @@ app.controller('HomeController', function ($scope, $rootScope, $http, $timeout, 
                 resetActiveCampaigns();
             }
             else {
-                $scope.campaigns = clone($scope.campaigns_bank);
+                $scope.campaigns = clone($scope.campaigns_bank.data);
                 $scope.filtered_data = clone($scope.data_bank);
                 $scope.filtered_data.totalToday = sum($scope.data_bank.today, 'cdr_count');
                 $scope.filtered_data.impressionToday = sum($scope.data_bank.today, 'impression_count');
