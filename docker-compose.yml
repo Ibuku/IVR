@@ -1,0 +1,13 @@
+version: '2'
+services:
+  server:
+    image: stikks/ivr
+    ports:
+      - "8981:80"
+      - "443:443"
+    volumes:
+      - .:/opt/IVR
+  redis:
+    image: redis
+  elasticsearch:
+    image: elasticsearch
