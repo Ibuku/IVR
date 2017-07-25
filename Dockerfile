@@ -14,7 +14,6 @@ RUN apt-get install -yqq php5.6 php5.6-gd php5.6-ldap zip unzip php5.6-zip \
 COPY conf/apache/000-default.conf /etc/apache2/sites-available/000-default.conf
 ADD . /opt/IVR
 
-RUN cd /opt/IVR && composer install && a2enmod rewrite && service apache2 restart
-#&& /usr/bin/php bootstrap/setup.php
+RUN cd /opt/IVR && composer install && /usr/bin/php bootstrap/setup.php && a2enmod rewrite && service apache2 restart
 
 EXPOSE 80
