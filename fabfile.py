@@ -96,5 +96,3 @@ def deploy():
     """
     with cd('/opt/IVR'):
         sudo('git pull')
-        restart_service(['/etc/init.d/apache2', '/etc/init.d/elasticsearch', '/etc/init.d/rabbitmq-server',
-            '/etc/init.d/redis-server', '/etc/init.d/pm2-root'])
