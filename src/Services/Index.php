@@ -11,10 +11,20 @@ use Predis\Client;
 
 class Index
 {
+    public function __construct()
+    {
+        $settings = include_once __DIR__.'/../settings.php';
+        $this->settings = $settings['settings'];
+    }
+
+
     static public function index($type, $params=array()) {
 
+        $settings_file = include_once __DIR__.'/../settings.php';
+        $settings = $settings_file['settings'];
+
         $ch = curl_init();
-        $url = 'http://localhost:4043/elastic/elasticsearch/'. $type.'/create';
+        $url = $settings['es_url'].'/elasticsearch/'. $type.'/create';
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS,
@@ -32,8 +42,11 @@ class Index
 
     static public function update($type, $_id, $params=array()) {
 
+        $settings_file = include_once __DIR__.'/../settings.php';
+        $settings = $settings_file['settings'];
+
         $ch = curl_init();
-        $url = 'http://localhost:4043/elastic/elasticsearch/'. $type. '/'.  $_id. '/update';
+        $url = $settings['es_url'].'/elasticsearch/'. $type. '/'.  $_id. '/update';
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS,
@@ -51,8 +64,11 @@ class Index
 
 
     static public function get_data($type) {
+
+        $settings_file = include_once __DIR__.'/../settings.php';
+        $settings = $settings_file['settings'];
         $ch = curl_init();
-        $url = 'http://localhost:4043/elastic/elasticsearch/'. $type.'/get';
+        $url = $settings['es_url'].'/elasticsearch/'. $type.'/get';
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
@@ -64,8 +80,10 @@ class Index
     }
 
     static public function filterBy($type, $params=array()) {
+        $settings_file = include_once __DIR__.'/../settings.php';
+        $settings = $settings_file['settings'];
         $ch = curl_init();
-        $url = 'http://localhost:4043/elastic/elasticsearch/'. $type.'/create';
+        $url = $settings['es_url'].'/elasticsearch/'. $type.'/create';
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS,
@@ -81,7 +99,10 @@ class Index
 
     static public function save_redis($key, $params=array()) {
 
-        $redis = new Client();
+        $settings_file = include_once __DIR__.'/../settings.php';
+        $settings = $settings_file['settings'];
+
+        $redis = new Client(array('host'=>$settings['redis']['host'], 'port'=>$settings['redis']['port']));
 
         $redis->hmset($string = preg_replace('/\s+/', '_', $key), $params);
 

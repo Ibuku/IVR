@@ -22,7 +22,8 @@ return [
         ],
         'db' => [
             'driver' => 'pgsql',
-            'host' => 'localhost',
+//            'host' => 'localhost',
+            'host' => 'db',
             'username' => 'postgres',
             'password' => 'postgres',
             'database' => 'ivr',
@@ -30,6 +31,11 @@ return [
             'collation' => 'utf8_unicode_ci'
         ],
         "default_index" => "ivr",
-        "DEFAULT_ACCOUNT" => "etisalat"
+        "DEFAULT_ACCOUNT" => "etisalat",
+        'redis'=> [
+            'host' => 'redis',
+            'port' => 6379
+        ],
+        'es_url' => 'http://localhost:4043/elastic/'
     ]
 ];
