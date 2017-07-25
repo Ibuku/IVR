@@ -7,8 +7,8 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: ivr
   server:
-    build: .
-#    image: stikks/ivr
+#    build: .
+    image: stikks/ivr
     ports:
       - "8981:80"
       - "443:443"
