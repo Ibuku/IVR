@@ -1,0 +1,9 @@
+{
+  "apps": [{
+    "name": "node-app",
+    "script": "/opt/app/app.js",
+    "env": {
+      "production": true
+    }
+  }]
+}

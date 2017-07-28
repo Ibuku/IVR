@@ -2,23 +2,12 @@
   "name": "ivr",
   "version": "1.0.0",
   "description": "Interactice Voice Response Marketing Platform",
-  "main": "app/app.js",
+  "main": "app.js",
   "dependencies": {
-    "bower": "^1.8.0",
-    "angular-audio": "^1.7.3",
     "amqplib": "^0.5.1",
-    "express": "^4.15.3",
-    "body-parser": "~1.15.1",
-    "cookie-parser": "~1.4.3",
-    "debug": "~2.2.0",
-    "ejs": "~2.4.1",
-    "elasticsearch": "^11.0.1",
-    "highcharts": "^5.0.0",
-    "morgan": "~1.7.0",
-    "serve-favicon": "~2.3.0",
     "rabbit.js": "^0.4.4",
-    "request-promise": "^4.2.1",
-    "pm2": "2.6.1"
+    "request": "^2.81.0",
+    "request-promise": "^4.2.1"
   },
   "devDependencies": {},
   "repository": {
