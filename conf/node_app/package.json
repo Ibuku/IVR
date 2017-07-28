@@ -3374,7 +3374,8 @@
     "elasticsearch": "^11.0.1",
     "highcharts": "^5.0.0",
     "morgan": "~1.7.0",
-    "serve-favicon": "~2.3.0"
+    "serve-favicon": "~2.3.0",
+    "pm2": "2.6.1"
   },
   "devDependencies": {},
   "repository": {
