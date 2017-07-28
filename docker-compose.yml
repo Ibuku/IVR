@@ -33,7 +33,7 @@ services:
     ports:
       - "8982:80"
   app:
-    image: stikks/node-app
+    image: stikks/app
     hostname: app
     ports:
       - "4043:4043"
@@ -41,7 +41,7 @@ services:
       - elasticsearch
       - rabbit
   worker:
-    image: stikks/worker-app
+    image: stikks/worker
     hostname: worker
     depends_on:
       - elasticsearch
