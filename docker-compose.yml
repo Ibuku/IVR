@@ -13,6 +13,8 @@ services:
       - "443:443"
     volumes:
       - .:/opt/IVR
+  rabbit:
+    image: rabbitmq
   redis:
     image: redis
   elasticsearch:
@@ -21,7 +23,9 @@ services:
     image: stikks/freepbx
     ports:
       - "8982:80"
-  node-app:
+  app:
     image: stikks/node-app
     ports:
       - "4043:4043"
+  worker:
+    image: stikks/worker-app

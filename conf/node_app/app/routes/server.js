@@ -86,8 +86,8 @@ client.exists({
 
 router.post('/elasticsearch/:type/create', function (req, res, next) {
 
-    amqp.connect('amqp://localhost', function(err, conn) {
-        req.body.url = 'http://localhost:4043/ivr/elasticsearch/' + req.params.type + '/create';
+    amqp.connect('amqp://rabbit', function(err, conn) {
+        req.body.url = 'http://app:4043/ivr/elasticsearch/' + req.params.type + '/create';
         conn.createChannel(function(err, ch) {
             var q = 'ivr';
             ch.assertQueue(q, {durable: false});
@@ -100,8 +100,8 @@ router.post('/elasticsearch/:type/create', function (req, res, next) {
 
 router.post('/elasticsearch/cdr/missing', function (req, res, next) {
 
-    amqp.connect('amqp://localhost', function(err, conn) {
-        req.body.url = 'http://localhost:4043/ivr/elasticsearch/cdr/missing';
+    amqp.connect('amqp://rabbit', function(err, conn) {
+        req.body.url = 'http://app:4043/ivr/elasticsearch/cdr/missing';
         conn.createChannel(function(err, ch) {
             var q = 'ivr';
             ch.assertQueue(q, {durable: false});
@@ -114,8 +114,8 @@ router.post('/elasticsearch/cdr/missing', function (req, res, next) {
 
 router.post('/cdr/impression', function (req, res, next) {
 
-    amqp.connect('amqp://localhost', function(err, conn) {
-        req.body.url = 'http://localhost:4043/ivr/cdr/impression';
+    amqp.connect('amqp://rabbit', function(err, conn) {
+        req.body.url = 'http://app:4043/ivr/cdr/impression';
         conn.createChannel(function(err, ch) {
             var q = 'ivr';
             ch.assertQueue(q, {durable: false});
@@ -129,8 +129,8 @@ router.post('/cdr/impression', function (req, res, next) {
 
 router.post('/cdr/subscribe', function (req, res, next) {
 
-    amqp.connect('amqp://localhost', function(err, conn) {
-        req.body.url = 'http://localhost:4043/ivr/cdr/subscribe';
+    amqp.connect('amqp://rabbit', function(err, conn) {
+        req.body.url = 'http://app:4043/ivr/cdr/subscribe';
         conn.createChannel(function(err, ch) {
             var q = 'ivr';
             ch.assertQueue(q, {durable: false});
@@ -143,8 +143,8 @@ router.post('/cdr/subscribe', function (req, res, next) {
 
 router.post('/cdr/confirmation', function (req, res, next) {
 
-    amqp.connect('amqp://localhost', function(err, conn) {
-        req.body.url = 'http://localhost:4043/ivr/cdr/confirmation';
+    amqp.connect('amqp://rabbit', function(err, conn) {
+        req.body.url = 'http://app:4043/ivr/cdr/confirmation';
         conn.createChannel(function(err, ch) {
             var q = 'ivr';
             ch.assertQueue(q, {durable: false});
@@ -157,8 +157,8 @@ router.post('/cdr/confirmation', function (req, res, next) {
 
 router.post('/cdr/insufficient', function (req, res, next) {
 
-    amqp.connect('amqp://localhost', function(err, conn) {
-        req.body.url = 'http://localhost:4043/ivr/cdr/insufficient';
+    amqp.connect('amqp://rabbit', function(err, conn) {
+        req.body.url = 'http://app:4043/ivr/cdr/insufficient';
         conn.createChannel(function(err, ch) {
             var q = 'ivr';
             ch.assertQueue(q, {durable: false});
@@ -171,8 +171,8 @@ router.post('/cdr/insufficient', function (req, res, next) {
 
 router.post('/cdr/already_sub', function (req, res, next) {
 
-    amqp.connect('amqp://localhost', function(err, conn) {
-        req.body.url = 'http://localhost:4043/ivr/cdr/already_sub';
+    amqp.connect('amqp://rabbit', function(err, conn) {
+        req.body.url = 'http://app:4043/ivr/cdr/already_sub';
         conn.createChannel(function(err, ch) {
             var q = 'ivr';
             ch.assertQueue(q, {durable: false});
@@ -185,8 +185,8 @@ router.post('/cdr/already_sub', function (req, res, next) {
 
 router.post('/cdr/success', function (req, res, next) {
 
-    amqp.connect('amqp://localhost', function(err, conn) {
-        req.body.url = 'http://localhost:4043/ivr/cdr/success';
+    amqp.connect('amqp://rabbit', function(err, conn) {
+        req.body.url = 'http://app:4043/ivr/cdr/success';
         conn.createChannel(function(err, ch) {
             var q = 'ivr';
             ch.assertQueue(q, {durable: false});
@@ -199,8 +199,8 @@ router.post('/cdr/success', function (req, res, next) {
 
 router.post('/cdr/failed', function (req, res, next) {
 
-    amqp.connect('amqp://localhost', function(err, conn) {
-        req.body.url = 'http://localhost:4043/ivr/cdr/failed';
+    amqp.connect('amqp://rabbit', function(err, conn) {
+        req.body.url = 'http://app:4043/ivr/cdr/failed';
         conn.createChannel(function(err, ch) {
             var q = 'ivr';
             ch.assertQueue(q, {durable: false});

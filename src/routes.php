@@ -58,7 +58,7 @@ $app->group('', function (){
     // javascript data for pages
     $this->get('/dashboard', function($request, $response) {
         $ch = curl_init();
-        $url = 'http://localhost:4043/elastic/elasticsearch/data';
+        $url = 'http://app:4043/ivr/elasticsearch/data';
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
         $res = curl_exec($ch);
@@ -68,7 +68,7 @@ $app->group('', function (){
     // javascript data for today
     $this->get('/dashboard/today', function($request, $response) {
         $ch = curl_init();
-        $url = 'http://localhost:4043/elastic/data/today';
+        $url = 'http://app:4043/ivr/data/today';
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
         $res = curl_exec($ch);
@@ -78,7 +78,7 @@ $app->group('', function (){
     // javascript data for yesterday
     $this->get('/dashboard/yesterday', function($request, $response) {
         $ch = curl_init();
-        $url = 'http://localhost:4043/elastic/data/yesterday';
+        $url = 'http://app:4043/ivr/data/yesterday';
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
         $res = curl_exec($ch);
@@ -88,7 +88,7 @@ $app->group('', function (){
     // javascript data for last week
     $this->get('/dashboard/last', function($request, $response) {
         $ch = curl_init();
-        $url = 'http://localhost:4043/elastic/data/last';
+        $url = 'http://app:4043/ivr/data/last';
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
         $res = curl_exec($ch);
@@ -98,7 +98,7 @@ $app->group('', function (){
     // javascript data for last week
     $this->get('/dashboard/week', function($request, $response) {
         $ch = curl_init();
-        $url = 'http://localhost:4043/elastic/data/week';
+        $url = 'http://app:4043/ivr/data/week';
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
         $res = curl_exec($ch);
@@ -108,7 +108,7 @@ $app->group('', function (){
     // javascript data for last week
     $this->get('/dashboard/month', function($request, $response) {
         $ch = curl_init();
-        $url = 'http://localhost:4043/elastic/data/month';
+        $url = 'http://app:4043/ivr/data/month';
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
         $res = curl_exec($ch);
@@ -117,7 +117,7 @@ $app->group('', function (){
 
     $this->get('/campaign/period', function($request, $response) {
         $ch = curl_init();
-        $url = 'http://localhost:4043/elastic/no_of_campaign';
+        $url = 'http://app:4043/ivr/no_of_campaign';
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
         $res = curl_exec($ch);
@@ -133,7 +133,7 @@ $app->group('', function (){
         }
 
         $ch = curl_init();
-        $url = 'http://localhost:4043/elastic/campaign/'.$campaign_id.'/data';
+        $url = 'http://app:4043/ivr/campaign/'.$campaign_id.'/data';
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
         $res = curl_exec($ch);
@@ -152,7 +152,7 @@ $app->group('', function (){
 
     $this->post('/record/filter', function($request, $response) {
         $ch = curl_init();
-        $url = 'http://localhost:4043/record/filter';
+        $url = 'http://app:4043/elastic/record/filter';
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
@@ -168,7 +168,7 @@ $app->group('', function (){
 $app->group('/cdr', function (){
 
     $this->post('/create', function ($request, $response) {
-        $connection=new AMQPStreamConnection('localhost',5672,'guest','guest');
+        $connection=new AMQPStreamConnection('rabbit',5672,'guest','guest');
         $channel=$connection->channel();
         $channel->queue_declare('cdr',false,false,false,false);
 
@@ -190,7 +190,7 @@ $app->group('/cdr', function (){
     });
 
     $this->post('/impression', function ($request, $response) {
-        $connection=new AMQPStreamConnection('localhost',5672,'guest','guest');
+        $connection=new AMQPStreamConnection('rabbit',5672,'guest','guest');
         $channel=$connection->channel();
         $channel->queue_declare('cdr',false,false,false,false);
 
@@ -206,7 +206,7 @@ $app->group('/cdr', function (){
     });
 
     $this->post('/subscribe', function ($request, $response) {
-        $connection=new AMQPStreamConnection('localhost',5672,'guest','guest');
+        $connection=new AMQPStreamConnection('rabbit',5672,'guest','guest');
         $channel=$connection->channel();
         $channel->queue_declare('cdr',false,false,false,false);
 
@@ -222,7 +222,7 @@ $app->group('/cdr', function (){
     });
 
     $this->post('/confirmation', function ($request, $response) {
-        $connection=new AMQPStreamConnection('localhost',5672,'guest','guest');
+        $connection=new AMQPStreamConnection('rabbit',5672,'guest','guest');
         $channel=$connection->channel();
         $channel->queue_declare('cdr',false,false,false,false);
 
@@ -238,7 +238,7 @@ $app->group('/cdr', function (){
     });
 
     $this->post('/success', function ($request, $response) {
-        $connection=new AMQPStreamConnection('localhost',5672,'guest','guest');
+        $connection=new AMQPStreamConnection('rabbit',5672,'guest','guest');
         $channel=$connection->channel();
         $channel->queue_declare('cdr',false,false,false,false);
 
@@ -254,7 +254,7 @@ $app->group('/cdr', function (){
     });
 
     $this->post('/insufficient', function ($request, $response) {
-        $connection=new AMQPStreamConnection('localhost',5672,'guest','guest');
+        $connection=new AMQPStreamConnection('rabbit',5672,'guest','guest');
         $channel=$connection->channel();
         $channel->queue_declare('cdr',false,false,false,false);
 
@@ -270,7 +270,7 @@ $app->group('/cdr', function (){
     });
 
     $this->post('/failed', function ($request, $response) {
-        $connection=new AMQPStreamConnection('localhost',5672,'guest','guest');
+        $connection=new AMQPStreamConnection('rabbit',5672,'guest','guest');
         $channel=$connection->channel();
         $channel->queue_declare('cdr',false,false,false,false);
 
