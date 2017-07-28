@@ -28,10 +28,12 @@ services:
     ports:
       - "8982:80"
   app:
-    image: stikks/node-app
+    build: conf/node_app/.
+#    image: stikks/node-app
     hostname: app
     ports:
       - "4043:4043"
   worker:
-    image: stikks/worker-app
+    build: conf/worker/.
+#    image: stikks/worker-app
     hostname: worker
