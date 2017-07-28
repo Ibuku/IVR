@@ -15,17 +15,23 @@ services:
       - .:/opt/IVR
   rabbit:
     image: rabbitmq
+    hostname: rabbit
   redis:
     image: redis
+    hostname: redis
   elasticsearch:
     image: elasticsearch
+    hostname: elasticsearch
   freepbx:
     image: stikks/freepbx
+    hostname: freepbx
     ports:
       - "8982:80"
   app:
     image: stikks/node-app
+    hostname: app
     ports:
       - "4043:4043"
   worker:
     image: stikks/worker-app
+    hostname: worker
