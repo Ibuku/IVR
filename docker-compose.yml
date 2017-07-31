@@ -33,8 +33,7 @@ services:
     ports:
       - "8982:80"
   app:
-    build: conf/node_app/.
-#    image: stikks/node-app
+    image: stikks/node-app
     hostname: app
     ports:
       - "4043:4043"
