@@ -2,3 +2,9 @@
 vendor/
 files/
 node_modules/
+postgres-data/
+elasticsearch-data/
+redis-data/
+files-data/
+agi-defaults/
+agi-sounds/
