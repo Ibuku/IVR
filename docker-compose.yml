@@ -2,41 +2,71 @@ version: '2'
 services:
   db:
     image: postgres
+    hostname: postgres
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: ivr
-  server:
-    image: stikks/ivr
-    ports:
-      - "8981:80"
-      - "443:443"
     volumes:
-      - .:/opt/IVR
+      - ./postgres-data:/var/lib/postgresql/data
+  server:
+    build: .
+#    image: stikks/ivr
+    hostname: server
+    ports:
+      - 8981:80
+      - 443:443
     depends_on:
       - db
       - redis
       - elasticsearch
       - rabbit
+    volumes:
+      - ./files-data:/opt/IVR/files
   rabbit:
     image: rabbitmq
     hostname: rabbit
   redis:
     image: redis
     hostname: redis
+    ports:
+      - 6379:6379
+    volumes:
+      - ./redis-data:/data
   elasticsearch:
     image: elasticsearch
-    hostname: elasticsearch
+    container_name: elasticsearch1
+    environment:
+      - cluster.name=docker-cluster
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms2g -Xmx2g"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    mem_limit: 1g
+    ports:
+      - 9200:9200
+      - 9300:9300
+    volumes:
+      - ./elasticsearch-data:/usr/share/elasticsearch/data
   freepbx:
     image: stikks/freepbx
     hostname: freepbx
     ports:
-      - "8982:80"
+      - 80:80
+      - 5060:5060
+      - 5060:5060/udp
+      - 5061:5061
+      - 5061:5061/udp
+    volumes:
+      - ./agi-defaults:/var/lib/asterisk/sounds/defaults
+      - ./agi-sounds:/var/lib/asteriks/sounds/files
   app:
     image: stikks/node-app
     hostname: app
     ports:
-      - "4043:4043"
+      - 4043:4043
     depends_on:
       - elasticsearch
       - rabbit
