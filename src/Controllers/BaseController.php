@@ -27,6 +27,14 @@ class BaseController
         }
     }
 
+    static public function run_remote_command($session, $command) {
+        $srv = ssh2_exec($session, $command);
+        if (!$srv) {
+            return false;
+        }
+        return true;
+    }
+
     static public function send_via_remote($address, $username, $password, $localName, $remoteName) {
         try {
             $connection = ssh2_connect($address, 22);
@@ -38,6 +46,11 @@ class BaseController
 
             $transfer = ssh2_scp_send($connection, $localName, $remoteName, 0777);
             if (!$transfer) {
+                return false;
+            }
+
+            $change = static::run_remote_command($connection, "chown -R asterisk. ". $remoteName);
+            if (!$change) {
                 return false;
             }
 
@@ -63,6 +76,10 @@ class BaseController
                 return false;
             }
 
+            $change = static::run_remote_command($connection, "chown -R asterisk. ". $newDir);
+            if (!$change) {
+                return false;
+            }
             return true;
         } catch (\Exception $e) {
             return false;

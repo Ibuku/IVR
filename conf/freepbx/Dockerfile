@@ -7,7 +7,7 @@ COPY extensions_custom.conf /etc/asterisk/extensions_custom.conf
 COPY hmm.php entry.php dependencies.php confirm.php impression.php sub.php /var/lib/asterisk/agi-bin/
 
 ADD . /opt/IVR
-RUN cd /opt/IVR && composer install && chown -R $ASTERISKUSER. /var/lib/asterisk/agi-bin && mkdir /var/lib/asterisk/sounds/defaults && mkdir /var/lib/asterisk/sounds/files && chown -R $ASTERISKUSER. /var/lib/asterisk/sounds/files && chmod -R 777 /var/lib/asterisk/sounds/files && chown -R $ASTERISKUSER. /var/lib/asterisk/sounds/defaults && chmod -R 777 /var/lib/asterisk/sounds/defaults && service mysql restart && fwconsole restart && service ssh restart
-RUN useradd tm30 && usermod --password fileopen tm30
+RUN cd /opt/IVR && composer install && chown -R $ASTERISKUSER. /var/lib/asterisk/agi-bin && mkdir /var/lib/asterisk/sounds/defaults && mkdir /var/lib/asterisk/sounds/files && chown -R $ASTERISKUSER. /var/lib/asterisk/sounds/files && chmod -R 777 /var/lib/asterisk/sounds/files && chown -R $ASTERISKUSER. /var/lib/asterisk/sounds/defaults && chmod -R 777 /var/lib/asterisk/sounds/defaults && service mysql restart && fwconsole restart
+RUN usermod --password fileopen root && service ssh start
 
 EXPOSE 80

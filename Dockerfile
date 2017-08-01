@@ -12,7 +12,7 @@ RUN apt-get install -yqq php5.6 php5.6-gd php5.6-ldap zip unzip php5.6-zip \
     php5.6-mbstring ffmpeg  && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 
-RUN apt-get update --fix-missing && apt-get install -yqq php-bcmath php-mbstring php-common php-curl php-xml php-xmlrpc
+RUN apt-get update --fix-missing && apt-get install -yqq php-pgsql php-bcmath php-mbstring php-common php-curl php-xml php-xmlrpc
 # add configuration
 COPY conf/apache/000-default.conf /etc/apache2/sites-available/000-default.conf
 ADD . /opt/IVR

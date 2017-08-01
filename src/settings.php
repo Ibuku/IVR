@@ -36,6 +36,11 @@ return [
             'host' => 'redis',
             'port' => 6379
         ],
-        'es_url' => 'http://localhost:4043/elastic/'
+        'es_url' => 'http://app:4043/elastic/',
+        'REMOTE' => [
+            'USERNAME' => 'root',
+            'PASSWORD' => 'fileopen',
+            'URL' => 'freepbx'
+        ]
     ]
 ];
