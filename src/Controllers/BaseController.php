@@ -27,10 +27,45 @@ class BaseController
         }
     }
 
-    public function send_via_remote($address, $username, $password, $localName, $remoteName) {
-        $connection = ssh2_connect($address, 22);
-        ssh2_auth_password($connection, $username, $password);
+    static public function send_via_remote($address, $username, $password, $localName, $remoteName) {
+        try {
+            $connection = ssh2_connect($address, 22);
 
-        ssh2_scp_send($connection, $localName, $remoteName, 0777);
+            $auth = ssh2_auth_password($connection, $username, $password);
+            if (!$auth) {
+                return false;
+            }
+
+            $transfer = ssh2_scp_send($connection, $localName, $remoteName, 0777);
+            if (!$transfer) {
+                return false;
+            }
+
+            return true;
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
+
+    static public function rename_remotely($address, $username, $password, $currentDir, $newDir) {
+        try {
+            $connection = ssh2_connect($address, 22);
+
+            $auth = ssh2_auth_password($connection, $username, $password);
+            if (!$auth) {
+                return false;
+            }
+
+            $sftp = ssh2_sftp($connection);
+
+            $transfer = ssh2_sftp_rename($sftp, $currentDir, $newDir);
+            if (!$transfer) {
+                return false;
+            }
+
+            return true;
+        } catch (\Exception $e) {
+            return false;
+        }
     }
 }

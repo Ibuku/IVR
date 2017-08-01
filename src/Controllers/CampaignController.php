@@ -59,6 +59,178 @@ class CampaignController extends BaseController
         ]);
     }
 
+//    public function postData($request, $response){
+//
+//        $user = $this->auth->user();
+//
+//        $username = $user->username;
+//
+//        if ($request->getParam('username')) {
+//            $username = $request->getParam('username');
+//        }
+//
+//        $file_match = ['name' => $request->getParam('file')];
+//
+//        $file = Files::where($file_match)->first();
+//
+//        $match = ['file_path' => $file->file_path, 'username' => $username];
+//
+//        $campaign = Campaign::where($match)->first();
+//
+//        if ($campaign)
+//        {
+//            $files = Files::where('tag', 'advert')->get();
+//
+//            if ($user->username != $this->settings['DEFAULT_ACCOUNT']) {
+//                $match = ['tag'=>'advert', 'username'=>$user->username];
+//                $files = Files::where($match)->get();
+//            }
+//
+//            $options = [
+//                array("name" => "Subscribe", "value" => "subscribe")
+//            ];
+//
+//            $users = User::all();
+//
+//            $error =  "A campaign using this audio file already exists";
+//
+//            return $this->view->render($response, 'templates/forms/campaign.twig', [
+//                'files' => $files,
+//                'options' => $options,
+//                'user' => $user,
+//                'error' => $error,
+//                'users' => $users
+//            ]);
+//        }
+//
+//        $start_date = date('Y-m-d');
+//
+//        if ($request->getParam('start_date')) {
+//            $start_date = DateTime::createFromFormat('d/m/Y', $request->getParam('start_date'))->format('Y-m-d');
+//        }
+//
+//        $end_date = null;
+//
+//        if ($request->getParam('end_date')) {
+//            $end_date = DateTime::createFromFormat('d/m/Y', $request->getParam('end_date'))->format('Y-m-d');
+//        }
+//
+//        $validation = $this->validator->validate($request, [
+//            'file' => Val::notEmpty()->verifyFile(),
+//        ]);
+//
+//        if ($validation->failed()) {
+//            return $response->withRedirect($this->router->pathFor('create_campaign'));
+//        }
+//
+//        $file_split = explode('/', $file->file_path);
+//        $file_name = end($file_split);
+//
+////        $command = 'cp '. $file->file_path. ' '. "/var/lib/asterisk/sounds/files/inactive/" . $username . '/'. $file_name;
+////        shell_exec($command);
+//
+//        $play_path = "/var/lib/asterisk/sounds/files/{$username}/{$file_name}";
+//        $file_copy = copy($file->file_path, "/var/lib/asterisk/sounds/files/inactive/{$username}/{$file_name}");
+//
+//        if (!$file_copy) {
+//            $files = Files::where('tag', 'advert')->get();
+//
+//            if ($user->username != $this->settings['DEFAULT_ACCOUNT']) {
+//                $match = ['tag'=>'advert', 'username'=>$user->username];
+//                $files = Files::where($match)->get();
+//            }
+//
+//            $options = [
+//                array("name" => "Subscribe", "value" => "subscribe")
+//            ];
+//
+//            $users = User::all();
+//
+//            $error =  "Campaign audio file not moved.";
+//
+//            return $this->view->render($response, 'templates/forms/campaign.twig', [
+//                'files' => $files,
+//                'options' => $options,
+//                'user' => $user,
+//                'error' => $error,
+//                'users' => $users
+//            ]);
+//        }
+//
+//        $campaign = Campaign::create([
+//            'username' => $username,
+//            'start_date' => $start_date,
+//            'end_date' => $end_date,
+//            'name' => $request->getParam('name'),
+//            'file_path' => $file->file_path,
+//            'description' => $request->getParam('description'),
+//            'value' => $request->getParam('value'),
+//            'body' => $request->getParam('body'),
+//            'is_active' => false,
+//            'play_path' => $play_path
+//        ]);
+//
+//        if ($request->getParam('body') && $request->getParam('number') && $request->getParam('value')) {
+//            $value = array('number'=>$request->getParam('number'), 'value'=>$request->getParam('value'), 'parameter' => $request->getParam('parameter'),
+//                'body' => $request->getParam('body'), "repeat_param"=>$request->getParam('repeat_param'),
+//                "confirm"=>$request->getParam('confirm'), "request"=>$request->getParam('request'));
+//
+//            $action = Action::create([
+//                'number' => $value['number'],
+//                'value' => $value['value'],
+//                'body' => $value['body'],
+//                'repeat_param' => $value['repeat_param'],
+//                'confirm' => $value['confirm'],
+//                'request' => $value['request'],
+//                'parameter' => $value['parameter'],
+//                'campaign_id' => $campaign->id
+//            ]);
+//
+//            Index::save_redis($campaign->play_path. ':'. $action->number, [
+//                'number' => $action->number,
+//                'value' => $action->value,
+//                'body' => $action->body,
+//                'repeat_param' => $action->repeat_param,
+//                'confirm' => $action->confirm,
+//                'parameter' => $action->parameter,
+//                'request' => $action->request,
+//                'campaign_id' => $campaign->id,
+//                'id' => $action->id,
+//            ]);
+//        }
+//
+//        Index::index('campaign', [
+//            'username' => $campaign->username,
+//            'start_date' => $campaign->start_date,
+//            'end_date' => $campaign->end_date,
+//            'name' => $campaign->name,
+//            'file_path' => $campaign->file_path,
+//            'play_path' => $campaign->play_path,
+//            'description' => $campaign->description,
+//            'id' => $campaign->id,
+//            'created_at' => $campaign->created_at->format('Y-m-d'),
+//            'updated_at' => $campaign->updated_at->format('Y-m-d'),
+//            'is_active' => $campaign->is_active
+//        ]);
+//
+//        Index::save_redis($campaign->play_path, [
+//            'username' => $campaign->username,
+//            'start_date' => $campaign->start_date,
+//            'end_date' => $campaign->end_date,
+//            'name' => $campaign->name,
+//            'file_path' => $campaign->file_path,
+//            'play_path' => $campaign->play_path,
+//            'description' => $campaign->description,
+//            'id' => $campaign->id,
+//            'created_at' => $campaign->created_at->format('Y-m-d'),
+//            'updated_at' => $campaign->updated_at->format('Y-m-d'),
+//            'is_active' => $campaign->is_active
+//        ]);
+//
+//        return $response->withRedirect($this->router->pathFor('campaigns'));
+//
+//    }
+
     public function postData($request, $response){
 
         $user = $this->auth->user();
@@ -72,9 +244,9 @@ class CampaignController extends BaseController
         $file_match = ['name' => $request->getParam('file')];
 
         $file = Files::where($file_match)->first();
-        
+
         $match = ['file_path' => $file->file_path, 'username' => $username];
-        
+
         $campaign = Campaign::where($match)->first();
 
         if ($campaign)
@@ -126,11 +298,10 @@ class CampaignController extends BaseController
         $file_split = explode('/', $file->file_path);
         $file_name = end($file_split);
 
-//        $command = 'cp '. $file->file_path. ' '. "/var/lib/asterisk/sounds/files/inactive/" . $username . '/'. $file_name;
-//        shell_exec($command);
-
         $play_path = "/var/lib/asterisk/sounds/files/{$username}/{$file_name}";
-        $file_copy = copy($file->file_path, "/var/lib/asterisk/sounds/files/inactive/{$username}/{$file_name}");
+        $file_copy = static::send_via_remote($this->settings['REMOTE']['URL'], $this->settings['REMOTE']['USERNAME'],
+            $this->settings['REMOTE']['PASSWORD'], $file->file_path, "/var/lib/asterisk/sounds/files/inactive/{$username}/{$file_name}");
+//        $file_copy = copy($file->file_path, "/var/lib/asterisk/sounds/files/inactive/{$username}/{$file_name}");
 
         if (!$file_copy) {
             $files = Files::where('tag', 'advert')->get();
@@ -408,13 +579,19 @@ class CampaignController extends BaseController
         $file_name = end($file_split);
 
         try {
-            rename($campaign->play_path, '/var/lib/asterisk/sounds/files/inactive/'. $campaign->username. '/'. $file_name);
+            $transfer = static::rename_remotely($this->settings['REMOTE']['URL'], $this->settings['REMOTE']['USERNAME'],
+                $this->settings['REMOTE']['PASSWORD'], $campaign->play_path,
+                '/var/lib/asterisk/sounds/files/inactive/'. $campaign->username. '/'. $file_name);
+            if (!$transfer) {
+                return $response->withStatus(400);
+            }
             $campaign->update([
                 'is_active' => false,
                 'end_date' => date("Y-m-d")
             ]);
         }
         catch (\Exception $e) {
+            return $response->withStatus(400);
         }
 
         return $response->withStatus(200);
@@ -448,7 +625,12 @@ class CampaignController extends BaseController
         $file_name = end($file_split);
 
         try {
-            rename('/var/lib/asterisk/sounds/files/inactive/'. $campaign->username. '/'. $file_name, $campaign->play_path);
+            $transfer = static::rename_remotely($this->settings['REMOTE']['URL'], $this->settings['REMOTE']['USERNAME'],
+                $this->settings['REMOTE']['PASSWORD'],
+                '/var/lib/asterisk/sounds/files/inactive/'. $campaign->username. '/'. $file_name, $campaign->play_path);
+            if (!$transfer) {
+                return $response->withStatus(400);
+            }
             $campaign->update([
                 'is_active' => true,
                 'start_date' => date("Y-m-d"),
@@ -456,6 +638,7 @@ class CampaignController extends BaseController
             ]);
         }
         catch (\Exception $e) {
+            return $response->withStatus(400);
         }
 
         return $response->withStatus(200);
