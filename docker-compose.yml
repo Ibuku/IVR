@@ -64,7 +64,7 @@ services:
     volumes:
       - ./agi-defaults:/var/lib/asterisk/sounds/defaults
       - ./agi-sounds:/var/lib/asteriks/sounds/files
-      - ./freepbx-data:/var/lib/mysql
+#      - ./freepbx-data:/var/lib/mysql
   app:
     image: stikks/node-app
     hostname: app
