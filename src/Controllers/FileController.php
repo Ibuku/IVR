@@ -53,9 +53,13 @@ class FileController extends BaseController
             $file_name = end($file_split);
 
             try {
-                rename($campaign->play_path, '/var/lib/asterisk/sounds/files/inactive/'. $campaign->username. '/'. $file_name);
+                static::rename_remotely($this->settings['REMOTE']['URL'], $this->settings['REMOTE']['USERNAME'],
+                    $this->settings['REMOTE']['PASSWORD'], $campaign->play_path,
+                    '/var/lib/asterisk/sounds/files/inactive/'. $campaign->username. '/'. $file_name);
+//                rename($campaign->play_path, '/var/lib/asterisk/sounds/files/inactive/'. $campaign->username. '/'. $file_name);
             }
             catch (\Exception $e) {
+                return $response->withStatus(400);
             }
         }
 
@@ -63,7 +67,11 @@ class FileController extends BaseController
             $play_split = explode('/', $file->file_path);
             $play_name = end($play_split);
 
-            rename($file->file_path, realpath(__DIR__ . '/../..') . "/files/deleted/" . $play_name);
+            static::rename_remotely($this->settings['REMOTE']['URL'], $this->settings['REMOTE']['USERNAME'],
+                $this->settings['REMOTE']['PASSWORD'], $file->file_path,
+                realpath(__DIR__ . '/../..') . "/files/deleted/" . $play_name);
+
+//            rename($file->file_path, realpath(__DIR__ . '/../..') . "/files/deleted/" . $play_name);
             $file->delete();
         }
         catch (\Exception $e) {
