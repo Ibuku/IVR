@@ -83,6 +83,6 @@ services:
       - rabbit
 volumes:
   freepbx-data:
-    external: false
+    external: true
   asterisk-conf:
-    external: false
+    external: true

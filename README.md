@@ -37,3 +37,7 @@ mkdir -p  /var/lib/asterisk/sounds/files/inactive
 
 chown -R asterisk. /var/lib/asterisk/sounds/files/
 chmod -R 777 /var/lib/asterisk/sounds/files/
+
+docker volume create --name=freepbx-data
+
+docker volume create --name=asterisk-conf
