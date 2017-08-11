@@ -273,7 +273,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-lg-2"><strong>Subscription Key</strong></label>
                                     <div class="col-lg-2">
-                                        <input type="text" name="number" id="number" maxlength="1" class="form-control" value="{{ old.number }}" placeholder="Number">
+                                        <input type="text" name="number" id="number" maxlength="1" class="form-control" value="*" placeholder="Number" disabled>
                                     </div>
                                     <span class="col-sm-1"></span>
                                     <label class="control-label col-lg-2"><strong>Action</strong></label>
@@ -307,7 +307,7 @@
                                     <div class="col-sm-1">
                                         <select name="request" class="form-control" id="request">
                                             <option value='GET'>GET</option>
-                                            <option value='POST'>POST</option>
+                                            {#<option value='POST'>POST</option>#}
                                         </select>
                                     </div>
                                     <span class="col-sm-1"></span>

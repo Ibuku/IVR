@@ -302,14 +302,14 @@
                                 <div class="form-group">
                                     <label class="control-label col-lg-2"><strong>Subscription Key</strong></label>
                                     <div class="col-lg-2">
-                                        <input type="text" name="number" id="number" maxlength="1" class="form-control" value="{{ action.number }}" placeholder="Number">
+                                        <input type="text" name="number" id="number" maxlength="1" class="form-control" value="*" placeholder="Number">
                                     </div>
                                     <span class="col-sm-1"></span>
                                     <label class="control-label col-lg-2"><strong>Action</strong></label>
                                     <div class="col-lg-2">
                                         <select name="value" class="form-control" id="value">
                                             {% for option in options  %}
-                                                <option value="{{ option.value }}" {% if action.value == option.value %}selected{% endif %}>{{ option.name }}</option>
+                                                <option value="{{ option.value }}" {% if campaign.value == option.value %}selected{% endif %}>{{ option.name }}</option>
                                             {% endfor %}
                                         </select>
                                     </div>
@@ -318,19 +318,19 @@
                                 <div class="form-group">
                                     <label class="control-label col-lg-2"><strong>Subscription Url</strong></label>
                                     <div class="col-lg-3">
-                                        <input type="text" name="body" id="body" class="form-control" value="{{ action.body }}" placeholder="Enter subscription url here">
+                                        <input type="text" name="body" id="body" class="form-control" value="{{ campaign.body }}" placeholder="Enter subscription url here">
                                     </div>
                                     <label class="control-label col-sm-2"><strong>Request Method</strong></label>
                                     <div class="col-sm-1">
                                         <select name="request" class="form-control" id="request">
-                                            <option value='GET' {% if action.request == 'GET' %}selected{% endif %}>GET</option>
-                                            <option value='POST' {% if action.request == 'POST' %}selected{% endif %}>POST</option>
+                                            <option value='GET'>GET</option>
+                                            {#<option value='POST' {% if action.request == 'POST' %}selected{% endif %}>POST</option>#}
                                         </select>
                                     </div>
                                     <span class="col-sm-1"></span>
                                     <label class="control-label col-lg-1"><strong>Parameter</strong></label>
                                     <div class="col-sm-2">
-                                        <input type="text" name="parameter" id="parameter" class="form-control" value="{{ action.parameter }}" placeholder="Phone/Msisdn parameter">
+                                        <input type="text" name="parameter" id="parameter" class="form-control" value="msisdn" placeholder="Phone/Msisdn parameter">
                                     </div>
                                 </div>
 

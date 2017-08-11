@@ -29,11 +29,14 @@ docker exec -it {container ID of stikks/freepbx} bash
 
 service ssh start
 
-passwd root
+passwd root (set password to fileopen)
 
 mkdir -p /var/lib/asterisk/sounds/files/etisalat
 mkdir -p /var/lib/asterisk/sounds/files/tm30
 mkdir -p  /var/lib/asterisk/sounds/files/inactive
+mkdir -p /var/lib/asterisk/sounds/files/inactive/tm30
+mkdir -p  /var/lib/asterisk/sounds/files/inactive/etisalat
+
 
 chown -R asterisk. /var/lib/asterisk/sounds/files/
 chmod -R 777 /var/lib/asterisk/sounds/files/

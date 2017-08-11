@@ -13,14 +13,14 @@ class Index
 {
     public function __construct()
     {
-        $settings = include_once __DIR__.'/../settings.php';
-        $this->settings = $settings['settings'];
+        $settings_file = require(__DIR__.'/../settings.php');
+        $this->settings = $settings_file['settings'];
     }
 
 
     static public function index($type, $params=array()) {
 
-        $settings_file = include_once __DIR__.'/../settings.php';
+        $settings_file = require(__DIR__.'/../settings.php');
         $settings = $settings_file['settings'];
 
         $ch = curl_init();
@@ -42,7 +42,7 @@ class Index
 
     static public function update($type, $_id, $params=array()) {
 
-        $settings_file = include_once __DIR__.'/../settings.php';
+        $settings_file = require(__DIR__.'/../settings.php');
         $settings = $settings_file['settings'];
 
         $ch = curl_init();
@@ -65,7 +65,7 @@ class Index
 
     static public function get_data($type) {
 
-        $settings_file = include_once __DIR__.'/../settings.php';
+        $settings_file = require(__DIR__.'/../settings.php');
         $settings = $settings_file['settings'];
         $ch = curl_init();
         $url = $settings['es_url'].'/elasticsearch/'. $type.'/get';
@@ -80,7 +80,7 @@ class Index
     }
 
     static public function filterBy($type, $params=array()) {
-        $settings_file = include_once __DIR__.'/../settings.php';
+        $settings_file = require(__DIR__.'/../settings.php');
         $settings = $settings_file['settings'];
         $ch = curl_init();
         $url = $settings['es_url'].'/elasticsearch/'. $type.'/create';
@@ -99,10 +99,15 @@ class Index
 
     static public function save_redis($key, $params=array()) {
 
-        $settings_file = include_once __DIR__.'/../settings.php';
+        $settings_file = require(__DIR__.'/../settings.php');
         $settings = $settings_file['settings'];
+        $redisSettings = $settings['redis'];
 
-        $redis = new Client(array('host'=>$settings['redis']['host'], 'port'=>$settings['redis']['port']));
+        $redis = new Client([
+            'scheme' => 'tcp',
+            'host'   => 'redis',
+            'port'   => 6379,
+        ]);
 
         $redis->hmset($string = preg_replace('/\s+/', '_', $key), $params);
 

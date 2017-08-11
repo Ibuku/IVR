@@ -33,8 +33,9 @@ return [
         "default_index" => "ivr",
         "DEFAULT_ACCOUNT" => "etisalat",
         'redis'=> [
-            'host' => 'redis',
-            'port' => 6379
+            'scheme' => 'tcp',
+            'host'   => 'redis',
+            'port'   => 6379,
         ],
         'es_url' => 'http://app:4043/elastic/',
         'REMOTE' => [

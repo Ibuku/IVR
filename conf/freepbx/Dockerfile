@@ -4,10 +4,12 @@ ENV ASTERISKUSER asterisk
 
 RUN apt-get update && apt-get install -yqq apt-utils curl nano git  && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 COPY extensions_custom.conf /etc/asterisk/extensions_custom.conf
+COPY sip_custom.conf /etc/asterisk/sip_custom.conf
 COPY hmm.php entry.php dependencies.php confirm.php impression.php sub.php /var/lib/asterisk/agi-bin/
 
 ADD . /opt/IVR
-RUN cd /opt/IVR && composer install && chown -R $ASTERISKUSER. /var/lib/asterisk/agi-bin && mkdir /var/lib/asterisk/sounds/defaults && mkdir /var/lib/asterisk/sounds/files && chown -R $ASTERISKUSER. /var/lib/asterisk/sounds/files && mkdir -p /var/lib/asterisk/sounds/files/etisalat && mkdir -p /var/lib/asterisk/sounds/files/tm30 && mkdir -p /var/lib/asterisk/sounds/files/inactive && chmod -R 777 /var/lib/asterisk/sounds/files && chown -R $ASTERISKUSER. /var/lib/asterisk/sounds/defaults && chmod -R 777 /var/lib/asterisk/sounds/defaults && service mysql restart && fwconsole restart
-RUN service ssh start
+RUN cd /opt/IVR && composer install && chown -R $ASTERISKUSER. /var/lib/asterisk/agi-bin && mkdir /var/lib/asterisk/sounds/defaults && mkdir /var/lib/asterisk/sounds/files && chown -R $ASTERISKUSER. /var/lib/asterisk/sounds/files && mkdir -p /var/lib/asterisk/sounds/files/etisalat && mkdir -p /var/lib/asterisk/sounds/files/tm30 && mkdir -p /var/lib/asterisk/sounds/files/inactive && mkdir -p /var/lib/asterisk/sounds/files/inactive/tm30 && mkdir -p /var/lib/asterisk/sounds/files/inactive/etisalat && chmod -R 777 /var/lib/asterisk/sounds/files && chown -R $ASTERISKUSER. /var/lib/asterisk/sounds/defaults && chmod -R 777 /var/lib/asterisk/sounds/defaults && service mysql restart && fwconsole restart && export TERM=xterm
+#ENTRYPOINT service ssh restart && bash
 
 EXPOSE 80
+EXPOSE 10000-15000/udp
