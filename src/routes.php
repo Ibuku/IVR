@@ -58,7 +58,7 @@ $app->group('', function (){
     // javascript data for pages
     $this->get('/dashboard', function($request, $response) {
         $ch = curl_init();
-        $url = 'http://app:4043/ivr/elasticsearch/data';
+        $url = 'http://app:4043/elastic/elasticsearch/data';
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
         $res = curl_exec($ch);
@@ -68,7 +68,7 @@ $app->group('', function (){
     // javascript data for today
     $this->get('/dashboard/today', function($request, $response) {
         $ch = curl_init();
-        $url = 'http://app:4043/ivr/data/today';
+        $url = 'http://app:4043/elastic/data/today';
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
         $res = curl_exec($ch);
@@ -78,7 +78,7 @@ $app->group('', function (){
     // javascript data for yesterday
     $this->get('/dashboard/yesterday', function($request, $response) {
         $ch = curl_init();
-        $url = 'http://app:4043/ivr/data/yesterday';
+        $url = 'http://app:4043/elastic/data/yesterday';
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
         $res = curl_exec($ch);
@@ -88,7 +88,7 @@ $app->group('', function (){
     // javascript data for last week
     $this->get('/dashboard/last', function($request, $response) {
         $ch = curl_init();
-        $url = 'http://app:4043/ivr/data/last';
+        $url = 'http://app:4043/elastic/data/last';
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
         $res = curl_exec($ch);
@@ -98,7 +98,7 @@ $app->group('', function (){
     // javascript data for last week
     $this->get('/dashboard/week', function($request, $response) {
         $ch = curl_init();
-        $url = 'http://app:4043/ivr/data/week';
+        $url = 'http://app:4043/elastic/data/week';
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
         $res = curl_exec($ch);
@@ -108,7 +108,7 @@ $app->group('', function (){
     // javascript data for last week
     $this->get('/dashboard/month', function($request, $response) {
         $ch = curl_init();
-        $url = 'http://app:4043/ivr/data/month';
+        $url = 'http://app:4043/elastic/data/month';
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
         $res = curl_exec($ch);
@@ -117,7 +117,7 @@ $app->group('', function (){
 
     $this->get('/campaign/period', function($request, $response) {
         $ch = curl_init();
-        $url = 'http://app:4043/ivr/no_of_campaign';
+        $url = 'http://app:4043/elastic/no_of_campaign';
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
         $res = curl_exec($ch);
@@ -133,7 +133,7 @@ $app->group('', function (){
         }
 
         $ch = curl_init();
-        $url = 'http://app:4043/ivr/campaign/'.$campaign_id.'/data';
+        $url = 'http://app:4043/elastic/campaign/'.$campaign_id.'/data';
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
         $res = curl_exec($ch);

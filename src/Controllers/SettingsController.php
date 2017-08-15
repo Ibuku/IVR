@@ -43,7 +43,7 @@ class SettingsController extends BaseController
 //                'default_settings' => true,
 //                'incorrect_path' => $request->getParam('incorrect_path'),
 //                'no_selection_path' => $request->getParam('no_selection_path'),
-//                'no_selection_repeat_path' => $request->getParam('no_selection_repeat_path'),
+//                'repeat_path' => $request->getParam('repeat_path'),
 //                'no_selection_confirm_subscription_path' => $request->getParam('no_selection_confirm_subscription_path'),
 //                'success_path' => $request->getParam('success_path'),
 //                'goodbye_path' => $request->getParam('goodbye_path'),
@@ -60,7 +60,7 @@ class SettingsController extends BaseController
 //                'default_settings' => true,
 //                'incorrect_path' => $request->getParam('incorrect_path'),
 //                'no_selection_path' => $request->getParam('no_selection_path'),
-//                'no_selection_repeat_path' => $request->getParam('no_selection_repeat_path'),
+//                'repeat_path' => $request->getParam('repeat_path'),
 //                'no_selection_confirm_subscription_path' => $request->getParam('no_selection_confirm_subscription_path'),
 //                'success_path' => $request->getParam('success_path'),
 //                'goodbye_path' => $request->getParam('goodbye_path'),
@@ -98,7 +98,7 @@ class SettingsController extends BaseController
 //            ]);
 //        }
 //
-//        $repeat_copy = copy($settings->no_selection_repeat_path, "/var/lib/asterisk/sounds/defaults/no_selection_repeat.wav");
+//        $repeat_copy = copy($settings->repeat_path, "/var/lib/asterisk/sounds/defaults/no_selection_repeat.wav");
 //
 //        if (!$repeat_copy) {
 //            return $this->view->render($response, 'templates/forms/settings.twig', [
@@ -216,7 +216,7 @@ class SettingsController extends BaseController
 //                'default_settings' => true,
 //                'incorrect_path' => "/var/lib/asterisk/sounds/defaults/incorrect.wav",
 //                'no_selection_path' => "/var/lib/asterisk/sounds/defaults/no_selection.wav",
-//                'no_selection_repeat_path' => "/var/lib/asterisk/sounds/defaults/no_selection_repeat.wav",
+//                'repeat_path' => "/var/lib/asterisk/sounds/defaults/no_selection_repeat.wav",
 //                'no_selection_confirm_subscription_path' => "/var/lib/asterisk/sounds/defaults/no_selection_confirm_subscription.wav",
 //                'success_path' => "/var/lib/asterisk/sounds/defaults/success.wav",
 //                'goodbye_path' => "/var/lib/asterisk/sounds/defaults/goodbye.wav",
@@ -245,8 +245,8 @@ class SettingsController extends BaseController
                 'default_settings' => true,
                 'incorrect_path' => $request->getParam('incorrect_path'),
                 'no_selection_path' => $request->getParam('no_selection_path'),
-                'no_selection_repeat_path' => $request->getParam('no_selection_repeat_path'),
-                'no_selection_confirm_subscription_path' => $request->getParam('no_selection_confirm_subscription_path'),
+                'repeat_path' => $request->getParam('repeat_path'),
+//                'no_selection_confirm_subscription_path' => $request->getParam('no_selection_confirm_subscription_path'),
                 'success_path' => $request->getParam('success_path'),
                 'goodbye_path' => $request->getParam('goodbye_path'),
                 'subscription_path' => $request->getParam('subscription_path'),
@@ -262,8 +262,8 @@ class SettingsController extends BaseController
                 'default_settings' => true,
                 'incorrect_path' => $request->getParam('incorrect_path'),
                 'no_selection_path' => $request->getParam('no_selection_path'),
-                'no_selection_repeat_path' => $request->getParam('no_selection_repeat_path'),
-                'no_selection_confirm_subscription_path' => $request->getParam('no_selection_confirm_subscription_path'),
+                'repeat_path' => $request->getParam('repeat_path'),
+//                'no_selection_confirm_subscription_path' => $request->getParam('no_selection_confirm_subscription_path'),
                 'success_path' => $request->getParam('success_path'),
                 'goodbye_path' => $request->getParam('goodbye_path'),
                 'subscription_path' => $request->getParam('subscription_path'),
@@ -302,8 +302,8 @@ class SettingsController extends BaseController
         }
 
         $repeat_copy = static::send_via_remote($this->settings['REMOTE']['URL'], $this->settings['REMOTE']['USERNAME'],
-            $this->settings['REMOTE']['PASSWORD'], $settings->no_selection_repeat_path,
-            "/var/lib/asterisk/sounds/defaults/no_selection_repeat.wav");
+            $this->settings['REMOTE']['PASSWORD'], $settings->repeat_path,
+            "/var/lib/asterisk/sounds/defaults/repeat.wav");
 
         if (!$repeat_copy) {
             return $this->view->render($response, 'templates/forms/settings.twig', [
@@ -314,18 +314,18 @@ class SettingsController extends BaseController
             ]);
         }
 
-        $con_copy = static::send_via_remote($this->settings['REMOTE']['URL'], $this->settings['REMOTE']['USERNAME'],
-            $this->settings['REMOTE']['PASSWORD'], $settings->no_selection_confirm_subscription_path,
-            "/var/lib/asterisk/sounds/defaults/no_selection_confirm_subscription.wav");
-
-        if (!$con_copy) {
-            return $this->view->render($response, 'templates/forms/settings.twig', [
-                'user' => $user,
-                'error' => 'Confirmation prompt not saved',
-                'files' => Files::where('tag', 'prompt')->get(),
-                'setting' => $settings
-            ]);
-        }
+//        $con_copy = static::send_via_remote($this->settings['REMOTE']['URL'], $this->settings['REMOTE']['USERNAME'],
+//            $this->settings['REMOTE']['PASSWORD'], $settings->no_selection_confirm_subscription_path,
+//            "/var/lib/asterisk/sounds/defaults/no_selection_confirm_subscription.wav");
+//
+//        if (!$con_copy) {
+//            return $this->view->render($response, 'templates/forms/settings.twig', [
+//                'user' => $user,
+//                'error' => 'Confirmation prompt not saved',
+//                'files' => Files::where('tag', 'prompt')->get(),
+//                'setting' => $settings
+//            ]);
+//        }
 
         $success_path = static::send_via_remote($this->settings['REMOTE']['URL'], $this->settings['REMOTE']['USERNAME'],
             $this->settings['REMOTE']['PASSWORD'], $settings->success_path,  "/var/lib/asterisk/sounds/defaults/success.wav");
@@ -429,8 +429,8 @@ class SettingsController extends BaseController
                 'default_settings' => true,
                 'incorrect_path' => "/var/lib/asterisk/sounds/defaults/incorrect.wav",
                 'no_selection_path' => "/var/lib/asterisk/sounds/defaults/no_selection.wav",
-                'no_selection_repeat_path' => "/var/lib/asterisk/sounds/defaults/no_selection_repeat.wav",
-                'no_selection_confirm_subscription_path' => "/var/lib/asterisk/sounds/defaults/no_selection_confirm_subscription.wav",
+                'repeat_path' => "/var/lib/asterisk/sounds/defaults/repeat.wav",
+//                'no_selection_confirm_subscription_path' => "/var/lib/asterisk/sounds/defaults/no_selection_confirm_subscription.wav",
                 'success_path' => "/var/lib/asterisk/sounds/defaults/success.wav",
                 'goodbye_path' => "/var/lib/asterisk/sounds/defaults/goodbye.wav",
                 'subscription_path' => "/var/lib/asterisk/sounds/defaults/subscription.wav",

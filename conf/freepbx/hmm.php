@@ -10,7 +10,11 @@ include 'dependencies.php';
 use Predis\Client;
 
 // replace with HMM model
-$redis = new Client();
+$redis = new Client([
+    'scheme' => 'tcp',
+    'host'   => 'redis',
+    'port'   => 6379,
+]);
 
 if (!$redis->exists("current")) {
     $redis->set('current', 'etisalat');

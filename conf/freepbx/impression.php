@@ -11,7 +11,12 @@ date_default_timezone_set("Africa/Lagos");
 include 'dependencies.php';
 use Predis\Client;
 
-$redis = new Client();
+$redis = new Client([
+    'scheme' => 'tcp',
+    'host'   => 'redis',
+    'port'   => 6379,
+]);
+
 $result = $agi->get_variable('CAMPAIGN_PATH');
 $campaign_path = $result['data'];
 $data = $redis->hgetall($campaign_path);
@@ -26,7 +31,7 @@ $unique_id = $unique_data['data'];
 if ($values) {
     try {
 
-        $subscribe_url = 'http://localhost:4043/elastic/cdr/impression';
+        $subscribe_url = 'http://app:4043/elastic/cdr/impression';
         curl_setopt($ch, CURLOPT_URL, $subscribe_url);
         curl_setopt($ch, CURLOPT_POST, 1);
 

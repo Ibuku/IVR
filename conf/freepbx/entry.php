@@ -22,18 +22,23 @@ $agi->set_variable('CAMPAIGN_PATH', $campaign_path);
 $unique_id = $agi->get_variable('CDR(uniqueid)')['data'].'_'.$agi->get_variable('CDR(src)')['data'];
 $agi->set_variable('UNIQUEID', $unique_id);
 
-$redis = new Client();
+$redis = new Client([
+    'scheme' => 'tcp',
+    'host'   => 'redis',
+    'port'   => 6379,
+]);
+
 $data = $redis->hgetall($campaign_path);
 
 // record missing audio call
 if (!file_exists($file_path)) {
     if ($name == 'etisalat') {
-        $agi->stream_file("etisalat_backup");
+        $agi->stream_file("defaults/backup");
     } else {
-        $agi->stream_file("tm30_backup");
+        $agi->stream_file("defaults/backup");
     }
     try {
-        $url = 'http://localhost:4043/elastic/elasticsearch/cdr/missing';
+        $url = 'http://app:4043/elastic/elasticsearch/cdr/missing';
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_POST, 1);
 
@@ -58,7 +63,7 @@ if (!file_exists($file_path)) {
 
 try {
 
-    $url = 'http://localhost:4043/elastic/elasticsearch/cdr/create';
+    $url = 'http://app:4043/elastic/elasticsearch/cdr/create';
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_POST, 1);
 

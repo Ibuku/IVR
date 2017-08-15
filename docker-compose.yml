@@ -15,7 +15,7 @@ services:
     hostname: server
     ports:
       - 8981:80
-      - 443:443
+      - 443
       - 22
     depends_on:
       - db
@@ -31,7 +31,7 @@ services:
     image: redis
     hostname: redis
     ports:
-      - 6379:6379
+      - 6379
     volumes:
       - ./redis-data:/data
   elasticsearch:
@@ -58,9 +58,11 @@ services:
       - 80:80
       - 5060:5060
       - 5060:5060/udp
-      - 5061:5061
-      - 5061:5061/udp
-      - 22
+      - 16384-16394/udp:16384-16394/udp
+#      - 10000-15000/udp
+#      - 5061:5061
+#      - 5061:5061/udp
+#      - 22
     volumes:
       - ./agi-defaults:/var/lib/asterisk/sounds/defaults
       - ./agi-sounds:/var/lib/asterisk/sounds/files

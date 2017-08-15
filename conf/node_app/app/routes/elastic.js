@@ -144,7 +144,6 @@ router.post('/elasticsearch/:type/create', function (req, res, next) {
         });
     }
     else if (req.params.type == "cdr") {
-
         client.search({
             index: 'ivr',
             type: 'campaign',
@@ -240,6 +239,9 @@ router.post('/elasticsearch/:type/create', function (req, res, next) {
                     res.sendStatus(200);
                 });
             }
+        }, function (err) {
+            console.trace(err.message);
+            res.send(400);
         });
     }
     else if (req.params.type == 'action') {
@@ -319,6 +321,7 @@ router.post('/cdr/impression', function (req, res, next) {
                     }
                 }
             }, function (error, response) {
+                console.trace(error);
                 res.sendStatus(200);
             })
         });
@@ -546,18 +549,22 @@ router.get('/no_of_campaign', function (req, res, next) {
         type: "statuses",
         body: {
             "query": {
-                "filtered": {
-                    "query": {
-                        "match_all": {}
-                    },
-                    "filter": {
-                        "range": {
-                            "created_at": {
-                                "gte": sevenDays,
-                                "lte": today
+                "bool": {
+                    "must": [
+                        {
+                            "match_all": {}
+                        }
+                    ],
+                    "filter": [
+                        {
+                            "range": {
+                                "created_at": {
+                                    "gte": sevenDays,
+                                    "lte": today
+                                }
                             }
                         }
-                    }
+                    ]
                 }
             }
         }
@@ -587,18 +594,22 @@ router.get('/campaign/:id/data', function (req, res, next) {
         type: "statuses",
         body: {
             "query": {
-                "filtered": {
-                    "query": {
-                        "match_all": {}
-                    },
-                    "filter": {
-                        "range": {
-                            "created_at": {
-                                "gte": sevenDays,
-                                "lte": today
+                "bool": {
+                    "must": [
+                        {
+                            "match_all": {}
+                        }
+                    ],
+                    "filter": [
+                        {
+                            "range": {
+                                "created_at": {
+                                    "gte": sevenDays,
+                                    "lte": today
+                                }
                             }
                         }
-                    }
+                    ]
                 }
             }
         }
@@ -845,17 +856,20 @@ router.get('/elasticsearch/:type/all', function (req, res, next) {
 
 router.post('/elasticsearch/cdr/missing', function (req, res, next) {
 
+    var created = new Date();
+    created.toDateString;
+
     client.index({
         index: 'ivr',
         id: req.body.uniqueid,
-        type: req.params.type,
+        type: 'cdr',
         body: {
             "src": req.body.src,
             "clid": req.body.clid,
             "duration": req.body.duration,
             "userfield": req.body.name,
             "uniqueid": req.body.uniqueid,
-            "impression": impression,
+            "impression": false,
             "billsec": req.body.billsec,
             "is_successful": false,
             "created_at": created
@@ -880,18 +894,22 @@ router.get('/data/today', function (req, res, next) {
         type: 'statuses',
         body: {
             "query": {
-                "filtered": {
-                    "query": {
-                        "match_all": {}
-                    },
-                    "filter": {
-                        "range": {
-                            "created_at": {
-                                "gte": day,
-                                "lte": right_now
+                "bool": {
+                    "must": [
+                        {
+                            "match_all": {}
+                        }
+                    ],
+                    "filter": [
+                        {
+                            "range": {
+                                "created_at": {
+                                    "gte": day,
+                                    "lte": right_now
+                                }
                             }
                         }
-                    }
+                    ]
                 }
             }
         }
@@ -922,19 +940,22 @@ router.get('/data/yesterday', function (req, res, next) {
         type: 'statuses',
         body: {
             "query": {
-                "filtered": {
-                    "query": {
-                        "match_all": {
+                "bool": {
+                    "must": [
+                        {
+                            "match_all": {}
                         }
-                    },
-                    "filter": {
-                        "range": {
-                            "created_at": {
-                                "gte": yesterday_start,
-                                "lte": yesterday_end
+                    ],
+                    "filter": [
+                        {
+                            "range": {
+                                "created_at": {
+                                    "gte": yesterday_start,
+                                    "lte": yesterday_end
+                                }
                             }
                         }
-                    }
+                    ]
                 }
             }
         }
@@ -961,19 +982,22 @@ router.get('/data/week', function (req, res, next) {
         type: 'statuses',
         body: {
             "query": {
-                "filtered": {
-                    "query": {
-                        "match_all": {
+                "bool": {
+                    "must": [
+                        {
+                            "match_all": {}
                         }
-                    },
-                    "filter": {
-                        "range": {
-                            "created_at": {
-                                "gte": week_start,
-                                "lte": week_end
+                    ],
+                    "filter": [
+                        {
+                            "range": {
+                                "created_at": {
+                                    "gte": week_start,
+                                    "lte": week_end
+                                }
                             }
                         }
-                    }
+                    ]
                 }
             }
         }
@@ -1020,18 +1044,22 @@ router.get('/data/last', function (req, res, next) {
         type: 'statuses',
         body: {
             "query": {
-                "filtered": {
-                    "query": {
-                        "match_all": {}
-                    },
-                    "filter": {
-                        "range": {
-                            "created_at": {
-                                "gte": last_start,
-                                "lte": last_end
+                "bool": {
+                    "must": [
+                        {
+                            "match_all": {}
+                        }
+                    ],
+                    "filter": [
+                        {
+                            "range": {
+                                "created_at": {
+                                    "gte": last_start,
+                                    "lte": last_end
+                                }
                             }
                         }
-                    }
+                    ]
                 }
             }
         }
@@ -1078,18 +1106,22 @@ router.get('/data/month', function (req, res, next) {
         type: 'statuses',
         body: {
             "query": {
-                "filtered": {
-                    "query": {
-                        "match_all": {}
-                    },
-                    "filter": {
-                        "range": {
-                            "created_at": {
-                                "gte": start,
-                                "lte": end
+                "bool": {
+                    "must": [
+                        {
+                            "match_all": {}
+                        }
+                    ],
+                    "filter": [
+                        {
+                            "range": {
+                                "created_at": {
+                                    "gte": start,
+                                    "lte": end
+                                }
                             }
                         }
-                    }
+                    ]
                 }
             }
         }
@@ -1135,20 +1167,39 @@ router.get('/elasticsearch/data', function (req, res, next) {
         index: 'ivr',
         type: 'statuses',
         body: {
+            // "query": {
+            //     "filtered": {
+            //         "query": {
+            //             "match_all": {
+            //             }
+            //         },
+            //         "filter": {
+            //             "range": {
+            //                 "created_at": {
+            //                     "gte": day,
+            //                     "lte": right_now
+            //                 }
+            //             }
+            //         }
+            //     }
+            // }
             "query": {
-                "filtered": {
-                    "query": {
-                        "match_all": {
+                "bool": {
+                    "must": [
+                        {
+                            "match_all": {}
                         }
-                    },
-                    "filter": {
-                        "range": {
-                            "created_at": {
-                                "gte": day,
-                                "lte": right_now
+                    ],
+                        "filter": [
+                        {
+                            "range": {
+                                "created_at": {
+                                    "gte": day,
+                                    "lte": right_now
+                                }
                             }
                         }
-                    }
+                    ]
                 }
             }
         }
@@ -1170,19 +1221,22 @@ router.get('/elasticsearch/data', function (req, res, next) {
             type: 'statuses',
             body: {
                 "query": {
-                    "filtered": {
-                        "query": {
-                            "match_all": {
+                    "bool": {
+                        "must": [
+                            {
+                                "match_all": {}
                             }
-                        },
-                        "filter": {
-                            "range": {
-                                "created_at": {
-                                    "gte": yesterday_start,
-                                    "lte": yesterday_end
+                        ],
+                        "filter": [
+                            {
+                                "range": {
+                                    "created_at": {
+                                        "gte": yesterday_start,
+                                        "lte": yesterday_end
+                                    }
                                 }
                             }
-                        }
+                        ]
                     }
                 }
             }
@@ -1203,19 +1257,22 @@ router.get('/elasticsearch/data', function (req, res, next) {
                 type: 'statuses',
                 body: {
                     "query": {
-                        "filtered": {
-                            "query": {
-                                "match_all": {
+                        "bool": {
+                            "must": [
+                                {
+                                    "match_all": {}
                                 }
-                            },
-                            "filter": {
-                                "range": {
-                                    "created_at": {
-                                        "gte": week_start,
-                                        "lte": week_end
+                            ],
+                            "filter": [
+                                {
+                                    "range": {
+                                        "created_at": {
+                                            "gte": week_start,
+                                            "lte": week_end
+                                        }
                                     }
                                 }
-                            }
+                            ]
                         }
                     }
                 }
@@ -1256,19 +1313,22 @@ router.get('/elasticsearch/data', function (req, res, next) {
                     type: 'statuses',
                     body: {
                         "query": {
-                            "filtered": {
-                                "query": {
-                                    "match_all": {
+                            "bool": {
+                                "must": [
+                                    {
+                                        "match_all": {}
                                     }
-                                },
-                                "filter": {
-                                    "range": {
-                                        "created_at": {
-                                            "gte": last_start,
-                                            "lte": last_end
+                                ],
+                                "filter": [
+                                    {
+                                        "range": {
+                                            "created_at": {
+                                                "gte": last_start,
+                                                "lte": last_end
+                                            }
                                         }
                                     }
-                                }
+                                ]
                             }
                         }
                     }
@@ -1309,19 +1369,22 @@ router.get('/elasticsearch/data', function (req, res, next) {
                         type: 'statuses',
                         body: {
                             "query": {
-                                "filtered": {
-                                    "query": {
-                                        "match_all": {
+                                "bool": {
+                                    "must": [
+                                        {
+                                            "match_all": {}
                                         }
-                                    },
-                                    "filter": {
-                                        "range": {
-                                            "created_at": {
-                                                "gte": firstDay,
-                                                "lte": lastDay
+                                    ],
+                                    "filter": [
+                                        {
+                                            "range": {
+                                                "created_at": {
+                                                    "gte": firstDay,
+                                                    "lte": lastDay
+                                                }
                                             }
                                         }
-                                    }
+                                    ]
                                 }
                             }
                         }
@@ -1394,18 +1457,22 @@ router.post('/record/filter', function (req, res, next) {
         type: "statuses",
         body: {
             "query": {
-                "filtered": {
-                    "query": {
-                        "match_all": {}
-                    },
-                    "filter": {
-                        "range": {
-                            "created_at": {
-                                "gte": start,
-                                "lte": end
+                "bool": {
+                    "must": [
+                        {
+                            "match_all": {}
+                        }
+                    ],
+                    "filter": [
+                        {
+                            "range": {
+                                "created_at": {
+                                    "gte": start,
+                                    "lte": end
+                                }
                             }
                         }
-                    }
+                    ]
                 }
             }
         }

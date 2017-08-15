@@ -35,6 +35,25 @@ class BaseController
         return true;
     }
 
+    static public function create_remotely($address, $username, $password, $directory) {
+
+        try{
+            $connection = ssh2_connect($address, 22);
+            ssh2_auth_password($connection, $username, $password);
+            $sftp = ssh2_sftp($connection);
+            ssh2_sftp_mkdir($sftp, $directory);
+
+            $change = static::run_remote_command($connection, "chown -R asterisk. ". $directory);
+            if (!$change) {
+                return false;
+            }
+
+            return true;
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
+
     static public function send_via_remote($address, $username, $password, $localName, $remoteName) {
         try {
             $connection = ssh2_connect($address, 22);

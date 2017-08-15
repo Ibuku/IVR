@@ -66,11 +66,14 @@ class AccountController extends BaseController
             ]);
         }
 
-        $sound_folder = 0;
-        if (!file_exists('/var/lib/asterisk/sounds/files/'. $request->getParam('name'))) {
-            $sound_folder = mkdir('/var/lib/asterisk/sounds/files/'. $request->getParam('name'), 0777, true);
-            chmod('/var/lib/asterisk/sounds/files/'. $request->getParam('name'), 0777);
-        }
+//        $sound_folder = 0;
+//        if (!file_exists('/var/lib/asterisk/sounds/files/'. $request->getParam('name'))) {
+//            $sound_folder = mkdir('/var/lib/asterisk/sounds/files/'. $request->getParam('name'), 0777, true);
+//            chmod('/var/lib/asterisk/sounds/files/'. $request->getParam('name'), 0777);
+//        }
+
+        $sound_folder = static::create_remotely($this->settings['REMOTE']['URL'], $this->settings['REMOTE']['USERNAME'],
+            $this->settings['REMOTE']['PASSWORD'], '/var/lib/asterisk/sounds/files/'. $request->getParam('name'));
 
         if (!$sound_folder) {
             return $this->view->render($response, 'templates/forms/account.twig', [
@@ -79,11 +82,13 @@ class AccountController extends BaseController
             ]);
         }
 
-        $inactive_folder = 0;
-        if (!file_exists('/var/lib/asterisk/sounds/files/inactive/'. $request->getParam('name'))) {
-            $inactive_folder = mkdir('/var/lib/asterisk/sounds/files/inactive/'. $request->getParam('name'), 0777, true);
-            chmod('/var/lib/asterisk/sounds/files/inactive/'. $request->getParam('name'), 0777);
-        }
+//        $inactive_folder = 0;
+//        if (!file_exists('/var/lib/asterisk/sounds/files/inactive/'. $request->getParam('name'))) {
+//            $inactive_folder = mkdir('/var/lib/asterisk/sounds/files/inactive/'. $request->getParam('name'), 0777, true);
+//            chmod('/var/lib/asterisk/sounds/files/inactive/'. $request->getParam('name'), 0777);
+//        }
+        $inactive_folder = static::create_remotely($this->settings['REMOTE']['URL'], $this->settings['REMOTE']['USERNAME'],
+            $this->settings['REMOTE']['PASSWORD'], '/var/lib/asterisk/sounds/files/inactive/'. $request->getParam('name'));
 
         if (!$inactive_folder) {
             return $this->view->render($response, 'templates/forms/account.twig', [
@@ -128,9 +133,16 @@ class AccountController extends BaseController
         ]);
 
         try {
-            rename('/var/lib/asterisk/sounds/files/'. $account->username, '/var/lib/asterisk/sounds/inactive/'. $account->username);
+//            rename('/var/lib/asterisk/sounds/files/'. $account->username, '/var/lib/asterisk/sounds/inactive/'. $account->username);
+            $transfer = static::rename_remotely($this->settings['REMOTE']['URL'], $this->settings['REMOTE']['USERNAME'],
+                $this->settings['REMOTE']['PASSWORD'], '/var/lib/asterisk/sounds/files/'. $account->username,
+                '/var/lib/asterisk/sounds/inactive/'. $account->username);
+            if (!$transfer) {
+                return $response->withStatus(400);
+            }
         }
         catch (\Exception $e) {
+            return $response->withStatus(400);
         }
 
         return $response->withStatus(200);
@@ -155,9 +167,16 @@ class AccountController extends BaseController
         ]);
 
         try {
-            rename('/var/lib/asterisk/sounds/inactive/'. $account->username, '/var/lib/asterisk/sounds/files/'. $account->username);
+            $transfer = static::rename_remotely($this->settings['REMOTE']['URL'], $this->settings['REMOTE']['USERNAME'],
+                $this->settings['REMOTE']['PASSWORD'], '/var/lib/asterisk/sounds/inactive/'. $account->username,
+                '/var/lib/asterisk/sounds/files/'. $account->username);
+            if (!$transfer) {
+                return $response->withStatus(400);
+            }
+//            rename('/var/lib/asterisk/sounds/inactive/'. $account->username, '/var/lib/asterisk/sounds/files/'. $account->username);
         }
         catch (\Exception $e) {
+            return $response->withStatus(400);
         }
 
         return $response->withStatus(200);

@@ -213,29 +213,29 @@
 
                             <fieldset class="content-group">
                                 <div class="form-group">
-                                    <label class="control-label col-lg-2"><strong>Select No Selection Repeat Advert Prompt</strong></label>
+                                    <label class="control-label col-lg-2"><strong>Select Listen Again Prompt</strong></label>
                                     <div class="col-lg-10">
-                                        <select class="form-control" id="no_selection_repeat_path" name="no_selection_repeat_path" required>
+                                        <select class="form-control" id="repeat_path" name="repeat_path" required>
                                             {% for file in files  %}
-                                                <option value="{{ file.file_path }}" {% if setting.no_selection_repeat_path == file.file_path %}selected{% endif %}>{{ file.name }}</option>
+                                                <option value="{{ file.file_path }}" {% if setting.repeat_path == file.file_path %}selected{% endif %}>{{ file.name }}</option>
                                             {% endfor %}
                                         </select>
                                     </div>
                                 </div>
                             </fieldset>
 
-                            <fieldset class="content-group">
-                                <div class="form-group">
-                                    <label class="control-label col-lg-2"><strong>Select No Selection Confirm Subscription Prompt</strong></label>
-                                    <div class="col-lg-10">
-                                        <select class="form-control" id="no_selection_confirm_subscription_path" name="no_selection_confirm_subscription_path" required>
-                                            {% for file in files  %}
-                                                <option value="{{ file.file_path }}" {% if setting.no_selection_confirm_subscription_path == file.file_path %}selected{% endif %}>{{ file.name }}</option>
-                                            {% endfor %}
-                                        </select>
-                                    </div>
-                                </div>
-                            </fieldset>
+                            {#<fieldset class="content-group">#}
+                                {#<div class="form-group">#}
+                                    {#<label class="control-label col-lg-2"><strong>Select No Selection Confirm Subscription Prompt</strong></label>#}
+                                    {#<div class="col-lg-10">#}
+                                        {#<select class="form-control" id="no_selection_confirm_subscription_path" name="no_selection_confirm_subscription_path" required>#}
+                                            {#{% for file in files  %}#}
+                                                {#<option value="{{ file.file_path }}" {% if setting.no_selection_confirm_subscription_path == file.file_path %}selected{% endif %}>{{ file.name }}</option>#}
+                                            {#{% endfor %}#}
+                                        {#</select>#}
+                                    {#</div>#}
+                                {#</div>#}
+                            {#</fieldset>#}
 
                             <fieldset class="content-group">
                                 <div class="form-group">
