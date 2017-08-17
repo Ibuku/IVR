@@ -24,7 +24,7 @@ $agi->set_variable('UNIQUEID', $unique_id);
 
 $redis = new Client([
     'scheme' => 'tcp',
-    'host'   => 'redis',
+    'host'   => 'localhost',
     'port'   => 6379,
 ]);
 
@@ -38,7 +38,7 @@ if (!file_exists($file_path)) {
         $agi->stream_file("defaults/backup");
     }
     try {
-        $url = 'http://app:4043/elastic/elasticsearch/cdr/missing';
+        $url = 'http://localhost:4043/elastic/elasticsearch/cdr/missing';
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_POST, 1);
 
@@ -63,7 +63,7 @@ if (!file_exists($file_path)) {
 
 try {
 
-    $url = 'http://app:4043/elastic/elasticsearch/cdr/create';
+    $url = 'http://localhost:4043/elastic/elasticsearch/cdr/create';
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_POST, 1);
 

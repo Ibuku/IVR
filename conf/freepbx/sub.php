@@ -13,7 +13,7 @@ use Predis\Client;
 
 $redis = new Client([
     'scheme' => 'tcp',
-    'host'   => 'redis',
+    'host'   => 'localhost',
     'port'   => 6379,
 ]);
 $result = $agi->get_variable('CAMPAIGN_PATH');
@@ -30,7 +30,7 @@ $unique_id = $unique_data['data'];
 if ($values) {
     try {
 
-        $subscribe_url = 'http://app:4043/elastic/cdr/subscribe';
+        $subscribe_url = 'http://localhost:4043/elastic/cdr/subscribe';
         curl_setopt($ch, CURLOPT_URL, $subscribe_url);
         curl_setopt($ch, CURLOPT_POST, 1);
 

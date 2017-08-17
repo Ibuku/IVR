@@ -1,0 +1,35 @@
+FROM eboraas/apache
+MAINTAINER stikks <styccs@gmail.com>
+ENV APACHEUSER www-data
+
+COPY conf/apache/000-default.conf /etc/apache2/sites-available/000-default.conf
+ADD . /opt/IVR
+
+# install dependencies
+RUN echo "deb http://ppa.launchpad.net/ondrej/php/ubuntu trusty main" >> /etc/apt/sources.list && \
+    apt-key adv --keyserver keyserver.ubuntu.com --recv-key E5267A6C && \
+    apt-get update && apt-get install -yqq apt-utils curl nano git ssh
+
+RUN apt-get install -yqq php5.6 \
+    php5.6-gd php5.6-ldap zip unzip php5.6-zip \
+    php5.6-sqlite php5.6-pgsql php5.6-mysql php5.6-common php5.6-ssh2 php5.6-curl \
+    php5.6-mcrypt php5.6-xmlrpc php5.6-dom php5.6-xmlwriter php5.6-bcmath \
+    php5.6-mbstring ffmpeg && \
+    curl -sS https://getcomposer.org/installer | php5.6 -- --install-dir=/usr/local/bin --filename=composer && \
+#    apt-get install -yqq php-pgsql php-bcmath php-mbstring php-common php-curl php-xml php-xmlrpc && \
+    cd /opt/IVR && \
+    mkdir -p files && \
+    mkdir -p files/etisalat && \
+    mkdir -p files/inactive && \
+    mkdir -p files/inactive/etisalat && \
+    chmod 757 -R files && \
+    chown -R $APACHEUSER. files && \
+    apt-get -yqq remove php7* && \
+    composer install && \
+    a2enmod rewrite && \
+    service apache2 restart
+
+
+#RUN /usr/bin/php bootstrap/setup.php
+
+EXPOSE 80

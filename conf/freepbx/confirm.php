@@ -11,7 +11,7 @@ use Predis\Client;
 
 $redis = new Client([
     'scheme' => 'tcp',
-    'host'   => 'redis',
+    'host'   => 'localhost',
     'port'   => 6379,
 ]);
 
@@ -27,7 +27,7 @@ $unique_data = $agi->get_variable('UNIQUEID');
 $unique_id = $unique_data['data'];
 
 try {
-    $url = 'http://app:4043/elastic/cdr/confirmation';
+    $url = 'http://localhost:4043/elastic/cdr/confirmation';
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_POST, 1);
 
@@ -70,7 +70,7 @@ try {
             $record = '[DATETIME:' . time() . '][STATUS: Successful][Advert: ][MSISDN:' . $agi->get_variable('CDR(src)')['data'] . '][MSG: Advert Subscription Successful by ' . $agi->get_variable('CDR(src)')['data'] . '][FILE_PATH:' . $file_path . '][CAMPAIGN:' . $data['name'] . '][COUNT:' . $sys_count . '][ServiceProvider:' . $name . ']';
             $agi->noop();
 
-            $success_url = 'http://app:4043/elastic/cdr/success';
+            $success_url = 'http://localhost:4043/elastic/cdr/success';
             curl_setopt($ch, CURLOPT_URL, $success_url);
             curl_setopt($ch, CURLOPT_POST, 1);
 
@@ -90,9 +90,9 @@ try {
                 // insufficient balance
                 if (strtolower($output->msg) == "insufficient_balance") {
                     $record = '[DATETIME:' . time() . '][STATUS: Insufficient Balance][Advert: ][MSISDN:' . $agi->get_variable('CDR(src)')['data'] . '][MSG: Advert Subscription Status by ' . $agi->get_variable('CDR(src)')['data'] . '][FILE_PATH:' . $file_path . '][CAMPAIGN:' . $data['name'] . '][COUNT:' . $sys_count . '][ServiceProvider:' . $name . ']';
-                    append_line_to_limited_text_file($record);
+                    localhostend_line_to_limited_text_file($record);
 
-                    $__url = 'http://app:4043/elastic/cdr/insufficient';
+                    $__url = 'http://localhost:4043/elastic/cdr/insufficient';
                     curl_setopt($ch, CURLOPT_URL, $__url);
                     curl_setopt($ch, CURLOPT_POST, 1);
 
@@ -110,9 +110,9 @@ try {
                 } else if (strtolower($output->msg) == "already_subscribed") {
                     // already subscribed
                     $record = '[DATETIME:' . time() . '][STATUS: Already Subscribed][Advert: ][MSISDN:' . $agi->get_variable('CDR(src)')['data'] . '][MSG: Advert Already Subscribed by ' . $agi->get_variable('CDR(src)')['data'] . '][FILE_PATH:' . $file_path . '][CAMPAIGN:' . $data['name'] . '][COUNT:' . $sys_count . '][ServiceProvider:' . $name . ']';
-                    append_line_to_limited_text_file($record);
+                    localhostend_line_to_limited_text_file($record);
 
-                    $___url = 'http://app:4043/elastic/cdr/already_sub';
+                    $___url = 'http://localhost:4043/elastic/cdr/already_sub';
 
                     curl_setopt($ch, CURLOPT_URL, $___url);
                     curl_setopt($ch, CURLOPT_POST, 1);
@@ -132,7 +132,7 @@ try {
                 // subscription failed
                 $record = '[DATETIME:' . time() . '][STATUS: Subscription Failed][Advert: ][MSISDN:' . $agi->get_variable('CDR(src)')['data'] . '][MSG: Advert Subscription Failure by ' . $agi->get_variable('CDR(src)')['data'] . '][FILE_PATH:' . $file_path . '][CAMPAIGN:' . $data['name'] . '][COUNT:' . $sys_count . '][ServiceProvider:' . $name . ']';
 
-                $____url = 'http://app:4043/elastic/cdr/failed';
+                $____url = 'http://localhost:4043/elastic/cdr/failed';
                 curl_setopt($ch, CURLOPT_URL, $____url);
                 curl_setopt($ch, CURLOPT_POST, 1);
 
@@ -152,7 +152,7 @@ try {
         // subscription failed
         $record = '[DATETIME:' . time() . '][STATUS: Subscription Failed][Advert: ][MSISDN:' . $agi->get_variable('CDR(src)')['data'] . '][MSG: Advert Subscription Failure by ' . $agi->get_variable('CDR(src)')['data'] . '][FILE_PATH:' . $file_path . '][CAMPAIGN:' . $data['name'] . '][COUNT:' . $sys_count . '][ServiceProvider:' . $name . ']';
 
-        $____url = 'http://app:4043/elastic/cdr/failed';
+        $____url = 'http://localhost:4043/elastic/cdr/failed';
 
         curl_setopt($ch, CURLOPT_URL, $____url);
         curl_setopt($ch, CURLOPT_POST, 1);

@@ -23,7 +23,7 @@ return [
         'db' => [
             'driver' => 'pgsql',
 //            'host' => 'localhost',
-            'host' => 'db',
+            'host' => 'localhost',
             'username' => 'postgres',
             'password' => 'postgres',
             'database' => 'ivr',
@@ -34,7 +34,7 @@ return [
         "DEFAULT_ACCOUNT" => "etisalat",
         'redis'=> [
             'scheme' => 'tcp',
-            'host'   => 'redis',
+            'host'   => 'localhost',
             'port'   => 6379,
         ],
         'es_url' => 'http://app:4043/elastic/',

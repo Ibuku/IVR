@@ -75,6 +75,7 @@ class BaseController
 
             return true;
         } catch (\Exception $e) {
+            error_log($e);
             return false;
         }
     }

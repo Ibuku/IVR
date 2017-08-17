@@ -9,7 +9,7 @@ require 'app.php';
 
 $container = $app->getContainer();
 $db = $container->get('settings')['db'];
-$pdo = new PDO('pgsql:dbname='.$db['database'].';host=db;user='.$db['username'].';password='.$db['password']);
+$pdo = new PDO('pgsql:dbname='.$db['database'].';host=localhost;user='.$db['username'].';password='.$db['password']);
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 
@@ -117,8 +117,7 @@ $settings = "CREATE TABLE IF NOT EXISTS settings(
   default_settings BOOL DEFAULT TRUE,
   incorrect_path TEXT NOT NULL,
   no_selection_path TEXT NOT NULL,
-  no_selection_repeat_path TEXT NOT NULL,
-  no_selection_confirm_subscription_path TEXT NOT NULL,
+  repeat_path TEXT NOT NULL,
   success_path TEXT NOT NULL,
   goodbye_path TEXT NOT NULL,
   subscription_path TEXT NOT NULL,

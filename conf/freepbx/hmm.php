@@ -12,7 +12,7 @@ use Predis\Client;
 // replace with HMM model
 $redis = new Client([
     'scheme' => 'tcp',
-    'host'   => 'redis',
+    'host'   => 'localhost',
     'port'   => 6379,
 ]);
 
