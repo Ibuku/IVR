@@ -122,25 +122,37 @@ app.controller('FileCtrl', function ($scope, WebAudio, $location) {
         }
     };
 
-    $scope.changeActive = function (value) {
-        $scope.username = value;
-        $scope.etisalat = false;
-        $scope.tm30 = false;
-        $scope.all = false;
+    // $scope.changeActive = function (value) {
+    //     $scope.username = value;
+    //     $scope.etisalat = false;
+    //     $scope.tm30 = false;
+    //     $scope.all = false;
+    //
+    //     if (value == 'etisalat') {
+    //         $scope.etisalat = true;
+    //     }
+    //     else if (value == 'tm30') {
+    //         $scope.tm30 = true;
+    //     }
+    //     else {
+    //         $scope.all = true
+    //     }
+    //
+    //     if (value != 'all') {
+    //         $scope.data = $scope.data_bank.filter(function (value) {
+    //             return value.username == $scope.username;
+    //         });
+    //     }
+    //     else {
+    //         $scope.data = $scope.data_bank;
+    //     }
+    // };
 
-        if (value == 'etisalat') {
-            $scope.etisalat = true;
-        }
-        else if (value == 'tm30') {
-            $scope.tm30 = true;
-        }
-        else {
-            $scope.all = true
-        }
+    $scope.changeActive = function () {
 
-        if (value != 'all') {
-            $scope.data = $scope.data_bank.filter(function (value) {
-                return value.username == $scope.username;
+        if ($scope.username != 'all') {
+            $scope.data = $scope.data_bank.filter(function (val) {
+                return val.username == $scope.username;
             });
         }
         else {
@@ -182,7 +194,6 @@ app.controller('FileCtrl', function ($scope, WebAudio, $location) {
     };
 
 });
-
 
 app.controller('AccountCtrl', function ($scope) {
 
@@ -671,273 +682,294 @@ app.controller("ReportsController", function ($scope, $timeout, $q, $parse) {
             week_map.push(z);
         }
 
-        // call records
-        Object.keys(data.result).map(function (key, index) {
-            // var temp_object = {"name": data.result[key][0].campaign_name, "data": [0, 0, 0, 0, 0, 0, 0]};
-            // var __temp = data.result[key];
-            // var temp = __temp;
-            // if ($scope.camp_data.username != 'all') {
-            //     temp = [];
-            //     temp = __temp.filter(function (z) {
-            //         return z.username == $scope.camp_data.username
-            //     })
-            // }
-            // temp.map(function (i, j) {
-            //     var pos = new Date(temp[j].created_at).getDay();
-            //     var b = date_range.indexOf(pos);
-            //     temp_object['data'][b] = temp[j].cdr_count;
-            // });
-            var temp_object = {"name": data.result[key][0].campaign_name, "data": [0, 0, 0, 0, 0, 0, 0]};
-            var _object = data.result[key];
-            _object.map(function (i, j) {
-                if ($scope.camp_data.username == 'all' || _object[j].username == $scope.camp_data.username) {
-                    var pos = new Date(_object[j].created_at).getDay();
-                    var b = date_range.indexOf(pos);
-                    temp_object['data'][b] = _object[j].impression_count;
-                }
-            });
-            $scope.camp_data.data.push(temp_object);
-        });
-
-        var cam_data = {
-            "categories": week_map,
-            "text": "Call Records over a week",
-            "subtitle": "All campaigns",
-            "yaxis_text": "Call Record",
-            "series": $scope.camp_data.data
-        };
-        $('#camp').highcharts(buildData(cam_data));
-        if ($scope.camp_data.data.length > 0) { $scope.base.has_records = true}
-
-        // impression records
-        Object.keys(data.result).map(function (key, index) {
-            var impression_object = {"name": data.result[key][0].campaign_name, "data": [0, 0, 0, 0, 0, 0, 0]};
-            var _object = data.result[key];
-            _object.map(function (i, j) {
-                if ($scope.camp_data.username == 'all' || _object[j].username == $scope.camp_data.username) {
-                    var pos = new Date(_object[j].created_at).getDay();
-                    var b = date_range.indexOf(pos);
-                    impression_object['data'][b] = _object[j].impression_count;
-                }
+        if (Object.keys(data.result).length > 0) {
+            // call records
+            Object.keys(data.result).map(function (key, index) {
+                // var temp_object = {"name": data.result[key][0].campaign_name, "data": [0, 0, 0, 0, 0, 0, 0]};
+                // var __temp = data.result[key];
+                // var temp = __temp;
+                // if ($scope.camp_data.username != 'all') {
+                //     temp = [];
+                //     temp = __temp.filter(function (z) {
+                //         return z.username == $scope.camp_data.username
+                //     })
+                // }
+                // temp.map(function (i, j) {
+                //     var pos = new Date(temp[j].created_at).getDay();
+                //     var b = date_range.indexOf(pos);
+                //     temp_object['data'][b] = temp[j].cdr_count;
+                // });
+                var temp_object = {"name": data.result[key][0].campaign_name, "data": [0, 0, 0, 0, 0, 0, 0]};
+                var _object = data.result[key];
+                _object.map(function (i, j) {
+                    if ($scope.camp_data.username == 'all' || _object[j].username == $scope.camp_data.username) {
+                        var pos = new Date(_object[j].created_at).getDay();
+                        var b = date_range.indexOf(pos);
+                        temp_object['data'][b] = _object[j].cdr_count;
+                    }
+                });
+                $scope.camp_data.data.push(temp_object);
             });
 
-            $scope.camp_data.impression_data.push(impression_object);
-        });
-
-        var impression_data = {
-            "categories": week_map,
-            "text": "Adverts Impressions over a week",
-            "subtitle": "All campaigns",
-            "yaxis_text": "Call Impressions",
-            "series": $scope.camp_data.impression_data
-        };
-        $('#impression').highcharts(buildData(impression_data));
-        if ($scope.camp_data.impression_data.length > 0) { $scope.base.has_impressions = true}
-
-        // subscribed
-        Object.keys(data.result).map(function (key, index) {
-            var subscription_object = {"name": data.result[key][0].campaign_name, "data": [0, 0, 0, 0, 0, 0, 0]};
-            var _object = data.result[key];
-            _object.map(function (i, j) {
-                if ($scope.camp_data.username == 'all' || _object[j].username == $scope.camp_data.username) {
-                    var pos = new Date(_object[j].created_at).getDay();
-                    var b = date_range.indexOf(pos);
-                    subscription_object['data'][b] = _object[j].subscription_count;
-                }
+            var cam_data = {
+                "categories": week_map,
+                "text": "Call Records over a week",
+                "subtitle": "All campaigns",
+                "yaxis_text": "Call Record",
+                "series": $scope.camp_data.data
+            };
+            $('#camp').highcharts(buildData(cam_data));
+            $scope.$apply(function () {
+                $scope.base.has_records = true
             });
 
-            $scope.camp_data.subscribed_data.push(subscription_object);
-        });
+            // impression records
+            Object.keys(data.result).map(function (key, index) {
+                var impression_object = {"name": data.result[key][0].campaign_name, "data": [0, 0, 0, 0, 0, 0, 0]};
+                var _object = data.result[key];
+                _object.map(function (i, j) {
+                    if ($scope.camp_data.username == 'all' || _object[j].username == $scope.camp_data.username) {
+                        var pos = new Date(_object[j].created_at).getDay();
+                        var b = date_range.indexOf(pos);
+                        impression_object['data'][b] = _object[j].impression_count;
+                    }
+                });
 
-        var subscribed_data = {
-            "categories": week_map,
-            "text": "Subscription Attempts over a week",
-            "subtitle": "All campaigns",
-            "yaxis_text": "Subscription Attempts",
-            "series": $scope.camp_data.subscribed_data
-        };
-        $('#subscribed').highcharts(buildData(subscribed_data));
-        if ($scope.camp_data.subscribed_data.length > 0) { $scope.base.has_subscribed = true}
-
-        // confirmation
-        Object.keys(data.result).map(function (key, index) {
-            var confirmation_object = {"name": data.result[key][0].campaign_name, "data": [0, 0, 0, 0, 0, 0, 0]};
-            var _object = data.result[key];
-            _object.map(function (i, j) {
-                if ($scope.camp_data.username == 'all' || _object[j].username == $scope.camp_data.username) {
-                    var pos = new Date(_object[j].created_at).getDay();
-                    var b = date_range.indexOf(pos);
-                    confirmation_object['data'][b] = _object[j].confirmation_count;
-                }
+                $scope.camp_data.impression_data.push(impression_object);
             });
-            // var temp_object = {"name": data.result[key][0].campaign_name, "data": [0, 0, 0, 0, 0, 0, 0]};
-            // var __temp = data.result[key];
-            // var temp = __temp;
-            // if ($scope.camp_data.username != 'all') {
-            //     temp = [];
-            //     temp = __temp.filter(function (z) {
-            //         return z.username == $scope.camp_data.username
-            //     })
-            // }
-            // temp.map(function (i, j) {
-            //     var pos = new Date(temp[j].created_at).getDay();
-            //     var b = date_range.indexOf(pos);
-            //     temp_object['data'][b] = temp[j].cdr_count;
-            // });
 
-            $scope.camp_data.confirmation_data.push(confirmation_object);
-        });
-
-        var confirmation_data = {
-            "categories": week_map,
-            "text": "Subscription Confirmation over a week",
-            "subtitle": "All campaigns",
-            "yaxis_text": "Subscription Confirmation",
-            "series": $scope.camp_data.confirmation_data
-        };
-        $('#confirmed').highcharts(buildData(confirmation_data));
-        if ($scope.camp_data.confirmation_data.length > 0) { $scope.base.has_confirmed = true}
-
-        // already subscribed
-        Object.keys(data.result).map(function (key, index) {
-            var subbed_object = {"name": data.result[key][0].campaign_name, "data": [0, 0, 0, 0, 0, 0, 0]};
-            var _object = data.result[key];
-            _object.map(function (i, j) {
-                if ($scope.camp_data.username == 'all' || _object[j].username == $scope.camp_data.username) {
-                    var pos = new Date(_object[j].created_at).getDay();
-                    var b = date_range.indexOf(pos);
-                    subbed_object['data'][b] = _object[j].already_subbed_count;
-                }
+            var impression_data = {
+                "categories": week_map,
+                "text": "Adverts Impressions over a week",
+                "subtitle": "All campaigns",
+                "yaxis_text": "Call Impressions",
+                "series": $scope.camp_data.impression_data
+            };
+            $('#impression').highcharts(buildData(impression_data));
+            $scope.$apply(function () {
+                $scope.base.has_impressions = true
             });
-            // var temp_object = {"name": data.result[key][0].campaign_name, "data": [0, 0, 0, 0, 0, 0, 0]};
-            // var __temp = data.result[key];
-            // var temp = __temp;
-            // if ($scope.camp_data.username != 'all') {
-            //     temp = [];
-            //     temp = __temp.filter(function (z) {
-            //         return z.username == $scope.camp_data.username
-            //     })
-            // }
-            // temp.map(function (i, j) {
-            //     var pos = new Date(temp[j].created_at).getDay();
-            //     var b = date_range.indexOf(pos);
-            //     temp_object['data'][b] = temp[j].cdr_count;
-            // });
 
-            $scope.camp_data.subbed_data.push(subbed_object);
-        });
+            // subscribed
+            Object.keys(data.result).map(function (key, index) {
+                var subscription_object = {"name": data.result[key][0].campaign_name, "data": [0, 0, 0, 0, 0, 0, 0]};
+                var _object = data.result[key];
+                _object.map(function (i, j) {
+                    if ($scope.camp_data.username == 'all' || _object[j].username == $scope.camp_data.username) {
+                        var pos = new Date(_object[j].created_at).getDay();
+                        var b = date_range.indexOf(pos);
+                        subscription_object['data'][b] = _object[j].subscription_count;
+                    }
+                });
 
-        var subbed_data = {
-            "categories": week_map,
-            "text": "Already Subscribed over a week",
-            "subtitle": "All campaigns",
-            "yaxis_text": "Already Subscribed",
-            "series": $scope.camp_data.subbed_data
-        };
-        $('#subbed').highcharts(buildData(subbed_data));
-        if ($scope.camp_data.subbed_data.length > 0) { $scope.base.has_already_subscribed = true}
-
-        // insufficient balance
-        Object.keys(data.result).map(function (key, index) {
-            var insufficient_object = {"name": data.result[key][0].campaign_name, "data": [0, 0, 0, 0, 0, 0, 0]};
-            var _object = data.result[key];
-            _object.map(function (i, j) {
-                if ($scope.camp_data.username == 'all' || _object[j].username == $scope.camp_data.username) {
-                    var pos = new Date(_object[j].created_at).getDay();
-                    var b = date_range.indexOf(pos);
-                    insufficient_object['data'][b] = _object[j].insufficient_count;
-                }
+                $scope.camp_data.subscribed_data.push(subscription_object);
             });
-            // var temp_object = {"name": data.result[key][0].campaign_name, "data": [0, 0, 0, 0, 0, 0, 0]};
-            // var __temp = data.result[key];
-            // var temp = __temp;
-            // if ($scope.camp_data.username != 'all') {
-            //     temp = [];
-            //     temp = __temp.filter(function (z) {
-            //         return z.username == $scope.camp_data.username
-            //     })
-            // }
-            // temp.map(function (i, j) {
-            //     var pos = new Date(temp[j].created_at).getDay();
-            //     var b = date_range.indexOf(pos);
-            //     temp_object['data'][b] = temp[j].cdr_count;
-            // });
 
-            $scope.camp_data.insufficient_data.push(insufficient_object);
-        });
-
-        var insufficient_data = {
-            "categories": week_map,
-            "text": "Insufficent Balance over a week",
-            "subtitle": "All campaigns",
-            "yaxis_text": "Insufficent Balance",
-            "series": $scope.camp_data.insufficient_data
-        };
-        $('#insufficient').highcharts(buildData(insufficient_data));
-        if ($scope.camp_data.insufficient_data.length > 0) { $scope.base.has_insufficient = true}
-
-        // success
-        Object.keys(data.result).map(function (key, index) {
-            var success_object = {"name": data.result[key][0].campaign_name, "data": [0, 0, 0, 0, 0, 0, 0]};
-            var _object = data.result[key];
-            _object.map(function (i, j) {
-                if ($scope.camp_data.username == 'all' || _object[j].username == $scope.camp_data.username) {
-                    var pos = new Date(_object[j].created_at).getDay();
-                    var b = date_range.indexOf(pos);
-                    success_object['data'][b] = _object[j].success_count;
-                }
+            var subscribed_data = {
+                "categories": week_map,
+                "text": "Subscription Attempts over a week",
+                "subtitle": "All campaigns",
+                "yaxis_text": "Subscription Attempts",
+                "series": $scope.camp_data.subscribed_data
+            };
+            $('#subscribed').highcharts(buildData(subscribed_data));
+            $scope.$apply(function () {
+                $scope.base.has_subscribed = true
             });
-            $scope.camp_data.success_data.push(success_object);
-        });
 
-        var success_data = {
-            "categories": week_map,
-            "text": "Successful Subscriptions over a week",
-            "subtitle": "All campaigns",
-            "yaxis_text": "Successful Subscriptions",
-            "series": $scope.camp_data.success_data
-        };
-        $('#success').highcharts(buildData(success_data));
-        if ($scope.camp_data.success_data.length > 0) { $scope.base.has_success = true}
+            // confirmation
+            Object.keys(data.result).map(function (key, index) {
+                var confirmation_object = {"name": data.result[key][0].campaign_name, "data": [0, 0, 0, 0, 0, 0, 0]};
+                var _object = data.result[key];
+                _object.map(function (i, j) {
+                    if ($scope.camp_data.username == 'all' || _object[j].username == $scope.camp_data.username) {
+                        var pos = new Date(_object[j].created_at).getDay();
+                        var b = date_range.indexOf(pos);
+                        confirmation_object['data'][b] = _object[j].confirmation_count;
+                    }
+                });
+                // var temp_object = {"name": data.result[key][0].campaign_name, "data": [0, 0, 0, 0, 0, 0, 0]};
+                // var __temp = data.result[key];
+                // var temp = __temp;
+                // if ($scope.camp_data.username != 'all') {
+                //     temp = [];
+                //     temp = __temp.filter(function (z) {
+                //         return z.username == $scope.camp_data.username
+                //     })
+                // }
+                // temp.map(function (i, j) {
+                //     var pos = new Date(temp[j].created_at).getDay();
+                //     var b = date_range.indexOf(pos);
+                //     temp_object['data'][b] = temp[j].cdr_count;
+                // });
 
-        // failure
-        Object.keys(data.result).map(function (key, index) {
-            var failed_object = {"name": data.result[key][0].campaign_name, "data": [0, 0, 0, 0, 0, 0, 0]};
-            var _object = data.result[key];
-            _object.map(function (i, j) {
-                if ($scope.camp_data.username == 'all' || _object[j].username == $scope.camp_data.username) {
-                    var pos = new Date(_object[j].created_at).getDay();
-                    var b = date_range.indexOf(pos);
-                    failed_object['data'][b] = _object[j].failed_count;
-                }
+                $scope.camp_data.confirmation_data.push(confirmation_object);
             });
-            // var failed_object = {"name": data.result[key][0].campaign_name, "data": [0, 0, 0, 0, 0, 0, 0]};
-            // var failed = data.result[key];
-            // var temp_failed = failed;
-            // if ($scope.camp_data.username != 'all') {
-            //     temp_failed = [];
-            //     temp_failed = failed.filter(function (z) {
-            //         return z.username == $scope.camp_data.username
-            //     })
-            // }
-            // temp_failed.map(function (i, j) {
-            //     var pos = new Date(temp[j].created_at).getDay();
-            //     var b = date_range.indexOf(pos);
-            //     failed_object['data'][b] = temp_failed[j].cdr_count;
-            // });
 
-            $scope.camp_data.failed_data.push(failed_object);
-        });
+            var confirmation_data = {
+                "categories": week_map,
+                "text": "Subscription Confirmation over a week",
+                "subtitle": "All campaigns",
+                "yaxis_text": "Subscription Confirmation",
+                "series": $scope.camp_data.confirmation_data
+            };
+            $('#confirmed').highcharts(buildData(confirmation_data));
+            $scope.$apply(function () {
+                $scope.base.has_confirmed = true
+            });
 
-        var failed_data = {
-            "categories": week_map,
-            "text": "Failed Subscriptions over a week",
-            "subtitle": "All campaigns",
-            "yaxis_text": "Failed Subscriptions",
-            "series": $scope.camp_data.failed_data
-        };
-        $('#failed').highcharts(buildData(failed_data));
-        if ($scope.camp_data.failed_data.length > 0) { $scope.base.has_failed = true}
+            // already subscribed
+            Object.keys(data.result).map(function (key, index) {
+                var subbed_object = {"name": data.result[key][0].campaign_name, "data": [0, 0, 0, 0, 0, 0, 0]};
+                var _object = data.result[key];
+                _object.map(function (i, j) {
+                    if ($scope.camp_data.username == 'all' || _object[j].username == $scope.camp_data.username) {
+                        var pos = new Date(_object[j].created_at).getDay();
+                        var b = date_range.indexOf(pos);
+                        subbed_object['data'][b] = _object[j].already_subbed_count;
+                    }
+                });
+                // var temp_object = {"name": data.result[key][0].campaign_name, "data": [0, 0, 0, 0, 0, 0, 0]};
+                // var __temp = data.result[key];
+                // var temp = __temp;
+                // if ($scope.camp_data.username != 'all') {
+                //     temp = [];
+                //     temp = __temp.filter(function (z) {
+                //         return z.username == $scope.camp_data.username
+                //     })
+                // }
+                // temp.map(function (i, j) {
+                //     var pos = new Date(temp[j].created_at).getDay();
+                //     var b = date_range.indexOf(pos);
+                //     temp_object['data'][b] = temp[j].cdr_count;
+                // });
+
+                $scope.camp_data.subbed_data.push(subbed_object);
+            });
+
+            var subbed_data = {
+                "categories": week_map,
+                "text": "Already Subscribed over a week",
+                "subtitle": "All campaigns",
+                "yaxis_text": "Already Subscribed",
+                "series": $scope.camp_data.subbed_data
+            };
+            $('#subbed').highcharts(buildData(subbed_data));
+            $scope.$apply(function () {
+                $scope.base.has_already_subscribed = true
+            });
+
+            // insufficient balance
+            Object.keys(data.result).map(function (key, index) {
+                var insufficient_object = {"name": data.result[key][0].campaign_name, "data": [0, 0, 0, 0, 0, 0, 0]};
+                var _object = data.result[key];
+                _object.map(function (i, j) {
+                    if ($scope.camp_data.username == 'all' || _object[j].username == $scope.camp_data.username) {
+                        var pos = new Date(_object[j].created_at).getDay();
+                        var b = date_range.indexOf(pos);
+                        insufficient_object['data'][b] = _object[j].insufficient_count;
+                    }
+                });
+                // var temp_object = {"name": data.result[key][0].campaign_name, "data": [0, 0, 0, 0, 0, 0, 0]};
+                // var __temp = data.result[key];
+                // var temp = __temp;
+                // if ($scope.camp_data.username != 'all') {
+                //     temp = [];
+                //     temp = __temp.filter(function (z) {
+                //         return z.username == $scope.camp_data.username
+                //     })
+                // }
+                // temp.map(function (i, j) {
+                //     var pos = new Date(temp[j].created_at).getDay();
+                //     var b = date_range.indexOf(pos);
+                //     temp_object['data'][b] = temp[j].cdr_count;
+                // });
+
+                $scope.camp_data.insufficient_data.push(insufficient_object);
+            });
+
+            var insufficient_data = {
+                "categories": week_map,
+                "text": "Insufficent Balance over a week",
+                "subtitle": "All campaigns",
+                "yaxis_text": "Insufficent Balance",
+                "series": $scope.camp_data.insufficient_data
+            };
+            $('#insufficient').highcharts(buildData(insufficient_data));
+            $scope.$apply(function () {
+                $scope.base.has_insufficient = true
+            });
+
+            // success
+            Object.keys(data.result).map(function (key, index) {
+                var success_object = {"name": data.result[key][0].campaign_name, "data": [0, 0, 0, 0, 0, 0, 0]};
+                var _object = data.result[key];
+                _object.map(function (i, j) {
+                    if ($scope.camp_data.username == 'all' || _object[j].username == $scope.camp_data.username) {
+                        var pos = new Date(_object[j].created_at).getDay();
+                        var b = date_range.indexOf(pos);
+                        success_object['data'][b] = _object[j].success_count;
+                    }
+                });
+                $scope.camp_data.success_data.push(success_object);
+            });
+
+            var success_data = {
+                "categories": week_map,
+                "text": "Successful Subscriptions over a week",
+                "subtitle": "All campaigns",
+                "yaxis_text": "Successful Subscriptions",
+                "series": $scope.camp_data.success_data
+            };
+            $('#success').highcharts(buildData(success_data));
+            $scope.$apply(function () {
+                $scope.base.has_success = true
+            });
+
+            // failure
+            Object.keys(data.result).map(function (key, index) {
+                var failed_object = {"name": data.result[key][0].campaign_name, "data": [0, 0, 0, 0, 0, 0, 0]};
+                var _object = data.result[key];
+                _object.map(function (i, j) {
+                    if ($scope.camp_data.username == 'all' || _object[j].username == $scope.camp_data.username) {
+                        var pos = new Date(_object[j].created_at).getDay();
+                        var b = date_range.indexOf(pos);
+                        failed_object['data'][b] = _object[j].failed_count;
+                    }
+                });
+                // var failed_object = {"name": data.result[key][0].campaign_name, "data": [0, 0, 0, 0, 0, 0, 0]};
+                // var failed = data.result[key];
+                // var temp_failed = failed;
+                // if ($scope.camp_data.username != 'all') {
+                //     temp_failed = [];
+                //     temp_failed = failed.filter(function (z) {
+                //         return z.username == $scope.camp_data.username
+                //     })
+                // }
+                // temp_failed.map(function (i, j) {
+                //     var pos = new Date(temp[j].created_at).getDay();
+                //     var b = date_range.indexOf(pos);
+                //     failed_object['data'][b] = temp_failed[j].cdr_count;
+                // });
+
+                $scope.camp_data.failed_data.push(failed_object);
+            });
+
+            var failed_data = {
+                "categories": week_map,
+                "text": "Failed Subscriptions over a week",
+                "subtitle": "All campaigns",
+                "yaxis_text": "Failed Subscriptions",
+                "series": $scope.camp_data.failed_data
+            };
+            $('#failed').highcharts(buildData(failed_data));
+            $scope.$apply(function () {
+                $scope.base.has_failed = true
+            });
+        }
+        else {
+
+        }
     };
 
     var load_data = function () {
@@ -956,16 +988,31 @@ app.controller("ReportsController", function ($scope, $timeout, $q, $parse) {
     };
 
     $scope.changeActive = function () {
-        processData($scope.base.data);
+        $timeout(function () {
+            var username = $scope.camp_data.username;
+            $scope.camp_data = {"username": username, "data": [], "impression_data": [], "subscribed_data": [], "confirmation_data": [], "subbed_data": [],  "insufficient_data": [], "success_data": [], "failed_data": []};
+            $.get("/campaign/period", function (_data, status) {
+                $scope.base.data = JSON.parse(_data);
+                processData($scope.base.data);
+            });
+        }, 5)
     };
 
-    $scope.filterReport = function (variable, start, end) {
+    $scope.filterReport = function (start, end) {
+        var start_date = new Date(start);
+        var end_date = new Date(end);
         $.post('/record/filter', {
-            start: start,
-            end: end
+            start: start_date,
+            end: end_date
         }, function (data, status) {
-            console.log(data);
-            console.log(status);
+            if (status == 'success') {
+                $scope.camp_data = {"username": 'all', "data": [], "impression_data": [], "subscribed_data": [], "confirmation_data": [], "subbed_data": [],  "insufficient_data": [], "success_data": [], "failed_data": []};
+                $scope.base = {data: [], has_records: false, has_impressions: false, has_already_subscribed: false, has_success: false, has_failed: false, has_subscribed: false, has_confirmed: false, has_insufficient: false};
+                $timeout(function () {
+                    $scope.base.data = JSON.parse(data);
+                    processData($scope.base.data);
+                }, 5);
+            }
         })
     };
 });

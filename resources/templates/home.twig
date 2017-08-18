@@ -294,21 +294,17 @@
                                 <tr ng-repeat="val in filtered_data.today">
                                 <td>
                                     <div class="media-left media-middle">
-                                        <div class=""><span class="text-default" ng-bind="val.username"
-                                                         style="font-size:13px"></span>
-                                        </div>
+                                        <div><span class="text-default" ng-bind="val.username" style="font-size:13px"></span></div>
                                     </div>
                                     <div class="media-left">
-                                        <div class=""><a href="campaigns/[[val.campaign_id]]/report" class="text-default text-semibold"
-                                                         ng-bind="val.campaign_name"></a>
-                                        </div>
+                                        <div><a href="campaigns/[[val.campaign_id]]/report" class="text-default text-semibold" ng-bind="val.campaign_name"></a></div>
                                     </div>
                                 </td>
                                 <td><span class="text-muted" ng-bind="val.cdr_count"></span></td>
                                 <td><span class="text-warning-600" ng-bind="val.impression_count"></span></td>
                                 <td><span class="text-muted" ng-cloak>[[ val.cdr_count - val.impression_count | number ]]</span></td>
                                 <td><h6 class="text-semibold" ng-bind="val.success_count"></h6></td>
-                                <td><h6 class="text-semibold" ng-cloak>[[ (val.success_count / val.impression_count) * 100  | number]]%</h6></td>
+                                <td><h6 class="text-semibold" ng-cloak>[[ ((val.success_count / val.impression_count) * 100  | number) || 0]]%</h6></td>
                                 <td><span class="label bg-blue"></span></td>
                                 <td class="text-center">
                                     <ul class="icons-list">
@@ -317,8 +313,8 @@
                                                         class="icon-menu7"></i></a>
                                             <ul class="dropdown-menu dropdown-menu-right">
                                                 <li>
-                                                    <a href="campaigns/[[val.campaign_id]]/report"><i
-                                                                class="icon-file-stats"></i> View Report</a>
+                                                    <a href="campaigns/[[val.campaign_id]]/report">
+                                                        <i class="icon-file-stats"></i> View Report</a>
                                                 </li>
                                                 <li>
                                                     <a href="reports/[[val.campaign_id]]/download"><i
@@ -344,8 +340,7 @@
                                 <tr ng-repeat="val in filtered_data.yesterday">
                                     <td>
                                         <div class="media-left media-middle">
-                                            <div class=""><span class="text-default" ng-bind="val.username"
-                                                             style="font-size:13px"></span>
+                                            <div class=""><span class="text-default" ng-bind="val.username" style="font-size:13px"></span>
                                             </div>
                                         </div>
                                         <div class="media-left">
@@ -359,7 +354,7 @@
                                     </td>
                                     <td><span class="text-muted">[[ val.cdr_count - val.impression_count | number ]]</span></td>
                                     <td><h6 class="text-semibold" ng-bind="val.success_count"></h6></td>
-                                    <td><h6 class="text-semibold" ng-cloak>[[ (val.success_count / val.impression_count) * 100 | number]]%</h6></td>
+                                    <td><h6 class="text-semibold" ng-cloak>[[ ((val.success_count / val.impression_count) * 100 | number) || 0]]%</h6></td>
                                     <td><span class="label bg-blue"></span></td>
                                     <td class="text-center">
                                     <ul class="icons-list">
@@ -406,7 +401,7 @@
                                     </td>
                                     <td><span class="text-muted">[[ val.cdr_count - val.impression_count | number ]]</span></td>
                                     <td><h6 class="text-semibold" ng-bind="val.success_count"></h6></td>
-                                    <td><h6 class="text-semibold" ng-cloak>[[ (val.success_count / val.impression_count) * 100 | number]]%</h6></td>
+                                    <td><h6 class="text-semibold" ng-cloak>[[ ((val.success_count / val.impression_count) * 100 | number) || 0]]%</h6></td>
                                     <td><span class="label bg-blue"></span></td>
                                     <td class="text-center">
                                         <ul class="icons-list">
@@ -510,7 +505,7 @@
                                     </td>
                                     <td><span class="text-muted">[[ val.cdr_count - val.impression_count | number ]]</span></td>
                                     <td><h6 class="text-semibold" ng-bind="val.success_count"></h6></td>
-                                    <td><h6 class="text-semibold" ng-cloak>[[ (val.success_count / val.impression_count) * 100 | number]]%</h6></td>
+                                    <td><h6 class="text-semibold" ng-cloak>[[ ((val.success_count / val.impression_count) * 100 | number) || 0]]%</h6></td>
                                     <td><span class="label bg-blue"></span></td>
                                     <td class="text-center">
                                         <ul class="icons-list">

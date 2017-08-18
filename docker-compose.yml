@@ -10,7 +10,7 @@ services:
     ports:
       - 5432:5432
     volumes:
-      - ./postgres-data:/var/lib/postgresql/data
+      - postgres-data:/var/lib/postgresql/data
   server:
     image: stikks/ivr-app
     hostname: localhost
@@ -21,10 +21,10 @@ services:
       - elasticsearch
       - rabbit
     volumes:
-      - ./agi-defaults:/var/lib/asterisk/sounds/defaults
-      - ./agi-sounds:/var/lib/asterisk/sounds/files
+      - agi-defaults:/var/lib/asterisk/sounds/defaults
+      - agi-sounds:/var/lib/asterisk/sounds/files
       - freepbx-data:/var/lib/mysql
-      - ./files-data:/opt/IVR/files
+      - files-data:/opt/IVR/files
 #  server:
 #    image: stikks/ivr
 #    hostname: server
@@ -48,7 +48,7 @@ services:
     ports:
       - 6379:6379
     volumes:
-      - ./redis-data:/data
+      - redis-data:/data
   elasticsearch:
     image: elasticsearch
     container_name: elasticsearch1
@@ -65,7 +65,7 @@ services:
       - 9200:9200
       - 9300:9300
     volumes:
-      - ./elasticsearch-data:/usr/share/elasticsearch/data
+      - elasticsearch-data:/usr/share/elasticsearch/data
 #  freepbx:
 #    image: stikks/freepbx
 #    hostname: localhost
@@ -91,7 +91,15 @@ services:
 volumes:
   freepbx-data:
     external: true
-#networks:
-#  default:
-#    external:
-#      name: host
+  postgres-data:
+      external: true
+  elasticsearch-data:
+      external: true
+  redis-data:
+      external: true
+  files-data:
+      external: true
+  agi-sounds:
+      external: true
+  agi-defaults:
+      external: true

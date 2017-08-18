@@ -114,10 +114,17 @@ router.post('/elasticsearch/:type/create', function (req, res, next) {
         var updated = new Date(req.body.updated_at);
         var sd = new Date(req.body.start_date);
         var ed = new Date(req.body.end_date);
-        created.toDateString
-        updated.toDateString
-        sd.toDateString
-        ed.toDateString
+
+        // var start_date = sd.setHours(sd.getHours() + 1);
+        // var created_date = created.setHours(created.getHours() + 1);
+        // var end_date = sd.setHours(ed.getHours() + 1);
+        // var updated_date = sd.setHours(updated.getHours() + 1);
+
+        created_date.toDateString;
+        updated_date.toDateString;
+        start_date.toDateString;
+        end_date.toDateString;
+
 
         client.index({
             index: 'ivr',
@@ -133,10 +140,10 @@ router.post('/elasticsearch/:type/create', function (req, res, next) {
                 "play_path": req.body.play_path,
                 "value": req.body.value,
                 "body": req.body.body,
-                "created_at": created,
-                "updated_at": updated,
-                "start_date": sd,
-                "end_date": ed
+                "created_at": created_date,
+                "updated_at": updated_date,
+                "start_date": start_date,
+                "end_date": end_date
             }
         }, function (err, resp, status) {
             res.setHeader('Content-Type', 'application/json');
@@ -158,90 +165,99 @@ router.post('/elasticsearch/:type/create', function (req, res, next) {
                     }
                 }
             }
-        }).then(function (resp) {
-            if (resp.hits.hits.length > 0) {
-                var campaign = resp.hits.hits[0]._source;
-                var created = new Date();
-                // created.setHours(created.getHours() - 8);
-                created.toDateString;
+        }).then(function (resp, err, status) {
+            console.log('err: ' + err);
+            console.log('resp: '+ resp);
+            console.log('status: ' + status);
+            if (resp) {
+                if (resp.hits.hits.length > 0) {
+                    var campaign = resp.hits.hits[0]._source;
+                    var created = new Date();
+                    // created.setHours(created.getHours() - 8);
+                    created.toDateString;
 
-                client.index({
-                    index: 'ivr',
-                    id: req.body.uniqueid,
-                    type: req.params.type,
-                    body: {
-                        "src": req.body.src,
-                        "clid": req.body.clid,
-                        "duration": req.body.duration,
-                        "userfield": campaign.id,
-                        "uniqueid": req.body.uniqueid,
-                        "billsec": req.body.billsec,
-                        "created_at": created,
-                        "file_path": req.body.file_path,
-                        "campaign_name": campaign.name,
-                        "impression": false,
-                        "is_subscribed": false,
-                        "is_confirmed": false,
-                        "is_successful": false,
-                        "is_insufficient": false,
-                        "has_failed": false,
-                        "already_subbed": false
-                    }
-                }, function (err, resp, status) {
-                    var _date = new Date();
-                    // _date.setHours(_date.getHours() - 8);
-                    var status_id = _date.toDateString().replace(/ /g, '') + '-' + campaign.id;
-                    client.exists({
+                    client.index({
                         index: 'ivr',
-                        type: 'statuses',
-                        id: status_id
-                    }, function (error, exists) {
-                        if (exists == true) {
-                            client.get({
-                                index: 'ivr',
-                                type: 'statuses',
-                                id: status_id
-                            }, function (error, response) {
-                                client.update({
+                        id: req.body.uniqueid,
+                        type: req.params.type,
+                        body: {
+                            "src": req.body.src,
+                            "clid": req.body.clid,
+                            "duration": req.body.duration,
+                            "userfield": campaign.id,
+                            "uniqueid": req.body.uniqueid,
+                            "billsec": req.body.billsec,
+                            "created_at": created,
+                            "file_path": req.body.file_path,
+                            "campaign_name": campaign.name,
+                            "impression": false,
+                            "is_subscribed": false,
+                            "is_confirmed": false,
+                            "is_successful": false,
+                            "is_insufficient": false,
+                            "has_failed": false,
+                            "already_subbed": false
+                        }
+                    }, function (err, resp, status) {
+                        var _date = new Date();
+                        // _date.setHours(_date.getHours() - 8);
+                        var status_id = _date.toDateString().replace(/ /g, '') + '-' + campaign.id;
+                        client.exists({
+                            index: 'ivr',
+                            type: 'statuses',
+                            id: status_id
+                        }, function (error, exists) {
+                            if (exists == true) {
+                                client.get({
+                                    index: 'ivr',
+                                    type: 'statuses',
+                                    id: status_id
+                                }, function (error, response) {
+                                    client.update({
+                                        index: 'ivr',
+                                        type: 'statuses',
+                                        id: status_id,
+                                        body: {
+                                            doc: {
+                                                cdr_count: response._source.cdr_count + 1
+                                            }
+                                        }
+                                    }, function (error, response) {
+                                    })
+                                });
+                            } else {
+                                client.index({
                                     index: 'ivr',
                                     type: 'statuses',
                                     id: status_id,
                                     body: {
-                                        doc: {
-                                            cdr_count: response._source.cdr_count + 1
-                                        }
+                                        "campaign_id": campaign.id,
+                                        "campaign_name": campaign.name,
+                                        "created_at": _date,
+                                        "username": campaign.username,
+                                        "cdr_count": 1,
+                                        "impression_count": 0,
+                                        "subscription_count": 0,
+                                        "confirmation_count": 0,
+                                        "insufficient_count": 0,
+                                        "failed_count": 0,
+                                        "success_count": 0,
+                                        "already_subbed_count": 0
                                     }
-                                }, function (error, response) {
                                 })
-                            });
-                        } else {
-                            client.index({
-                                index: 'ivr',
-                                type: 'statuses',
-                                id: status_id,
-                                body: {
-                                    "campaign_id": campaign.id,
-                                    "campaign_name": campaign.name,
-                                    "created_at": _date,
-                                    "username": campaign.username,
-                                    "cdr_count": 1,
-                                    "impression_count": 0,
-                                    "subscription_count": 0,
-                                    "confirmation_count": 0,
-                                    "insufficient_count": 0,
-                                    "failed_count": 0,
-                                    "success_count": 0,
-                                    "already_subbed_count": 0
-                                }
-                            })
-                        }
+                            }
+                        });
+                        res.sendStatus(200);
                     });
+                }
+                else {
                     res.sendStatus(200);
-                });
+                }
             }
-        }, function (err) {
-            console.trace(err.message);
-            res.send(400);
+            else {
+                console.log(err.message);
+                res.sendStatus(400);
+            }
         });
     }
     else if (req.params.type == 'action') {
@@ -303,28 +319,36 @@ router.post('/cdr/impression', function (req, res, next) {
                 impression: true
             }
         }
-    }, function (errr, respose) {
-        var _date = new Date();
-        var status_id = _date.toDateString().replace(/ /g, '') + '-' + req.body.userfield;
-        client.get({
-            index: 'ivr',
-            type: 'statuses',
-            id: status_id
-        }, function (error, response) {
-            client.update({
+    }, function (resp, err) {
+        console.log("resp: "+ resp);
+        console.log("err: " + err);
+        if (resp) {
+            var _date = new Date();
+            var status_id = _date.toDateString().replace(/ /g, '') + '-' + req.body.userfield;
+            client.get({
                 index: 'ivr',
                 type: 'statuses',
-                id: status_id,
-                body: {
-                    doc: {
-                        impression_count: response._source.impression_count + 1
-                    }
-                }
+                id: status_id
             }, function (error, response) {
-                console.trace(error);
-                res.sendStatus(200);
-            })
-        });
+                client.update({
+                    index: 'ivr',
+                    type: 'statuses',
+                    id: status_id,
+                    body: {
+                        doc: {
+                            impression_count: response._source.impression_count + 1
+                        }
+                    }
+                }, function (error, response) {
+                    console.trace(error);
+                    res.sendStatus(200);
+                })
+            });
+        }
+        else {
+            console.log(err.message);
+            res.sendStatus(400);
+        }
     });
 });
 
@@ -339,27 +363,35 @@ router.post('/cdr/subscribe', function (req, res, next) {
                 is_subscribed: true
             }
         }
-    }, function (errr, respose) {
-        var _date = new Date();
-        var status_id = _date.toDateString().replace(/ /g, '') + '-' + req.body.userfield;
-        client.get({
-            index: 'ivr',
-            type: 'statuses',
-            id: status_id
-        }, function (err, resp) {
-            client.update({
+    }, function (resp, err) {
+        console.log("resp: "+ resp);
+        console.log("err: " + err);
+        if(resp) {
+            var _date = new Date();
+            var status_id = _date.toDateString().replace(/ /g, '') + '-' + req.body.userfield;
+            client.get({
                 index: 'ivr',
                 type: 'statuses',
-                id: status_id,
-                body: {
-                    doc: {
-                        subscription_count: resp._source.subscription_count + 1
+                id: status_id
+            }, function (err, resp) {
+                client.update({
+                    index: 'ivr',
+                    type: 'statuses',
+                    id: status_id,
+                    body: {
+                        doc: {
+                            subscription_count: resp._source.subscription_count + 1
+                        }
                     }
-                }
-            }, function (error, response) {
-                res.sendStatus(200);
-            })
-        });
+                }, function (error, response) {
+                    res.sendStatus(200);
+                })
+            });
+        }
+        else {
+            console.log(err.message);
+            res.sendStatus(400);
+        }
     });
 });
 
@@ -373,27 +405,35 @@ router.post('/cdr/confirmation', function (req, res, next) {
                 is_confirmed: true
             }
         }
-    }, function (errr, respose) {
-        var _date = new Date();
-        var status_id = _date.toDateString().replace(/ /g, '') + '-' + req.body.userfield;
-        client.get({
-            index: 'ivr',
-            type: 'statuses',
-            id: status_id
-        }, function (err, resp) {
-            client.update({
+    }, function (resp, err) {
+        console.log("resp: "+ resp);
+        console.log("err: " + err);
+        if (resp) {
+            var _date = new Date();
+            var status_id = _date.toDateString().replace(/ /g, '') + '-' + req.body.userfield;
+            client.get({
                 index: 'ivr',
                 type: 'statuses',
-                id: status_id,
-                body: {
-                    doc: {
-                        confirmation_count: resp._source.confirmation_count + 1
+                id: status_id
+            }, function (err, resp) {
+                client.update({
+                    index: 'ivr',
+                    type: 'statuses',
+                    id: status_id,
+                    body: {
+                        doc: {
+                            confirmation_count: resp._source.confirmation_count + 1
+                        }
                     }
-                }
-            }, function (error, response) {
-                res.sendStatus(200);
-            })
-        });
+                }, function (error, response) {
+                    res.sendStatus(200);
+                })
+            });
+        }
+        else {
+            console.log(err.message);
+            res.sendStatus(400);
+        }
     });
 });
 
@@ -408,27 +448,35 @@ router.post('/cdr/success', function (req, res, next) {
                 is_successful: true
             }
         }
-    }, function (errr, respose) {
-        var _date = new Date();
-        var status_id = _date.toDateString().replace(/ /g, '') + '-' + req.body.userfield;
-        client.get({
-            index: 'ivr',
-            type: 'statuses',
-            id: status_id
-        }, function (err, resp) {
-            client.update({
+    }, function (resp, err) {
+        console.log("resp: "+ resp);
+        console.log("err: " + err);
+        if (resp) {
+            var _date = new Date();
+            var status_id = _date.toDateString().replace(/ /g, '') + '-' + req.body.userfield;
+            client.get({
                 index: 'ivr',
                 type: 'statuses',
-                id: status_id,
-                body: {
-                    doc: {
-                        success_count: resp._source.success_count + 1
+                id: status_id
+            }, function (err, resp) {
+                client.update({
+                    index: 'ivr',
+                    type: 'statuses',
+                    id: status_id,
+                    body: {
+                        doc: {
+                            success_count: resp._source.success_count + 1
+                        }
                     }
-                }
-            }, function (error, response) {
-                res.sendStatus(200);
-            })
-        });
+                }, function (error, response) {
+                    res.sendStatus(200);
+                })
+            });
+        }
+        else {
+            console.log(err.message);
+            res.sendStatus(400);
+        }
     });
 });
 
@@ -443,27 +491,35 @@ router.post('/cdr/insufficient', function (req, res, next) {
                 is_insufficient: true
             }
         }
-    }, function (errr, respose) {
-        var _date = new Date();
-        var status_id = _date.toDateString().replace(/ /g, '') + '-' + req.body.userfield;
-        client.get({
-            index: 'ivr',
-            type: 'statuses',
-            id: status_id
-        }, function (err, resp) {
-            client.update({
+    }, function (resp, err) {
+        console.log("resp: "+ resp);
+        console.log("err: " + err);
+        if (resp) {
+            var _date = new Date();
+            var status_id = _date.toDateString().replace(/ /g, '') + '-' + req.body.userfield;
+            client.get({
                 index: 'ivr',
                 type: 'statuses',
-                id: status_id,
-                body: {
-                    doc: {
-                        insufficient_count: resp._source.insufficient_count + 1
+                id: status_id
+            }, function (err, resp) {
+                client.update({
+                    index: 'ivr',
+                    type: 'statuses',
+                    id: status_id,
+                    body: {
+                        doc: {
+                            insufficient_count: resp._source.insufficient_count + 1
+                        }
                     }
-                }
-            }, function (error, response) {
-                res.sendStatus(200);
-            })
-        });
+                }, function (error, response) {
+                    res.sendStatus(200);
+                })
+            });
+        }
+        else {
+            console.log(err.message);
+            res.sendStatus(400);
+        }
     });
 });
 
@@ -478,27 +534,35 @@ router.post('/cdr/already_sub', function (req, res, next) {
                 already_subbed: true
             }
         }
-    }, function (errr, respose) {
-        var _date = new Date();
-        var status_id = _date.toDateString().replace(/ /g, '') + '-' + req.body.userfield;
-        client.get({
-            index: 'ivr',
-            type: 'statuses',
-            id: status_id
-        }, function (err, resp) {
-            client.update({
+    }, function (resp, err) {
+        console.log("resp: "+ resp);
+        console.log("err: " + err);
+        if (resp) {
+            var _date = new Date();
+            var status_id = _date.toDateString().replace(/ /g, '') + '-' + req.body.userfield;
+            client.get({
                 index: 'ivr',
                 type: 'statuses',
-                id: status_id,
-                body: {
-                    doc: {
-                        already_subbed_count: resp._source.already_subbed_count + 1
+                id: status_id
+            }, function (err, resp) {
+                client.update({
+                    index: 'ivr',
+                    type: 'statuses',
+                    id: status_id,
+                    body: {
+                        doc: {
+                            already_subbed_count: resp._source.already_subbed_count + 1
+                        }
                     }
-                }
-            }, function (error, response) {
-                res.sendStatus(200);
-            })
-        });
+                }, function (error, response) {
+                    res.sendStatus(200);
+                })
+            });
+        }
+        else{
+            console.log(err.message);
+            res.sendStatus(400);
+        }
     });
 });
 
@@ -513,27 +577,35 @@ router.post('/cdr/failed', function (req, res, next) {
                 has_failed: true
             }
         }
-    }, function (errr, respose) {
-        var _date = new Date();
-        var status_id = _date.toDateString().replace(/ /g, '') + '-' + req.body.userfield;
-        client.get({
-            index: 'ivr',
-            type: 'statuses',
-            id: status_id
-        }, function (err, resp) {
-            client.update({
+    }, function (resp, err) {
+        console.log("resp: "+ resp);
+        console.log("err: " + err);
+        if (resp) {
+            var _date = new Date();
+            var status_id = _date.toDateString().replace(/ /g, '') + '-' + req.body.userfield;
+            client.get({
                 index: 'ivr',
                 type: 'statuses',
-                id: status_id,
-                body: {
-                    doc: {
-                        failed_count: resp._source.failed_count + 1
+                id: status_id
+            }, function (err, resp) {
+                client.update({
+                    index: 'ivr',
+                    type: 'statuses',
+                    id: status_id,
+                    body: {
+                        doc: {
+                            failed_count: resp._source.failed_count + 1
+                        }
                     }
-                }
-            }, function (error, response) {
-                res.sendStatus(200);
-            })
-        });
+                }, function (error, response) {
+                    res.sendStatus(200);
+                })
+            });
+        }
+        else {
+            console.log(err.message);
+            res.sendStatus(400);
+        }
     });
 });
 
@@ -633,11 +705,11 @@ router.get('/campaign/:id/data', function (req, res, next) {
 //Campign impressions
 router.get('/impressions/:campaign_id', function (req, res, next) {
     var sevenDays = new Date(new Date().getTime() - (6 * 24 * 60 * 60 * 1000));
-    sevenDays.setHours(0, 0, 0, 0);
+    sevenDays.setUTCHours(0, 0, 0, 0);
     var today = new Date();
-    today.setHours(0, 0, 0, 0);
-    sevenDays.toDateString
-    today.toDateString
+    today.setUTCHours(0, 0, 0, 0);
+    sevenDays.toDateString;
+    today.toDateString;
 
     client.search({
         index: "ivr",
@@ -684,6 +756,7 @@ router.post('/campaign/:id/download', function (req, res, next) {
     var campaign_id = req.params.id;
     var start = new Date(req.body.start_date);
     var end = new Date(req.body.end_date);
+    end.setUTCHours(23, 59, 59, 999);
     start.toDateString;
     end.toDateString;
     //Add javacript check date
@@ -732,6 +805,7 @@ router.post('/campaign/download', function (req, res, next) {
 
     var start = new Date(req.body.start_date);
     var end = new Date(req.body.end_date);
+    end.setUTCHours(23,59,59,999);
     start.toDateString;
     end.toDateString;
     //Add javacript check date
@@ -1097,8 +1171,8 @@ router.get('/data/month', function (req, res, next) {
     var date = new Date(), y = date.getFullYear(), m = date.getMonth();
     var start = new Date(y, m, 1);
     var end = new Date(y, m + 1, 0);
-    start.setHours(1,0,0,0);
-    end.setHours(24,59,59,999);
+    start.setUTCHours(0,0,0,0);
+    end.setUTCHours(23,59,59,999);
     var total_data = {"data": []};
 
     client.search({
@@ -1447,11 +1521,13 @@ router.post('/elasticsearch/campaign/path', function (req, res, next) {
 });
 
 router.post('/record/filter', function (req, res, next) {
+    var start = new Date(req.body.start);
+    start.setHours(1, 0, 0, 0);
 
-    var start = new Date(new Date(req.body.start));
-    start.setUTCHours(0, 0, 0, 0);
     var end = new Date(req.body.end);
-    end.setUTCHours(23, 59, 59, 999);
+    end.setHours(23, 59, 59, 999);
+    end.setHours(end.getHours() + 1);
+
     client.search({
         index: "ivr",
         type: "statuses",

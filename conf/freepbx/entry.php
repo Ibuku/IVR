@@ -32,11 +32,7 @@ $data = $redis->hgetall($campaign_path);
 
 // record missing audio call
 if (!file_exists($file_path)) {
-    if ($name == 'etisalat') {
-        $agi->stream_file("defaults/backup");
-    } else {
-        $agi->stream_file("defaults/backup");
-    }
+    $agi->stream_file("defaults/backup");
     try {
         $url = 'http://localhost:4043/elastic/elasticsearch/cdr/missing';
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -52,6 +48,7 @@ if (!file_exists($file_path)) {
         );
 
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($body));
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 3);
         curl_exec($ch);
         curl_close($ch);
     } catch (Exception $e) {
@@ -79,6 +76,7 @@ try {
     );
 
     curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($body));
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 3);
     curl_exec($ch);
 } catch (Exception $e) {
     echo $e;

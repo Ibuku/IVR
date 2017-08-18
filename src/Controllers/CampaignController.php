@@ -27,6 +27,7 @@ class CampaignController extends BaseController
         return $this->view->render($response, 'templates/campaigns.twig', [
             'user' => $user,
             'campaigns' => $campaigns,
+            'users' => User::all(),
             'username' => $user->username
         ]);
     }

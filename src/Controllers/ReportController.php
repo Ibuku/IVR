@@ -56,7 +56,7 @@ class ReportController extends BaseController
 
         $campaign = Campaign::where('id', $campaign_id)->first();
 
-        return $this->view->render($response, 'templates/download_campaign.twig', [
+        return $this->view->render($response, 'templates/download.twig', [
             'user' => $user,
             'campaign_id' => $campaign->id
         ]);
@@ -136,13 +136,17 @@ class ReportController extends BaseController
         $worksheet->fromArray($data, ' ', 'A2');
 
         header('Content-Type: application/vnd.ms-excel');
-        header('Content-Disposition: attachment;filename='. $campaign->name. $start_date. '_'. $end_date.'".xls"');
+        header('Content-Disposition: attachment;filename='. $campaign->name. $start_date. '_'. $end_date.'.xlsx');
         header('Cache-Control: max-age=0');
 
         $writer = \PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
-        $writer->save('php://output');
+//        $writer->save('php://output');
+        $filePath = sys_get_temp_dir() . "/" . rand(0, getrandmax()) . rand(0, getrandmax()) . ".tmp";
+        $writer->save($filePath);
+        readfile($filePath);
+        unlink($filePath);
 
-        return $response->withRedirect($this->router->pathFor('campaigns'));
+//        return $response->withRedirect($this->router->pathFor('campaigns'));
     }
 
     public function Download($request, $response){
@@ -195,7 +199,7 @@ class ReportController extends BaseController
                     'impression_count'=>$v->impression_count,
                     'subscription_count'=>$v->subscription_count,
                     'confirmation_count'=>$v->confirmation_count,
-                    'already_subscribed_count'=>$v->already_subscribed_count,
+                    'already_subscribed_count'=>$v->already_subbed_count,
                     'insufficient_count'=>$v->insufficient_count,
                     'success_count'=>$v->success_count,
                     'failed_count'=>$v->failed_count
@@ -236,13 +240,17 @@ class ReportController extends BaseController
         $worksheet->fromArray($data, ' ', 'A2');
 
         header('Content-Type: application/vnd.ms-excel');
-        header('Content-Disposition: attachment;filename='. $campaign->name. $start_date. '_'. $end_date.'".xls"');
+        header('Content-Disposition: attachment;filename='. $campaign->name. $start_date. '_'. $end_date.'.xlsx');
         header('Cache-Control: max-age=0');
 
         $writer = \PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
-        $writer->save('php://output');
+//        $writer->save('php://output');
 //        $writer->save(''. $campaign->name. $start_date. '_'. $end_date. '.xlsx');
+        $filePath = sys_get_temp_dir() . "/" . rand(0, getrandmax()) . rand(0, getrandmax()) . ".tmp";
+        $writer->save($filePath);
+        readfile($filePath);
+        unlink($filePath);
 
-        return $response->withRedirect($this->router->pathFor('campaigns'));
+//        return $response->withRedirect($this->router->pathFor('campaigns'));
     }
 }

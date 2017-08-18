@@ -40,7 +40,7 @@ if ($values) {
             "userfield" => $data['id']
         );
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($body));
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 3);
         curl_exec($ch);
     } catch (Exception $e) {
         echo $e;

@@ -37,8 +37,14 @@ $file = array_rand($files);
 $_file = explode("/", $files[$file]);
 $_files = explode(".", end($_file));
 $file_path = "/var/lib/asterisk/sounds/files/" . $name . '/' . current($_files) . '.wav';
+$play_path = "files/" . $name . '/' . current($_files);
+
+if (!file_exists($file_path)) {
+    $file_path = "/var/lib/asterisk/sounds/defaults/backup.wav";
+    $play_path = "defaults/backup";
+}
 
 $agi->set_variable('FILE_PATH', $file_path);
-$agi->set_variable('PLAY_PATH', "files/" . $name . '/' . current($_files));
+$agi->set_variable('PLAY_PATH', $play_path);
 
 return 200;

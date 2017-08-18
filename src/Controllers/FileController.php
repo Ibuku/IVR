@@ -9,6 +9,7 @@
 namespace App\Controllers;
 use App\Models\Files;
 use App\Models\Campaign;
+use App\Models\User;
 
 class FileController extends BaseController
 {
@@ -21,6 +22,7 @@ class FileController extends BaseController
         return $this->view->render($response, 'templates/files.twig', [
             'user' => $user,
             'files' => $files,
+            'users' => User::all(),
             'username' => $user->username
         ]);
     }
