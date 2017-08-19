@@ -11,7 +11,7 @@ use Monolog\Logger;
 use Monolog\Handler\RotatingFileHandler;
 
 $log = new Logger('recordsLog');
-$handler = new RotatingFileHandler('/home/stikks-workstation/Documents/projects/IVR/logs/activity.log', 0, Logger::INFO);
+$handler = new RotatingFileHandler('/opt/IVR/logs/activity.log', 0, Logger::INFO);
 $log->pushHandler($handler);
 
 $agi = new AGI();

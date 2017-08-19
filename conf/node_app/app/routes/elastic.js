@@ -115,15 +115,15 @@ router.post('/elasticsearch/:type/create', function (req, res, next) {
         var sd = new Date(req.body.start_date);
         var ed = new Date(req.body.end_date);
 
-        // var start_date = sd.setHours(sd.getHours() + 1);
-        // var created_date = created.setHours(created.getHours() + 1);
-        // var end_date = sd.setHours(ed.getHours() + 1);
-        // var updated_date = sd.setHours(updated.getHours() + 1);
+        // var start_date = sd.setUTCHours(sd.getHours() + 1);
+        // var created_date = created.setUTCHours(created.getHours() + 1);
+        // var end_date = sd.setUTCHours(ed.getHours() + 1);
+        // var updated_date = sd.setUTCHours(updated.getHours() + 1);
 
-        created_date.toDateString;
-        updated_date.toDateString;
-        start_date.toDateString;
-        end_date.toDateString;
+        created.toDateString;
+        updated.toDateString;
+        sd.toDateString;
+        ed.toDateString;
 
 
         client.index({
@@ -140,10 +140,10 @@ router.post('/elasticsearch/:type/create', function (req, res, next) {
                 "play_path": req.body.play_path,
                 "value": req.body.value,
                 "body": req.body.body,
-                "created_at": created_date,
-                "updated_at": updated_date,
-                "start_date": start_date,
-                "end_date": end_date
+                "created_at": created,
+                "updated_at": updated,
+                "start_date": sd,
+                "end_date": ed
             }
         }, function (err, resp, status) {
             res.setHeader('Content-Type', 'application/json');
@@ -319,7 +319,7 @@ router.post('/cdr/impression', function (req, res, next) {
                 impression: true
             }
         }
-    }, function (resp, err) {
+    }, function (err, resp) {
         console.log("resp: "+ resp);
         console.log("err: " + err);
         if (resp) {
@@ -363,7 +363,7 @@ router.post('/cdr/subscribe', function (req, res, next) {
                 is_subscribed: true
             }
         }
-    }, function (resp, err) {
+    }, function (err, resp) {
         console.log("resp: "+ resp);
         console.log("err: " + err);
         if(resp) {
@@ -405,7 +405,7 @@ router.post('/cdr/confirmation', function (req, res, next) {
                 is_confirmed: true
             }
         }
-    }, function (resp, err) {
+    }, function (err, resp) {
         console.log("resp: "+ resp);
         console.log("err: " + err);
         if (resp) {
@@ -448,7 +448,7 @@ router.post('/cdr/success', function (req, res, next) {
                 is_successful: true
             }
         }
-    }, function (resp, err) {
+    }, function (err, resp) {
         console.log("resp: "+ resp);
         console.log("err: " + err);
         if (resp) {
@@ -491,7 +491,7 @@ router.post('/cdr/insufficient', function (req, res, next) {
                 is_insufficient: true
             }
         }
-    }, function (resp, err) {
+    }, function (err, resp) {
         console.log("resp: "+ resp);
         console.log("err: " + err);
         if (resp) {
@@ -534,7 +534,7 @@ router.post('/cdr/already_sub', function (req, res, next) {
                 already_subbed: true
             }
         }
-    }, function (resp, err) {
+    }, function (err, resp) {
         console.log("resp: "+ resp);
         console.log("err: " + err);
         if (resp) {
@@ -577,7 +577,7 @@ router.post('/cdr/failed', function (req, res, next) {
                 has_failed: true
             }
         }
-    }, function (resp, err) {
+    }, function (err, resp) {
         console.log("resp: "+ resp);
         console.log("err: " + err);
         if (resp) {
@@ -1264,7 +1264,7 @@ router.get('/elasticsearch/data', function (req, res, next) {
                             "match_all": {}
                         }
                     ],
-                        "filter": [
+                    "filter": [
                         {
                             "range": {
                                 "created_at": {

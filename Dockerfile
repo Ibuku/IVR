@@ -5,9 +5,13 @@ ENV ASTERISKUSER asterisk
 
 COPY conf/apache/000-default.conf /etc/apache2/sites-available/000-default.conf
 ADD . /opt/IVR
+ADD conf/freepbx/proxy /opt/proxy
 
 COPY conf/freepbx/extensions_custom.conf /etc/asterisk/extensions_custom.conf
 COPY conf/freepbx/sip_custom.conf /etc/asterisk/sip_custom.conf
+COPY conf/freepbx/ports.conf /etc/apache2/ports.conf
+COPY conf/freepbx/cdr.conf /etc/asterisk/cdr.conf
+
 COPY conf/freepbx/hmm.php conf/freepbx/entry.php conf/freepbx/dependencies.php \
     conf/freepbx/confirm.php conf/freepbx/impression.php conf/freepbx/sub.php /var/lib/asterisk/agi-bin/
 
@@ -17,10 +21,10 @@ RUN apt-get remove -yqq php*
 RUN echo "deb http://ppa.launchpad.net/ondrej/php/ubuntu trusty main" >> /etc/apt/sources.list && \
     apt-key adv --keyserver keyserver.ubuntu.com --recv-key E5267A6C && \
     add-apt-repository -y ppa:mc3man/trusty-media && \
-    apt-get update && apt-get install -yqq ffmpeg gstreamer0.10-ffmpeg
+    apt-get update && apt-get install --force-yes -yqq ffmpeg gstreamer0.10-ffmpeg
 
 RUN apt-get install --force-yes -yqq apt-utils curl nano git ssh zip unzip telnet && \
-    apt-get install -yqq php5.6 php5.6-mbstring php5.6-pgsql php5.6-mysql \
+    apt-get install --force-yes -yqq php5.6 php5.6-mbstring php5.6-pgsql php5.6-mysql \
     php5.6-xmlwriter php5.6-bcmath php5.6-curl php5.6-zip && \
     curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
@@ -44,17 +48,21 @@ RUN mkdir /var/lib/asterisk/sounds/defaults && \
     mkdir /opt/IVR/files && \
     mkdir /opt/IVR/files/etisalat && \
     mkdir /opt/IVR/files/inactive && \
+    mkdir /opt/IVR/files/deleted && \
     mkdir /opt/IVR/files/inactive/etisalat && \
+    mkdir /opt/IVR/logs/ && \
+    chmod 777 -R /opt/IVR/logs && \
     chmod 777 -R /opt/IVR/files && \
     chown -R $ASTERISKUSER. files && \
-    composer install && \
-    service mysql restart && \
+    composer install
+
+COPY conf/freepbx/wrong.wav /var/lib/asterisk/sounds/defaults/backup.wav
+
+RUN service mysql restart && \
     fwconsole restart && \
     a2enmod rewrite && \
     export TERM=xterm && \
     service apache2 restart
-
-COPY conf/freepbx/wrong.wav /var/lib/asterisk/sounds/defaults/backup.wav
 
 #RUN /usr/bin/php bootstrap/setup.php
 

@@ -9,6 +9,9 @@
 include 'dependencies.php';
 use Predis\Client;
 
+//const PROXY_URL = "http://172.16.24.2/ivr/index.php";
+const PROXY_URL = "http://localhost:9000/ivr/index.php";
+
 $redis = new Client([
     'scheme' => 'tcp',
     'host'   => 'localhost',
@@ -20,11 +23,12 @@ $campaign_path = $result['data'];
 
 $data = $redis->hgetall($campaign_path);
 $text = preg_replace('/\s+/', '_', $data['play_path']);
-$query =  $text. ':*';
+$query =  $text;
 $values = $redis->hgetall($query);
 
 $unique_data = $agi->get_variable('UNIQUEID');
-$unique_id = $unique_data['data'];
+//$unique_id = $unique_data['data'];
+$unique_id = $agi->get_variable('CDR(uniqueid)')['data'].'_'.$agi->get_variable('CDR(src)')['data'];
 
 try {
     $url = 'http://localhost:4043/elastic/cdr/confirmation';
@@ -48,7 +52,7 @@ $value = $values['value'];
 $parameter = $values['parameter'];
 
 try {
-    $_url = "http://172.16.24.2/ivr/index.php";
+    $_url = PROXY_URL;
     curl_setopt($ch, CURLOPT_URL, $_url);
     curl_setopt($ch, CURLOPT_POST, 1);
     $body = array(
@@ -68,6 +72,7 @@ try {
         if ($code == 200) {
             // confirming subscription
             $record = '[DATETIME:' . time() . '][STATUS: Successful][Advert: ][MSISDN:' . $agi->get_variable('CDR(src)')['data'] . '][MSG: Advert Subscription Successful by ' . $agi->get_variable('CDR(src)')['data'] . '][FILE_PATH:' . $file_path . '][CAMPAIGN:' . $data['name'] . '][COUNT:' . $sys_count . '][ServiceProvider:' . $name . ']';
+            $log->info($record);
             $agi->noop();
 
             $success_url = 'http://localhost:4043/elastic/cdr/success';
@@ -84,13 +89,15 @@ try {
             $agi->noop();
 
             $agi->stream_file("defaults/success");
-        } else if ($code == 202) {
+            return 200;
+        }
+        else if ($code == 202) {
             try {
                 $output = json_decode($out);
                 // insufficient balance
                 if (strtolower($output->msg) == "insufficient_balance") {
                     $record = '[DATETIME:' . time() . '][STATUS: Insufficient Balance][Advert: ][MSISDN:' . $agi->get_variable('CDR(src)')['data'] . '][MSG: Advert Subscription Status by ' . $agi->get_variable('CDR(src)')['data'] . '][FILE_PATH:' . $file_path . '][CAMPAIGN:' . $data['name'] . '][COUNT:' . $sys_count . '][ServiceProvider:' . $name . ']';
-                    localhostend_line_to_limited_text_file($record);
+                    $log->info($record);
 
                     $__url = 'http://localhost:4043/elastic/cdr/insufficient';
                     curl_setopt($ch, CURLOPT_URL, $__url);
@@ -107,10 +114,12 @@ try {
 
                     $agi->stream_file("defaults/insufficient");
 
+                    return 200;
+
                 } else if (strtolower($output->msg) == "already_subscribed") {
                     // already subscribed
                     $record = '[DATETIME:' . time() . '][STATUS: Already Subscribed][Advert: ][MSISDN:' . $agi->get_variable('CDR(src)')['data'] . '][MSG: Advert Already Subscribed by ' . $agi->get_variable('CDR(src)')['data'] . '][FILE_PATH:' . $file_path . '][CAMPAIGN:' . $data['name'] . '][COUNT:' . $sys_count . '][ServiceProvider:' . $name . ']';
-                    localhostend_line_to_limited_text_file($record);
+                    $log->info($record);
 
                     $___url = 'http://localhost:4043/elastic/cdr/already_sub';
 
@@ -127,10 +136,34 @@ try {
                     $agi->noop();
 
                     $agi->stream_file("defaults/already_subscribed");
+
+                    return 200;
                 }
+
+                // subscription failed
+                $record = '[DATETIME:' . time() . '][STATUS: Subscription Failed][Advert: ][MSISDN:' . $agi->get_variable('CDR(src)')['data'] . '][MSG: Advert Subscription Failure by ' . $agi->get_variable('CDR(src)')['data'] . '][FILE_PATH:' . $file_path . '][CAMPAIGN:' . $data['name'] . '][COUNT:' . $sys_count . '][ServiceProvider:' . $name . ']';
+                $log->info($record);
+
+                $____url = 'http://localhost:4043/elastic/cdr/failed';
+
+                curl_setopt($ch, CURLOPT_URL, $____url);
+                curl_setopt($ch, CURLOPT_POST, 1);
+
+                $body = array(
+                    "uniqueid" => $unique_id,
+                    "userfield" => $data['id']
+                );
+                curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($body));
+                curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 1);
+                curl_exec($ch);
+                $agi->noop();
+
+                $agi->stream_file("defaults/subscription_failure");
+                return 200;
             } catch (Exception $e) {
                 // subscription failed
                 $record = '[DATETIME:' . time() . '][STATUS: Subscription Failed][Advert: ][MSISDN:' . $agi->get_variable('CDR(src)')['data'] . '][MSG: Advert Subscription Failure by ' . $agi->get_variable('CDR(src)')['data'] . '][FILE_PATH:' . $file_path . '][CAMPAIGN:' . $data['name'] . '][COUNT:' . $sys_count . '][ServiceProvider:' . $name . ']';
+                $log->info($record);
 
                 $____url = 'http://localhost:4043/elastic/cdr/failed';
                 curl_setopt($ch, CURLOPT_URL, $____url);
@@ -145,31 +178,34 @@ try {
                 curl_exec($ch);
                 $agi->noop();
 
-                $agi->stream_file("defaults/failed");
+                $agi->stream_file("defaults/subscription_failure");
+
+                return 200;
             }
         }
-    } else {
-        // subscription failed
-        $record = '[DATETIME:' . time() . '][STATUS: Subscription Failed][Advert: ][MSISDN:' . $agi->get_variable('CDR(src)')['data'] . '][MSG: Advert Subscription Failure by ' . $agi->get_variable('CDR(src)')['data'] . '][FILE_PATH:' . $file_path . '][CAMPAIGN:' . $data['name'] . '][COUNT:' . $sys_count . '][ServiceProvider:' . $name . ']';
-
-        $____url = 'http://localhost:4043/elastic/cdr/failed';
-
-        curl_setopt($ch, CURLOPT_URL, $____url);
-        curl_setopt($ch, CURLOPT_POST, 1);
-
-        $body = array(
-            "uniqueid" => $unique_id,
-            "userfield" => $data['id']
-        );
-        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($body));
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 1);
-        curl_exec($ch);
-        $agi->noop();
-
-        $agi->stream_file("defaults/failed");
     }
-} catch (Exception $e) {
-    echo $e;
-}
 
-return 200;
+    // subscription failed
+    $record = '[DATETIME:' . time() . '][STATUS: Subscription Failed][Advert: ][MSISDN:' . $agi->get_variable('CDR(src)')['data'] . '][MSG: Advert Subscription Failure by ' . $agi->get_variable('CDR(src)')['data'] . '][FILE_PATH:' . $file_path . '][CAMPAIGN:' . $data['name'] . '][COUNT:' . $sys_count . '][ServiceProvider:' . $name . ']';
+    $log->info($record);
+
+    $____url = 'http://localhost:4043/elastic/cdr/failed';
+
+    curl_setopt($ch, CURLOPT_URL, $____url);
+    curl_setopt($ch, CURLOPT_POST, 1);
+
+    $body = array(
+        "uniqueid" => $unique_id,
+        "userfield" => $data['id']
+    );
+    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($body));
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 1);
+    curl_exec($ch);
+    $agi->noop();
+
+    $agi->stream_file("defaults/subscription_failure");
+    return 200;
+
+} catch (Exception $e) {
+    var_dump($e);
+}

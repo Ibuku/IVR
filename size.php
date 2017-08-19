@@ -15,7 +15,7 @@ $campaigns = Campaign::all();
 
 foreach ($campaigns as $campaign) {
 
-    Index::index('campaign', [
+    Index::save_redis($campaign->play_path, [
         'username' => $campaign->username,
         'start_date' => $campaign->start_date,
         'end_date' => $campaign->end_date,
@@ -28,4 +28,18 @@ foreach ($campaigns as $campaign) {
         'updated_at' => $campaign->updated_at->format('Y-m-d'),
         'is_active' => $campaign->is_active
     ]);
+
+//    Index::index('campaign', [
+//        'username' => $campaign->username,
+//        'start_date' => $campaign->start_date,
+//        'end_date' => $campaign->end_date,
+//        'name' => $campaign->name,
+//        'file_path' => $campaign->file_path,
+//        'play_path' => $campaign->play_path,
+//        'description' => $campaign->description,
+//        'id' => $campaign->id,
+//        'created_at' => $campaign->created_at->format('Y-m-d'),
+//        'updated_at' => $campaign->updated_at->format('Y-m-d'),
+//        'is_active' => $campaign->is_active
+//    ]);
 }

@@ -22,11 +22,11 @@ $campaign_path = $result['data'];
 $data = $redis->hgetall($campaign_path);
 
 $text = preg_replace('/\s+/', '_', $data['play_path']);
-$query =  $text. ':*';
+$query =  $text;
 $values = $redis->hgetall($query);
 
 $unique_data = $agi->get_variable('UNIQUEID');
-$unique_id = $unique_data['data'];
+$unique_id = $agi->get_variable('CDR(uniqueid)')['data'].'_'.$agi->get_variable('CDR(src)')['data'];
 
 if ($values) {
     try {

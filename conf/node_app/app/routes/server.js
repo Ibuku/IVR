@@ -90,7 +90,7 @@ router.post('/elasticsearch/:type/create', function (req, res, next) {
         req.body.url = 'http://app:4043/ivr/elasticsearch/' + req.params.type + '/create';
         conn.createChannel(function(err, ch) {
             var q = 'ivr';
-            ch.assertQueue(q, {durable: false});
+            ch.assertQueue(q, {durable: true});
             ch.sendToQueue(q, new Buffer(JSON.stringify(req.body)));
             console.log(" [x] Sent Message");
             res.sendStatus(200);
@@ -104,7 +104,7 @@ router.post('/elasticsearch/cdr/missing', function (req, res, next) {
         req.body.url = 'http://app:4043/ivr/elasticsearch/cdr/missing';
         conn.createChannel(function(err, ch) {
             var q = 'ivr';
-            ch.assertQueue(q, {durable: false});
+            ch.assertQueue(q, {durable: true});
             ch.sendToQueue(q, new Buffer(JSON.stringify(req.body)));
             console.log(" [x] Sent Message");
             res.sendStatus(200);
@@ -118,7 +118,7 @@ router.post('/cdr/impression', function (req, res, next) {
         req.body.url = 'http://app:4043/ivr/cdr/impression';
         conn.createChannel(function(err, ch) {
             var q = 'ivr';
-            ch.assertQueue(q, {durable: false});
+            ch.assertQueue(q, {durable: true});
             ch.sendToQueue(q, new Buffer(JSON.stringify(req.body)));
             console.log(" [x] Sent Message");
             res.sendStatus(200);
@@ -133,7 +133,7 @@ router.post('/cdr/subscribe', function (req, res, next) {
         req.body.url = 'http://app:4043/ivr/cdr/subscribe';
         conn.createChannel(function(err, ch) {
             var q = 'ivr';
-            ch.assertQueue(q, {durable: false});
+            ch.assertQueue(q, {durable: true});
             ch.sendToQueue(q, new Buffer(JSON.stringify(req.body)));
             console.log(" [x] Sent Message");
             res.sendStatus(200);
@@ -147,7 +147,7 @@ router.post('/cdr/confirmation', function (req, res, next) {
         req.body.url = 'http://app:4043/ivr/cdr/confirmation';
         conn.createChannel(function(err, ch) {
             var q = 'ivr';
-            ch.assertQueue(q, {durable: false});
+            ch.assertQueue(q, {durable: true});
             ch.sendToQueue(q, new Buffer(JSON.stringify(req.body)));
             console.log(" [x] Sent Message");
             res.sendStatus(200);
@@ -161,7 +161,7 @@ router.post('/cdr/insufficient', function (req, res, next) {
         req.body.url = 'http://app:4043/ivr/cdr/insufficient';
         conn.createChannel(function(err, ch) {
             var q = 'ivr';
-            ch.assertQueue(q, {durable: false});
+            ch.assertQueue(q, {durable: true});
             ch.sendToQueue(q, new Buffer(JSON.stringify(req.body)));
             console.log(" [x] Sent Message");
             res.sendStatus(200);
@@ -175,7 +175,7 @@ router.post('/cdr/already_sub', function (req, res, next) {
         req.body.url = 'http://app:4043/ivr/cdr/already_sub';
         conn.createChannel(function(err, ch) {
             var q = 'ivr';
-            ch.assertQueue(q, {durable: false});
+            ch.assertQueue(q, {durable: true});
             ch.sendToQueue(q, new Buffer(JSON.stringify(req.body)));
             console.log(" [x] Sent Message");
             res.sendStatus(200);
@@ -189,7 +189,7 @@ router.post('/cdr/success', function (req, res, next) {
         req.body.url = 'http://app:4043/ivr/cdr/success';
         conn.createChannel(function(err, ch) {
             var q = 'ivr';
-            ch.assertQueue(q, {durable: false});
+            ch.assertQueue(q, {durable: true});
             ch.sendToQueue(q, new Buffer(JSON.stringify(req.body)));
             console.log(" [x] Sent Message");
             res.sendStatus(200);
@@ -203,7 +203,7 @@ router.post('/cdr/failed', function (req, res, next) {
         req.body.url = 'http://app:4043/ivr/cdr/failed';
         conn.createChannel(function(err, ch) {
             var q = 'ivr';
-            ch.assertQueue(q, {durable: false});
+            ch.assertQueue(q, {durable: true});
             ch.sendToQueue(q, new Buffer(JSON.stringify(req.body)));
             console.log(" [x] Sent Message");
             res.sendStatus(200);

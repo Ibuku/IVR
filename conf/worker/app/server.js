@@ -23,10 +23,9 @@ amqp.connect('amqp://rabbit', function(err, conn) {
                 };
                 rq(options).then(function(resp) {
                     console.log(resp);
-                })
-                    .catch(function(err) {
-                        console.log(err);
-                    });
+                }).catch(function(err) {
+                    console.log(err);
+                });
                 // request({
                 //     url: data.url, //URL to hit
                 //     method: 'POST',

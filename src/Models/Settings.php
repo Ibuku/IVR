@@ -25,6 +25,7 @@ class Settings extends Model
         "goodbye_path",
         "subscription_path",
         "subscription_confirmation_path",
+        "insufficient_balance_path",
         "already_subscribed_path",
         "subscription_failure_path",
         "continue_path",

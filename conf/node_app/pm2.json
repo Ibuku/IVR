@@ -1,9 +1,18 @@
 {
-  "apps": [{
-    "name": "node-app",
-    "script": "/opt/app/app.js",
-    "env": {
-      "production": true
+  "apps": [
+    {
+      "name": "node-app",
+      "script": "/opt/app/app.js",
+      "env": {
+        "production": true
+      }
     }
-  }]
+//    {
+//      "name": "worker-app",
+//      "script": "/opt/app/server.js",
+//      "env": {
+//        "production": true
+//      }
+//    }
+  ]
 }

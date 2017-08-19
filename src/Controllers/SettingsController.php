@@ -49,6 +49,7 @@ class SettingsController extends BaseController
                 'subscription_path' => $request->getParam('subscription_path'),
                 'subscription_confirmation_path' => $request->getParam('subscription_confirmation_path'),
                 'already_subscribed_path' => $request->getParam('already_subscribed_path'),
+                'insufficient_balance_path' => $request->getParam('insufficient_balance_path'),
                 'subscription_failure_path' => $request->getParam('subscription_failure_path'),
                 'continue_path' => $request->getParam('continue_path'),
                 'wrong_selection_path' => $request->getParam('wrong_selection_path')
@@ -65,6 +66,7 @@ class SettingsController extends BaseController
                 'subscription_path' => $request->getParam('subscription_path'),
                 'subscription_confirmation_path' => $request->getParam('subscription_confirmation_path'),
                 'already_subscribed_path' => $request->getParam('already_subscribed_path'),
+                'insufficient_balance_path' => $request->getParam('insufficient_balance_path'),
                 'subscription_failure_path' => $request->getParam('subscription_failure_path'),
                 'continue_path' => $request->getParam('continue_path'),
                 'wrong_selection_path' => $request->getParam('wrong_selection_path')
@@ -153,7 +155,18 @@ class SettingsController extends BaseController
         if (!$already_subscribed_copy) {
             return $this->view->render($response, 'templates/forms/settings.twig', [
                 'user' => $user,
-                'error' => 'Continue prompt not saved',
+                'error' => 'Already Subscribed prompt not saved',
+                'files' => Files::where('tag', 'prompt')->get(),
+                'setting' => $settings
+            ]);
+        }
+
+        $insufficient_copy = copy($settings->insufficient_balance_path, "/var/lib/asterisk/sounds/defaults/insufficient.wav");
+
+        if (!$insufficient_copy) {
+            return $this->view->render($response, 'templates/forms/settings.twig', [
+                'user' => $user,
+                'error' => 'Insufficient prompt not saved',
                 'files' => Files::where('tag', 'prompt')->get(),
                 'setting' => $settings
             ]);
@@ -206,6 +219,7 @@ class SettingsController extends BaseController
                 'subscription_path' => "/var/lib/asterisk/sounds/defaults/subscription.wav",
                 'subscription_confirmation_path' => "/var/lib/asterisk/sounds/defaults/subscription_confirmation.wav",
                 'already_subscribed_path' => "/var/lib/asterisk/sounds/defaults/already_subscribed.wav",
+                'insufficient_balance_path' => '/var/lib/asterisk/sounds/defaults/insufficient.wav',
                 'subscription_failure_path' => "/var/lib/asterisk/sounds/defaults/subscription_failure.wav",
                 'continue_path' => "/var/lib/asterisk/sounds/defaults/continue.wav",
                 "wrong_selection_path" => "/var/lib/asterisk/sounds/defaults/wrong.wav",

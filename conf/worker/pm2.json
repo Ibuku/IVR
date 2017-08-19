@@ -1,6 +1,6 @@
 {
   "apps": [{
-    "name": "rabbit-worker",
+    "name": "worker",
     "script": "/opt/app/app.js",
     "env": {
       "production": true

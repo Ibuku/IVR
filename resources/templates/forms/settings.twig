@@ -318,6 +318,19 @@
 
                             <fieldset class="content-group">
                                 <div class="form-group">
+                                    <label class="control-label col-lg-2"><strong>Select Insufficient Balance Prompt</strong></label>
+                                    <div class="col-lg-10">
+                                        <select class="form-control" id="insufficient_balance_path" name="insufficient_balance_path" required>
+                                            {% for file in files  %}
+                                                <option value="{{ file.file_path }}" {% if setting.insufficient_balance_path == file.file_path %}selected{% endif %}>{{ file.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                            </fieldset>
+
+                            <fieldset class="content-group">
+                                <div class="form-group">
                                     <label class="control-label col-lg-2"><strong>Select Subscription Failure Prompt</strong></label>
                                     <div class="col-lg-10">
                                         <select class="form-control" id="subscription_failure_path" name="subscription_failure_path" required>
