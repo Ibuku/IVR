@@ -51,6 +51,7 @@ RUN mkdir /var/lib/asterisk/sounds/defaults && \
     mkdir /opt/IVR/files/deleted && \
     mkdir /opt/IVR/files/inactive/etisalat && \
     mkdir /opt/IVR/logs/ && \
+    mkdir /opt/backup && \
     chmod 777 -R /opt/IVR/logs && \
     chmod 777 -R /opt/IVR/files && \
     chown -R $ASTERISKUSER. files && \
@@ -63,6 +64,18 @@ RUN service mysql restart && \
     a2enmod rewrite && \
     export TERM=xterm && \
     service apache2 restart
+
+# setup background task cron
+RUN crontab -l > test && \
+    echo "00 00 * * * /usr/bin/php /opt/IVR/background.php" >> test && \
+    crontab test && \
+    rm test\
+
+# setup cron
+RUN crontab -l > test && \
+    echo "00 00 * * * /usr/bin/php /opt/IVR/backup.php" >> test && \
+    crontab test && \
+    rm test
 
 #RUN /usr/bin/php bootstrap/setup.php
 

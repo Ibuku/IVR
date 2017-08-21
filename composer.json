@@ -12,7 +12,8 @@
         "gietos/phpagi": "^2.0",
         "php-amqplib/php-amqplib": "^2.6",
         "phpoffice/phpexcel": "^1.8",
-        "predis/predis": "^1.1"
+        "predis/predis": "^1.1",
+        "aws/aws-sdk-php": "^3.33"
     },
     "autoload": {
         "psr-4": {

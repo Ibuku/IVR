@@ -2,7 +2,7 @@ To setup the application,
 
 Install docker and docker-compose
 
-docker volume create --name=freepbx-data
+docker volume create --name=freepbx-data  
 docker volume create --name=files-data
 docker volume create --name=postgres-data
 docker volume create --name=elasticsearch-data
