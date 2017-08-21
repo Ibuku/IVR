@@ -1,5 +1,5 @@
 <?php
-    $v = '/opt/backup/es.zip';
-    $x = explode('/', $v);
-    var_dump(end($x));
+    $envData = file_get_contents(__DIR__.'/env.json');
+    $data = json_decode($envData);
+    var_dump($data);
     exit();

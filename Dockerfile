@@ -73,7 +73,7 @@ RUN crontab -l > test && \
 
 # setup cron
 RUN crontab -l > test && \
-    echo "00 00 * * * /usr/bin/php /opt/IVR/backup.php" >> test && \
+    echo "30 00 * * * /usr/bin/php /opt/IVR/backup.php" >> test && \
     crontab test && \
     rm test
 

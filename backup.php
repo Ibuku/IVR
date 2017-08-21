@@ -9,10 +9,13 @@ require __DIR__ . '/vendor/autoload.php';
 use Aws\S3\S3Client;
 
 // Instantiate the S3 client with your AWS credentials
+$envData = file_get_contents(__DIR__.'/env.json');
+$env = json_decode($envData);
+
 $s3 = S3Client::factory(array(
     'credentials' => array(
-        'key'    => 'AKIAJRPRP45N4OLEMXTA',
-        'secret' => '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',
+        'key'    => $env->key,
+        'secret' => $env->secret,
     ),
     'region'  => 'us-west-2',
     'version' => 'latest'
