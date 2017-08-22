@@ -66,16 +66,18 @@ RUN service mysql restart && \
     service apache2 restart
 
 # setup background task cron
-RUN crontab -l > test && \
-    echo "00 00 * * * /usr/bin/php /opt/IVR/background.php" >> test && \
-    crontab test && \
-    rm test\
-
-# setup cron
-RUN crontab -l > test && \
-    echo "30 00 * * * /usr/bin/php /opt/IVR/backup.php" >> test && \
-    crontab test && \
-    rm test
+#RUN crontab -e && \
+#    crontab -l > test && \
+#    echo "00 00 * * * /usr/bin/php /opt/IVR/background.php" >> test && \
+#    crontab test && \
+#    rm test
+#
+## setup cron
+#RUN crontab -e && \
+#    crontab -l > backup && \
+#    echo "30 00 * * * /usr/bin/php /opt/IVR/backup.php" >> backup && \
+#    crontab test && \
+#    rm test
 
 #RUN /usr/bin/php bootstrap/setup.php
 

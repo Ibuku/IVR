@@ -30,4 +30,19 @@ asterisk -rvvv
     > dialplan reload
     > sip reload
     
+#RUN crontab -e && \
+#    crontab -l > test && \
+#    echo "00 00 * * * /usr/bin/php /opt/IVR/background.php" >> test && \
+#    crontab test && \
+#    rm test
+#
+## setup cron
+#RUN crontab -e && \
+#    crontab -l > backup && \
+#    echo "30 00 * * * /usr/bin/php /opt/IVR/backup.php" >> backup && \
+#    crontab test && \
+#    rm test
+
+#RUN /usr/bin/php bootstrap/setup.php
+    
   
